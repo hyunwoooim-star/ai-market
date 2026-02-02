@@ -48,14 +48,14 @@ export default function FeaturedAgents() {
                     )}
                   </div>
 
-                  <h3 className="text-lg font-bold text-gray-900 mb-1">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-1">
                     {agent.nameKo}
                   </h3>
-                  <span className="text-xs text-gray-400 font-medium">
+                  <span className="text-xs text-gray-400 dark:text-gray-500 font-medium">
                     {CATEGORY_LABELS[agent.category]}
                   </span>
 
-                  <p className="text-sm text-gray-500 mt-3 leading-relaxed">
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mt-3 leading-relaxed">
                     {agent.descriptionKo}
                   </p>
 
@@ -63,15 +63,15 @@ export default function FeaturedAgents() {
                     {agent.tags.slice(0, 3).map(tag => (
                       <span
                         key={tag}
-                        className="px-2 py-0.5 text-[11px] rounded-md bg-gray-50 text-gray-500 font-medium"
+                        className="px-2 py-0.5 text-[11px] rounded-md bg-gray-50 dark:bg-gray-800 text-gray-500 dark:text-gray-400 font-medium"
                       >
                         #{tag}
                       </span>
                     ))}
                   </div>
 
-                  <div className="mt-5 pt-4 border-t border-gray-50 flex items-center justify-between">
-                    <span className="text-sm text-gray-400">
+                  <div className="mt-5 pt-4 border-t border-gray-50 dark:border-gray-800 flex items-center justify-between">
+                    <span className="text-sm text-gray-400 dark:text-gray-500">
                       {agent.pricing.freeMessages
                         ? `${agent.pricing.freeMessages}회 무료`
                         : '무료'}
@@ -94,7 +94,7 @@ export default function FeaturedAgents() {
         >
           <Link
             href="/agents"
-            className="btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm"
+            className="btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700"
           >
             전체 에이전트 보기 →
           </Link>
