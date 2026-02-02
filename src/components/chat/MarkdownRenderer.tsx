@@ -91,7 +91,7 @@ export default function MarkdownRenderer({ content, isUser }: Props) {
           }
 
           return (
-            <code className="bg-gray-200 text-indigo-700 text-xs px-1.5 py-0.5 rounded font-mono">
+            <code className="bg-gray-200 dark:bg-gray-700 text-indigo-700 dark:text-indigo-300 text-xs px-1.5 py-0.5 rounded font-mono">
               {children}
             </code>
           );
@@ -99,31 +99,31 @@ export default function MarkdownRenderer({ content, isUser }: Props) {
         pre: ({ children }) => <>{children}</>,
         table: ({ children }) => (
           <div className="overflow-x-auto my-2">
-            <table className="text-xs border-collapse w-full">
+            <table className="text-xs border-collapse w-full dark:text-gray-300">
               {children}
             </table>
           </div>
         ),
         thead: ({ children }) => (
-          <thead className="bg-gray-100">{children}</thead>
+          <thead className="bg-gray-100 dark:bg-gray-800">{children}</thead>
         ),
         th: ({ children }) => (
-          <th className="border border-gray-200 px-2 py-1.5 text-left font-semibold text-gray-700">
+          <th className="border border-gray-200 dark:border-gray-700 px-2 py-1.5 text-left font-semibold text-gray-700 dark:text-gray-200">
             {children}
           </th>
         ),
         td: ({ children }) => (
-          <td className="border border-gray-200 px-2 py-1.5 text-gray-600">
+          <td className="border border-gray-200 dark:border-gray-700 px-2 py-1.5 text-gray-600 dark:text-gray-400">
             {children}
           </td>
         ),
-        hr: () => <hr className="my-3 border-gray-200" />,
+        hr: () => <hr className="my-3 border-gray-200 dark:border-gray-700" />,
         a: ({ href, children }) => (
           <a
             href={href}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-indigo-500 hover:text-indigo-600 underline underline-offset-2"
+            className="text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300 underline underline-offset-2"
           >
             {children}
           </a>
