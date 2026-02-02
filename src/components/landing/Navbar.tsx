@@ -3,25 +3,27 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import ThemeToggle from '@/components/ui/ThemeToggle';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 backdrop-blur-xl border-b border-gray-100">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center gap-2.5">
           <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
             <span className="text-white text-sm font-bold">A</span>
           </div>
-          <span className="font-bold text-gray-900 text-lg">에이전트마켓</span>
+          <span className="font-bold text-gray-900 dark:text-white text-lg">에이전트마켓</span>
         </Link>
 
         {/* Desktop nav */}
-        <div className="hidden md:flex items-center gap-6">
-          <Link href="/agents" className="text-sm text-gray-500 hover:text-gray-900 transition-colors font-medium">
+        <div className="hidden md:flex items-center gap-4">
+          <Link href="/agents" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
             에이전트
           </Link>
+          <ThemeToggle />
           <Link
             href="/agents"
             className="btn-primary px-5 py-2.5 text-sm"

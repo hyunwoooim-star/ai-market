@@ -20,6 +20,23 @@
   --success: #10B981;
 }
 
+.dark {
+  --background: #0F172A;
+  --foreground: #F1F5F9;
+  --accent: #818CF8;
+  --accent-light: #A5B4FC;
+  --accent-bg: #1E1B4B;
+  --surface: #1E293B;
+  --surface-2: #334155;
+  --surface-3: #475569;
+  --border: #334155;
+  --text-primary: #F1F5F9;
+  --text-secondary: #94A3B8;
+  --text-tertiary: #64748B;
+  --success: #34D399;
+  color-scheme: dark;
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
@@ -54,7 +71,7 @@ body {
 
 /* Card styles */
 .card {
-  background: white;
+  background: var(--surface);
   border: 1px solid var(--border);
   border-radius: 16px;
   transition: all 0.2s ease;
@@ -64,6 +81,11 @@ body {
   border-color: #C7D2FE;
   box-shadow: 0 4px 24px rgba(79, 70, 229, 0.08);
   transform: translateY(-2px);
+}
+
+.dark .card:hover {
+  border-color: #4338CA;
+  box-shadow: 0 4px 24px rgba(129, 140, 248, 0.12);
 }
 
 /* Soft shadow */
