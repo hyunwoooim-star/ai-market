@@ -1,12 +1,13 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
 
 export default function ThemeToggle() {
   const [dark, setDark] = useState(false);
+  const t = useTranslations('theme');
 
   useEffect(() => {
-    // Check localStorage or system preference
     const stored = localStorage.getItem('theme');
     if (stored === 'dark' || (!stored && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
       setDark(true);
@@ -25,7 +26,7 @@ export default function ThemeToggle() {
     <button
       onClick={toggle}
       className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors text-gray-500 dark:text-gray-400"
-      aria-label="테마 변경"
+      aria-label={t('toggle')}
     >
       {dark ? (
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
