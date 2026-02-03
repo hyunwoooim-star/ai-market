@@ -4,7 +4,7 @@ import { runEpoch, getNextEpochNumber, initializeAgents } from '@/lib/economy-en
 export const dynamic = 'force-dynamic';
 
 // 에포크 수동 실행 (테스트용, secret key 필요)
-const EPOCH_SECRET = process.env.EPOCH_SECRET || 'agent-market-epoch-2024';
+const EPOCH_SECRET = process.env.ECONOMY_EPOCH_SECRET!;
 
 export async function POST(req: NextRequest) {
   try {

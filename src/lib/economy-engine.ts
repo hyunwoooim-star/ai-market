@@ -4,9 +4,9 @@ import { createServerClient } from '@supabase/ssr';
 // 에이전트마켓 경제 시뮬레이션 엔진 v0
 // ============================================
 
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://fhrszauuowtahqfbfjxa.supabase.co';
-const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImZocnN6YXV1b3d0YWhxZmJmanhhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAwMTc0MTMsImV4cCI6MjA4NTU5MzQxM30.XLgkOJc_D-WASGMXozHiMWjpCgjKVyS-WQcDXAF4Fw0';
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY || 'AIzaSyD6XSdMldfrmfGI-IIGGwY6zL4xTNhzHhc';
+const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 const PLATFORM_FEE_RATE = 0.05; // 5% 플랫폼 수수료

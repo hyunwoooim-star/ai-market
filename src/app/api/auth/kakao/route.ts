@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 
-const KAKAO_CLIENT_ID = 'c4adbc33d3183591159fd8a4052ffb0f';
+const KAKAO_CLIENT_ID = process.env.KAKAO_CLIENT_ID!;
 const REDIRECT_URI = 'https://agentmarket.kr/api/auth/kakao/callback';
 
 export async function GET() {
