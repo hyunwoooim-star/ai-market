@@ -196,30 +196,45 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
 }
 
 function EpochEventRow({ event, index }: { event: EpochEventCard; index: number }) {
-  const styleMap: Record<string, { bg: string; border: string; icon: string; textColor: string }> = {
+  const styleMap: Record<string, { 
+    bg: string; 
+    border: string; 
+    icon: string; 
+    textColor: string;
+    shadowColor: string;
+    pulse: boolean;
+  }> = {
     boom: {
-      bg: 'bg-emerald-500/10',
-      border: 'border-emerald-500/30',
+      bg: 'bg-gradient-to-r from-emerald-500/15 to-green-500/10',
+      border: 'border-emerald-500/40',
       icon: '🚀',
-      textColor: 'text-emerald-400',
+      textColor: 'text-emerald-300',
+      shadowColor: 'shadow-emerald-500/20',
+      pulse: true,
     },
     recession: {
-      bg: 'bg-red-500/10',
-      border: 'border-red-500/30',
+      bg: 'bg-gradient-to-r from-red-500/15 to-rose-500/10',
+      border: 'border-red-500/40',
       icon: '📉',
-      textColor: 'text-red-400',
+      textColor: 'text-red-300',
+      shadowColor: 'shadow-red-500/20',
+      pulse: false,
     },
     opportunity: {
-      bg: 'bg-amber-500/10',
-      border: 'border-amber-500/30',
+      bg: 'bg-gradient-to-r from-amber-500/15 to-yellow-500/10',
+      border: 'border-amber-500/40',
       icon: '⚡',
-      textColor: 'text-amber-400',
+      textColor: 'text-amber-300',
+      shadowColor: 'shadow-amber-500/20',
+      pulse: true,
     },
     normal: {
-      bg: 'bg-slate-500/5',
-      border: 'border-slate-500/20',
-      icon: '📋',
-      textColor: 'text-slate-400',
+      bg: 'bg-gradient-to-r from-slate-500/8 to-gray-500/5',
+      border: 'border-slate-500/25',
+      icon: '📊',
+      textColor: 'text-slate-300',
+      shadowColor: 'shadow-slate-500/10',
+      pulse: false,
     },
   };
 
@@ -227,21 +242,86 @@ function EpochEventRow({ event, index }: { event: EpochEventCard; index: number 
 
   return (
     <motion.div
-      initial={{ opacity: 0, scale: 0.9 }}
-      animate={{ opacity: 1, scale: 1 }}
-      transition={{ delay: index * 0.02 }}
-      className={`${style.bg} ${style.border} border rounded-xl p-3 text-center`}
+      initial={{ opacity: 0, scale: 0.8, y: 20 }}
+      animate={{ opacity: 1, scale: 1, y: 0 }}
+      transition={{ 
+        delay: index * 0.02, 
+        type: 'spring',
+        stiffness: 300,
+        damping: 20
+      }}
+      className={`relative ${style.bg} ${style.border} ${style.shadowColor} border rounded-xl p-4 text-center shadow-lg overflow-hidden`}
     >
-      <div className="flex items-center justify-center gap-2">
-        <span className="text-lg">{style.icon}</span>
-        <span className={`text-xs font-bold uppercase tracking-wider ${style.textColor}`}>
-          에포크 #{event.epoch}
-        </span>
-        <span className="text-lg">{style.icon}</span>
+      {/* 백그라운드 패턴 */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
       </div>
-      <p className={`text-xs mt-1 ${style.textColor}`}>
-        {event.description}
-      </p>
+
+      {/* 메인 컨텐츠 */}
+      <div className="relative z-10">
+        <div className="flex items-center justify-center gap-3 mb-2">
+          <motion.span 
+            className="text-2xl"
+            animate={style.pulse ? { 
+              scale: [1, 1.1, 1],
+              rotate: [0, 5, -5, 0]
+            } : {}}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity,
+              repeatType: 'reverse'
+            }}
+          >
+            {style.icon}
+          </motion.span>
+          <span className={`text-sm font-bold uppercase tracking-widest ${style.textColor}`}>
+            에포크 #{event.epoch}
+          </span>
+          <motion.span 
+            className="text-2xl"
+            animate={style.pulse ? { 
+              scale: [1, 1.1, 1],
+              rotate: [0, -5, 5, 0]
+            } : {}}
+            transition={{ 
+              duration: 2, 
+              repeat: Infinity,
+              repeatType: 'reverse',
+              delay: 0.5
+            }}
+          >
+            {style.icon}
+          </motion.span>
+        </div>
+        
+        <p className={`text-sm font-medium leading-relaxed ${style.textColor}`}>
+          {event.description}
+        </p>
+
+        {/* 특별 이벤트 강조 */}
+        {event.type !== 'normal' && (
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: '100%' }}
+            transition={{ delay: 0.5, duration: 1 }}
+            className={`mt-3 h-0.5 ${
+              event.type === 'boom' ? 'bg-emerald-400' :
+              event.type === 'recession' ? 'bg-red-400' :
+              'bg-amber-400'
+            } rounded-full`}
+          />
+        )}
+      </div>
+
+      {/* 펄스 효과 */}
+      {style.pulse && (
+        <motion.div
+          className="absolute inset-0 rounded-xl border-2 border-current opacity-20"
+          animate={{ scale: [1, 1.05, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          style={{ color: style.textColor.replace('text-', '') }}
+        />
+      )}
     </motion.div>
   );
 }
