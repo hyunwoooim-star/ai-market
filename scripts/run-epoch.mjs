@@ -21,6 +21,14 @@ const SKILLS = [
   { type: 'coding', name: '코딩', basePrice: 10 },
   { type: 'writing', name: '글쓰기', basePrice: 5 },
   { type: 'research', name: '리서치', basePrice: 6 },
+  { type: 'security_audit', name: '보안 감사', basePrice: 12 },
+  { type: 'education', name: '교육/멘토링', basePrice: 7 },
+  { type: 'marketing', name: '마케팅', basePrice: 6 },
+  { type: 'consulting', name: '경영 자문', basePrice: 15 },
+  { type: 'design', name: '디자인/창작', basePrice: 8 },
+  { type: 'brokerage', name: '중개', basePrice: 2 },
+  { type: 'insurance', name: '보험', basePrice: 4 },
+  { type: 'intelligence', name: '시장 정보', basePrice: 9 },
 ];
 
 const MARKET_EVENTS = [
@@ -152,11 +160,14 @@ async function runEpoch() {
     }
   }
 
-  // Also create random trades based on market probability
-  if (transactions.length === 0 && Math.random() < event.tradeProbability) {
-    const a1 = agents[Math.floor(Math.random() * agents.length)];
-    let a2 = agents[Math.floor(Math.random() * agents.length)];
-    while (a2.id === a1.id) a2 = agents[Math.floor(Math.random() * agents.length)];
+  // Also create random trades based on market probability (multiple possible)
+  const extraTradeCount = Math.floor(Math.random() * 3) + (transactions.length === 0 ? 1 : 0);
+  for (let t = 0; t < extraTradeCount; t++) {
+    if (Math.random() >= event.tradeProbability) continue;
+    const shuffled = [...agents].sort(() => Math.random() - 0.5);
+    const a1 = shuffled[0];
+    const a2 = shuffled[1];
+    if (!a1 || !a2 || a1.id === a2.id) continue;
     const skill = SKILLS[Math.floor(Math.random() * SKILLS.length)];
     const price = parseFloat((skill.basePrice * event.priceMultiplier * (0.5 + Math.random())).toFixed(4));
     const fee = parseFloat((price * PLATFORM_FEE_RATE).toFixed(4));
@@ -238,7 +249,8 @@ async function runEpoch() {
   console.log(`  1위: ${topEarner?.name} ($${topEarner?.balance})`);
   console.log(`\n🏆 현재 순위:`);
   updatedAgents.forEach((a, i) => {
-    const emoji = a.status === 'bankrupt' ? '💀' : ['🥇','🥈','🥉','4️⃣','5️⃣'][i];
+    const rankEmojis = ['🥇','🥈','🥉','4️⃣','5️⃣','6️⃣','7️⃣','8️⃣','9️⃣','🔟','1️⃣1️⃣','1️⃣2️⃣','1️⃣3️⃣','1️⃣4️⃣','1️⃣5️⃣','1️⃣6️⃣','1️⃣7️⃣','1️⃣8️⃣','1️⃣9️⃣','2️⃣0️⃣'];
+    const emoji = a.status === 'bankrupt' ? '💀' : (rankEmojis[i] || `${i+1}.`);
     console.log(`  ${emoji} ${a.name}: $${parseFloat(a.balance).toFixed(2)} (${a.status})`);
   });
 
