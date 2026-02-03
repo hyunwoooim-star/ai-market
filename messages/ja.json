@@ -1,0 +1,321 @@
+{
+  "metadata": {
+    "title": "エージェントマーケット | AIが働く時代、あなたは選ぶだけ",
+    "description": "ブログ執筆、AI友達、履歴書作成、契約書分析まで。最適なAIエージェントがここに揃っています。",
+    "ogTitle": "エージェントマーケット — AIエージェントプラットフォーム",
+    "ogDescription": "検証済みAIエージェントを自由に選んで使えます。無料体験あり。"
+  },
+  "nav": {
+    "agents": "エージェント",
+    "startFree": "無料で始める",
+    "brandName": "エージェントマーケット"
+  },
+  "hero": {
+    "badge": "AIエージェントマーケット",
+    "heading1": "AIが働く時代、",
+    "heading2": "あなたは選ぶだけ",
+    "subtitle": "ブログ執筆、履歴書作成、契約書分析、AI友達まで。検証済みAIエージェントを無料で体験できます。",
+    "ctaBrowse": "エージェントを見る →",
+    "ctaTry": "✍️ ブログAIを無料体験",
+    "trustFree": "無料体験",
+    "trustNoCard": "カード不要",
+    "trustKorean": "多言語対応",
+    "floatBlog": "ブログ",
+    "floatFriend": "AI友達",
+    "floatResume": "履歴書",
+    "floatContract": "契約書"
+  },
+  "stats": {
+    "agents": "登録エージェント",
+    "chats": "累計チャット",
+    "rating": "平均評価",
+    "users": "月間ユーザー",
+    "agentSuffix": "件",
+    "chatSuffix": "件",
+    "ratingSuffix": "/5",
+    "userSuffix": "人"
+  },
+  "featured": {
+    "title": "人気エージェント",
+    "subtitle": "今すぐ無料で使えます",
+    "freeCount": "{count}回無料",
+    "free": "無料",
+    "start": "始める →",
+    "viewAll": "すべてのエージェントを見る →"
+  },
+  "howItWorks": {
+    "title": "たった3ステップ",
+    "subtitle": "誰でも簡単に、すぐ始められます",
+    "step1Title": "エージェントを選ぶ",
+    "step1Desc": "ブログ、履歴書、契約書など、必要なAIを選びましょう。",
+    "step2Title": "自然に会話する",
+    "step2Desc": "やりたいことを伝えるだけ。AIがすぐに理解します。",
+    "step3Title": "結果を受け取る",
+    "step3Desc": "プロレベルの成果物をすぐに受け取れます。"
+  },
+  "testimonials": {
+    "title": "ユーザーの声",
+    "subtitle": "実際のユーザーからのリアルな声",
+    "items": [
+      {
+        "name": "田中 太郎",
+        "role": "カフェオーナー · 東京",
+        "avatar": "☕",
+        "text": "ブログマスターで毎週記事を投稿したら、検索流入が40%増えました。売上にも直結しています。",
+        "agent": "ブログマスター"
+      },
+      {
+        "name": "佐藤 美咲",
+        "role": "大学4年生 · 就活中",
+        "avatar": "👩🎓",
+        "text": "レジュメプロの添削でエントリーシートが見違えるほど良くなりました。第一志望の書類通過できました！",
+        "agent": "レジュメプロ"
+      },
+      {
+        "name": "鈴木 健太",
+        "role": "フリーランスエンジニア",
+        "avatar": "💻",
+        "text": "契約書ガードのおかげで危険な条項を事前に発見。フリーランスには必須ツールです。",
+        "agent": "契約書ガード"
+      },
+      {
+        "name": "高橋 由奈",
+        "role": "会社員 · 30代",
+        "avatar": "🧘‍♀️",
+        "text": "ムードダイアリーで毎日感情を整理しています。カウンセリングより気軽で、本当に癒されます。",
+        "agent": "ムードダイアリー"
+      },
+      {
+        "name": "伊藤 翔",
+        "role": "スタートアップ代表",
+        "avatar": "🚀",
+        "text": "スタートアップメンターにピッチ資料からVC対策まで手伝ってもらいました。シード調達成功！",
+        "agent": "スタートアップメンター"
+      },
+      {
+        "name": "山田 さくら",
+        "role": "一人暮らし · 料理初心者",
+        "avatar": "🍳",
+        "text": "冷蔵庫に卵とご飯しかなかったのに、美味しい炒飯レシピを教えてもらえました！助かります。",
+        "agent": "冷蔵庫シェフ"
+      }
+    ]
+  },
+  "cta": {
+    "title": "今すぐ始めましょう",
+    "subtitle": "会員登録不要\n無料で体験できます",
+    "button": "無料で始める →",
+    "trust": "カード登録不要 · データ安全 · 多言語対応"
+  },
+  "footer": {
+    "brandName": "エージェントマーケット",
+    "copyright": "© 2026 AgentMarket. AIが作り、人が使う。",
+    "terms": "利用規約",
+    "privacy": "プライバシーポリシー",
+    "contact": "お問い合わせ"
+  },
+  "agentsPage": {
+    "title": "AIエージェントカタログ",
+    "subtitle": "目的に合ったAIを選びましょう。すべて無料体験できます。",
+    "all": "すべて",
+    "freeLabel": "🆓 無料",
+    "freeCount": "{count}回無料",
+    "start": "始める →"
+  },
+  "agentDetail": {
+    "notFound": "エージェントが見つかりません",
+    "backToList": "← 一覧へ",
+    "free": "無料",
+    "freeCount": "{count}回無料",
+    "newChat": "+ 新しいチャット",
+    "pricing": "💎 料金プラン",
+    "messages": "{count}件のメッセージ",
+    "send": "送信",
+    "inputPlaceholder": "メッセージを入力... (Shift+Enterで改行)",
+    "aiDisclaimer": "AIの回答は参考用です。正確性を保証するものではありません。",
+    "aiGenerated": "🤖 AI生成の回答です",
+    "proUpgrade": "💎 Proにアップグレード",
+    "relatedAgents": "✨ 似ているエージェント",
+    "inProgress": "進行中",
+    "streamError": "⚠️ 一時的なエラーが発生しました。もう一度お試しください。"
+  },
+  "auth": {
+    "kakaoLogin": "カカオでログイン",
+    "kakaoLabel": "カカオログイン",
+    "mySubscription": "🎫 サブスクリプション管理",
+    "chatHistory": "💬 チャット履歴",
+    "logout": "ログアウト"
+  },
+  "wallet": {
+    "connect": "ウォレット接続",
+    "connecting": "接続中...",
+    "connected": "Devnet接続済み",
+    "copyAddress": "📋 アドレスをコピー",
+    "copied": "✅ コピーしました！",
+    "viewExplorer": "🔍 Explorerで見る",
+    "disconnect": "接続解除"
+  },
+  "pricing": {
+    "title": "プランを選ぶ",
+    "subtitle": "7日間無料体験で始めましょう。いつでも解約可能です。",
+    "ticket": "{name} プラン",
+    "perMonth": "/月",
+    "paymentInfo": "決済は安全なToss Paymentsで処理されます。",
+    "processing": "処理中...",
+    "starter": {
+      "name": "Starter",
+      "desc": "気軽にお試し",
+      "feat1": "毎日5件の無料メッセージ",
+      "feat2": "基本エージェント利用",
+      "feat3": "広告あり",
+      "btn": "現在のプラン"
+    },
+    "pro": {
+      "name": "Pro",
+      "desc": "一番人気",
+      "feat1": "無制限チャット",
+      "feat2": "全エージェント利用可能",
+      "feat3": "高速レスポンス",
+      "feat4": "広告なし",
+      "btn": "30日間無料体験を始める"
+    },
+    "business": {
+      "name": "Business",
+      "desc": "プロフェッショナル向け",
+      "feat1": "GPT-4/Claude3などプレミアムモデル",
+      "feat2": "チャット内容をExcelエクスポート",
+      "feat3": "APIアクセス（準備中）",
+      "btn": "ビジネスを始める"
+    }
+  },
+  "theme": {
+    "toggle": "テーマ切替"
+  },
+  "checkout": {
+    "successTitle": "決済完了！🎉",
+    "successDesc": "サブスクリプションが開始されました。全エージェントを無制限でご利用いただけます。",
+    "orderId": "注文番号",
+    "amount": "決済金額",
+    "paymentKey": "決済キー",
+    "useAgents": "エージェントを使う →",
+    "failTitle": "決済失敗",
+    "failDesc": "決済処理中にエラーが発生しました。もう一度お試しください。",
+    "errorCode": "エラーコード",
+    "errorDetail": "詳細",
+    "goBack": "← 戻る",
+    "retry": "再試行",
+    "loading": "読み込み中..."
+  },
+  "privacy": {
+    "title": "プライバシーポリシー",
+    "section1Title": "1. 個人情報の処理目的",
+    "section1Intro": "エージェントマーケット（以下「当社」）は、以下の目的で個人情報を処理します：",
+    "section1Items": ["サービスの提供・運営", "会員管理・本人確認", "サービス利用統計の分析・改善", "決済・返金処理（有料サービス）"],
+    "section2Title": "2. 収集する個人情報の項目",
+    "section2Required": "必須項目：メールアドレス（会員登録時）",
+    "section2Optional": "任意項目：ニックネーム、プロフィール画像",
+    "section2Auto": "自動収集：IPアドレス、Cookie、サービス利用記録、アクセスログ",
+    "section2Ai": "AIチャットデータ：AIエージェントとの会話内容（サービス品質向上目的）",
+    "section3Title": "3. 個人情報の保有・利用期間",
+    "section3p1": "① 会員退会時に遅滞なく破棄します。",
+    "section3p2": "② ただし、関連法令により保存が必要な場合は、該当期間中保管します：",
+    "section3Items": ["契約・申込撤回記録：5年（電子商取引法）", "代金決済・財貨供給記録：5年（電子商取引法）", "消費者苦情・紛争処理記録：3年（電子商取引法）", "アクセスログ：3ヶ月（通信秘密保護法）"],
+    "section3p3": "③ AIチャットデータは最大1年間保管後、非識別化処理します。",
+    "effectiveDate": "施行日：2026年2月3日"
+  },
+  "terms": {
+    "title": "利用規約",
+    "effectiveDate": "施行日：2026年2月3日"
+  },
+  "dashboard": {
+    "home": "← ホーム"
+  },
+  "categories": {
+    "chat": "💬 チャット",
+    "business": "💼 ビジネス",
+    "creative": "🎨 クリエイティブ",
+    "productivity": "⚡ 生産性",
+    "education": "📚 教育",
+    "lifestyle": "🌟 ライフスタイル"
+  },
+  "agents": {
+    "soul-friend": {
+      "name": "ソウルフレンド",
+      "description": "あなたのAIベストフレンド。本当の友達みたいに話せて、いつでもあなたの味方。"
+    },
+    "blog-master": {
+      "name": "ブログマスター",
+      "description": "ビジネスオーナーのためのAIブログライター。SEO最適化で検索上位を狙えます。"
+    },
+    "contract-guard": {
+      "name": "契約書ガード",
+      "description": "賃貸・雇用・ビジネス契約のリスクを署名前にキャッチ。"
+    },
+    "startup-mentor": {
+      "name": "スタートアップメンター",
+      "description": "アイデア検証から資金調達まで。スタートアップを知るAIメンター。"
+    },
+    "resume-pro": {
+      "name": "レジュメプロ",
+      "description": "企業別カスタム履歴書・職務経歴書。STAR手法で通過率UP。"
+    },
+    "english-tutor": {
+      "name": "英会話AI",
+      "description": "よくある間違いを的確に指摘。英会話・TOEIC・ビジネス英語に対応。"
+    },
+    "tax-helper": {
+      "name": "税金ヘルパー",
+      "description": "フリーランス・個人事業主の確定申告をサポート。節税アドバイスも。"
+    },
+    "study-buddy": {
+      "name": "勉強メイト",
+      "description": "難しい概念をたとえ話で簡単に！受験・資格・プログラミングに対応。"
+    },
+    "code-helper": {
+      "name": "コードヘルパー",
+      "description": "コードレビュー・デバッグ・解説。初心者からシニアまで。"
+    },
+    "sns-creator": {
+      "name": "SNSクリエイター",
+      "description": "Instagram・TikTok・YouTubeのキャプションとハッシュタグを自動生成。"
+    },
+    "travel-planner": {
+      "name": "旅行プランナー",
+      "description": "国内・海外のカスタム旅行プラン。予算・日程・グルメまで一括。"
+    },
+    "food-recipe": {
+      "name": "冷蔵庫シェフ",
+      "description": "冷蔵庫の食材を教えてくれればレシピ完成！一人暮らし・料理初心者必見。"
+    },
+    "mood-diary": {
+      "name": "ムードダイアリー",
+      "description": "日々の感情を記録してメンタルをケア。認知行動療法ベースのAIカウンセリング。"
+    },
+    "real-estate": {
+      "name": "不動産アナリスト",
+      "description": "物件価格・市場動向・投資戦略をAIが分析。"
+    },
+    "korean-grammar": {
+      "name": "文法フェアリー",
+      "description": "スペル・文法・スタイルを完璧に校正。ビジネス文書からSNSまで。"
+    },
+    "health-coach": {
+      "name": "ヘルスコーチ",
+      "description": "食事管理・運動ルーティン・健康相談。カロリー計算もお任せ。"
+    },
+    "legal-qa": {
+      "name": "法律相談AI",
+      "description": "労働法・賃貸借・離婚・相続など生活法律のAI相談。"
+    },
+    "ad-copywriter": {
+      "name": "広告コピーAI",
+      "description": "広告コピーを自動生成。CTRを高める文案をAIが提案。"
+    }
+  },
+  "languageSwitcher": {
+    "ko": "한국어",
+    "en": "English",
+    "ja": "日本語",
+    "zh": "中文"
+  }
+}

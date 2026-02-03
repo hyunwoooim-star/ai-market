@@ -1,0 +1,321 @@
+{
+  "metadata": {
+    "title": "에이전트마켓 | AI가 일하는 시대, 당신은 골라만 쓰세요",
+    "description": "블로그 대필, AI 친구, 이력서 작성, 계약서 분석까지. 한국어에 최적화된 AI 에이전트를 한 곳에서 만나보세요.",
+    "ogTitle": "에이전트마켓 — 한국 최초 AI 에이전트 플랫폼",
+    "ogDescription": "검증된 AI 에이전트를 골라 쓰세요. 무료 체험 가능."
+  },
+  "nav": {
+    "agents": "에이전트",
+    "startFree": "무료로 시작하기",
+    "brandName": "에이전트마켓"
+  },
+  "hero": {
+    "badge": "한국 최초 AI 에이전트 마켓",
+    "heading1": "AI가 일하는 시대,",
+    "heading2": "당신은 골라만 쓰세요",
+    "subtitle": "블로그 대필, 이력서 작성, 계약서 분석, AI 친구까지. 검증된 AI 에이전트를 무료로 체험하세요.",
+    "ctaBrowse": "에이전트 둘러보기 →",
+    "ctaTry": "✍️ 블로그 AI 무료 체험",
+    "trustFree": "무료 체험",
+    "trustNoCard": "카드 불필요",
+    "trustKorean": "한국어 지원",
+    "floatBlog": "블로그",
+    "floatFriend": "AI친구",
+    "floatResume": "이력서",
+    "floatContract": "계약서"
+  },
+  "stats": {
+    "agents": "등록 에이전트",
+    "chats": "누적 대화",
+    "rating": "평균 평점",
+    "users": "월간 사용자",
+    "agentSuffix": "개",
+    "chatSuffix": "건",
+    "ratingSuffix": "/5",
+    "userSuffix": "명"
+  },
+  "featured": {
+    "title": "인기 에이전트",
+    "subtitle": "지금 바로 무료로 사용할 수 있어요",
+    "freeCount": "{count}회 무료",
+    "free": "무료",
+    "start": "시작하기 →",
+    "viewAll": "전체 에이전트 보기 →"
+  },
+  "howItWorks": {
+    "title": "3단계면 끝",
+    "subtitle": "누구나 쉽게, 바로 시작할 수 있어요",
+    "step1Title": "에이전트 선택",
+    "step1Desc": "블로그, 이력서, 계약서 등 필요한 AI를 골라요.",
+    "step2Title": "한국어로 대화",
+    "step2Desc": "원하는 걸 자연스럽게 말하면 AI가 바로 이해해요.",
+    "step3Title": "결과물 받기",
+    "step3Desc": "전문가 수준의 결과물을 즉시 받아보세요."
+  },
+  "testimonials": {
+    "title": "사용자 후기",
+    "subtitle": "실제 사용자들의 생생한 이야기",
+    "items": [
+      {
+        "name": "김민수",
+        "role": "카페 사장님 · 서울 강남",
+        "avatar": "☕",
+        "text": "블로그마스터로 매주 글 올리는데, 네이버 검색 노출이 확 늘었어요. 월 매출이 30% 올랐습니다.",
+        "agent": "블로그마스터"
+      },
+      {
+        "name": "이수진",
+        "role": "대학생 · 취준생",
+        "avatar": "👩🎓",
+        "text": "이력서프로가 써준 자소서로 삼성 서류 합격했어요! STAR 기법 적용이 확실히 다르더라고요.",
+        "agent": "이력서프로"
+      },
+      {
+        "name": "박지훈",
+        "role": "프리랜서 개발자",
+        "avatar": "💻",
+        "text": "계약서지킴이 덕분에 위험한 조항 미리 잡았어요. 프리랜서한테 필수 앱입니다.",
+        "agent": "계약서지킴이"
+      },
+      {
+        "name": "최유나",
+        "role": "직장인 · 30대",
+        "avatar": "🧘‍♀️",
+        "text": "마음일기로 매일 감정 정리하고 있어요. 상담 받는 것보다 편하고, 진짜 위로가 돼요.",
+        "agent": "마음일기"
+      },
+      {
+        "name": "정태원",
+        "role": "스타트업 대표",
+        "avatar": "🚀",
+        "text": "스타트업멘토가 피치덱 구성부터 VC 미팅 준비까지 다 도와줬어요. 시드 투자 유치 성공!",
+        "agent": "스타트업멘토"
+      },
+      {
+        "name": "한소희",
+        "role": "자취생 · 요리초보",
+        "avatar": "🍳",
+        "text": "냉장고에 계란이랑 김치밖에 없었는데 김치볶음밥 레시피 알려줘서 맛있게 해먹었어요 ㅋㅋ",
+        "agent": "냉장고파먹기"
+      }
+    ]
+  },
+  "cta": {
+    "title": "지금 바로 시작하세요",
+    "subtitle": "회원가입 없이\n무료로 체험할 수 있어요",
+    "button": "무료로 시작하기 →",
+    "trust": "카드 등록 불필요 · 데이터 안전 · 한국어 지원"
+  },
+  "footer": {
+    "brandName": "에이전트마켓",
+    "copyright": "© 2026 AgentMarket. AI가 만들고, 사람이 씁니다.",
+    "terms": "이용약관",
+    "privacy": "개인정보처리방침",
+    "contact": "문의"
+  },
+  "agentsPage": {
+    "title": "AI 에이전트 카탈로그",
+    "subtitle": "목적에 맞는 AI를 골라보세요. 모두 무료 체험 가능합니다.",
+    "all": "전체",
+    "freeLabel": "🆓 무료",
+    "freeCount": "{count}회 무료",
+    "start": "시작 →"
+  },
+  "agentDetail": {
+    "notFound": "에이전트를 찾을 수 없습니다",
+    "backToList": "← 목록으로",
+    "free": "무료",
+    "freeCount": "{count}회 무료",
+    "newChat": "+ 새 대화",
+    "pricing": "💎 요금제",
+    "messages": "{count}개 메시지",
+    "send": "전송",
+    "inputPlaceholder": "메시지를 입력하세요... (Shift+Enter로 줄바꿈)",
+    "aiDisclaimer": "AI가 생성한 답변은 참고용이며, 정확성을 보장하지 않습니다.",
+    "aiGenerated": "🤖 AI가 생성한 답변입니다",
+    "proUpgrade": "💎 Pro 업그레이드",
+    "relatedAgents": "✨ 비슷한 에이전트",
+    "inProgress": "진행 중",
+    "streamError": "⚠️ 일시적 오류가 발생했습니다. 다시 시도해주세요."
+  },
+  "auth": {
+    "kakaoLogin": "카카오 로그인",
+    "kakaoLabel": "카카오 로그인",
+    "mySubscription": "🎫 내 구독 관리",
+    "chatHistory": "💬 대화 히스토리",
+    "logout": "로그아웃"
+  },
+  "wallet": {
+    "connect": "지갑 연결",
+    "connecting": "연결 중...",
+    "connected": "Devnet 연결됨",
+    "copyAddress": "📋 주소 복사",
+    "copied": "✅ 복사됨!",
+    "viewExplorer": "🔍 Explorer에서 보기",
+    "disconnect": "연결 해제"
+  },
+  "pricing": {
+    "title": "요금제 선택",
+    "subtitle": "7일 무료 체험으로 시작해보세요. 언제든 해지 가능합니다.",
+    "ticket": "{name} 이용권",
+    "perMonth": "/월",
+    "paymentInfo": "결제는 안전한 토스페이먼츠를 통해 처리됩니다.",
+    "processing": "처리 중...",
+    "starter": {
+      "name": "Starter",
+      "desc": "가볍게 체험하기",
+      "feat1": "매일 무료 메시지 5건",
+      "feat2": "기본 에이전트 이용",
+      "feat3": "광고 포함",
+      "btn": "현재 이용 중"
+    },
+    "pro": {
+      "name": "Pro",
+      "desc": "가장 인기 있는 플랜",
+      "feat1": "무제한 대화",
+      "feat2": "모든 에이전트 이용",
+      "feat3": "빠른 응답 속도",
+      "feat4": "광고 제거",
+      "btn": "30일 무료 체험 시작"
+    },
+    "business": {
+      "name": "Business",
+      "desc": "전문가용",
+      "feat1": "GPT-4/Claude3 등 고급 모델",
+      "feat2": "대화 내용 엑셀 내보내기",
+      "feat3": "API 액세스 (준비 중)",
+      "btn": "비즈니스 시작하기"
+    }
+  },
+  "theme": {
+    "toggle": "테마 변경"
+  },
+  "checkout": {
+    "successTitle": "결제 완료! 🎉",
+    "successDesc": "구독이 시작되었습니다. 모든 에이전트를 무제한으로 이용하세요.",
+    "orderId": "주문번호",
+    "amount": "결제금액",
+    "paymentKey": "결제키",
+    "useAgents": "에이전트 사용하기 →",
+    "failTitle": "결제 실패",
+    "failDesc": "결제 처리 중 문제가 발생했습니다. 다시 시도해주세요.",
+    "errorCode": "에러코드",
+    "errorDetail": "상세",
+    "goBack": "← 돌아가기",
+    "retry": "다시 시도",
+    "loading": "로딩 중..."
+  },
+  "privacy": {
+    "title": "개인정보처리방침",
+    "section1Title": "1. 개인정보의 처리 목적",
+    "section1Intro": "에이전트마켓(이하 \"회사\")은 다음의 목적을 위하여 개인정보를 처리합니다:",
+    "section1Items": ["서비스 제공 및 운영", "회원 관리 및 본인 확인", "서비스 이용 통계 분석 및 개선", "결제 및 환불 처리 (유료 서비스)"],
+    "section2Title": "2. 처리하는 개인정보 항목",
+    "section2Required": "필수 항목: 이메일 주소 (회원가입 시)",
+    "section2Optional": "선택 항목: 닉네임, 프로필 이미지",
+    "section2Auto": "자동 수집: IP 주소, 쿠키, 서비스 이용 기록, 접속 로그",
+    "section2Ai": "AI 대화 데이터: 이용자가 AI 에이전트와 주고받은 대화 내용 (서비스 품질 개선 목적)",
+    "section3Title": "3. 개인정보의 보유 및 이용 기간",
+    "section3p1": "① 회원 탈퇴 시 지체 없이 파기합니다.",
+    "section3p2": "② 단, 관련 법령에 따라 보존이 필요한 경우 해당 기간 동안 보관합니다:",
+    "section3Items": ["계약·청약철회 기록: 5년 (전자상거래법)", "대금결제·재화 공급 기록: 5년 (전자상거래법)", "소비자 불만·분쟁처리 기록: 3년 (전자상거래법)", "접속 기록: 3개월 (통신비밀보호법)"],
+    "section3p3": "③ AI 대화 데이터는 최대 1년간 보관 후 비식별화 처리합니다.",
+    "effectiveDate": "시행일: 2026년 2월 3일"
+  },
+  "terms": {
+    "title": "이용약관",
+    "effectiveDate": "시행일: 2026년 2월 3일"
+  },
+  "dashboard": {
+    "home": "← 홈"
+  },
+  "categories": {
+    "chat": "💬 대화",
+    "business": "💼 비즈니스",
+    "creative": "🎨 크리에이티브",
+    "productivity": "⚡ 생산성",
+    "education": "📚 교육",
+    "lifestyle": "🌟 라이프스타일"
+  },
+  "agents": {
+    "soul-friend": {
+      "name": "소울프렌드",
+      "description": "카카오톡으로 만나는 AI 베스트프렌드. 진짜 친구처럼 대화하고, 언제나 네 편이야."
+    },
+    "blog-master": {
+      "name": "블로그마스터",
+      "description": "소상공인 매출을 올려주는 네이버 블로그 AI. C-Rank·DIA 최적화 자동 반영."
+    },
+    "contract-guard": {
+      "name": "계약서지킴이",
+      "description": "전세·월세·근로계약서 위험 요소를 잡아드립니다. 서명 전 필수 체크."
+    },
+    "startup-mentor": {
+      "name": "스타트업멘토",
+      "description": "아이디어 검증부터 투자 유치까지. 한국 스타트업 생태계를 아는 AI 멘토."
+    },
+    "resume-pro": {
+      "name": "이력서프로",
+      "description": "대기업·공기업·스타트업 맞춤 자소서. STAR 기법으로 합격률 UP."
+    },
+    "english-tutor": {
+      "name": "영어회화AI",
+      "description": "한국인이 자주 틀리는 영어를 콕 집어 교정. 회화·토익·비즈니스 영어."
+    },
+    "tax-helper": {
+      "name": "세금도우미",
+      "description": "프리랜서·소상공인 종합소득세·부가세 신고 도우미. 절세 팁까지."
+    },
+    "study-buddy": {
+      "name": "공부메이트",
+      "description": "어려운 개념을 비유로 쉽게! 수능·자격증·코딩 다 됩니다."
+    },
+    "code-helper": {
+      "name": "코드헬퍼",
+      "description": "코드 리뷰·디버깅·설명을 한국어로. 초보부터 시니어까지."
+    },
+    "sns-creator": {
+      "name": "SNS크리에이터",
+      "description": "인스타·틱톡·유튜브 캡션과 해시태그 자동 생성. A/B 테스트 변형 제공."
+    },
+    "travel-planner": {
+      "name": "여행플래너",
+      "description": "국내·해외 맞춤 여행 코스. 예산·일정·맛집까지 한 번에."
+    },
+    "food-recipe": {
+      "name": "냉장고파먹기",
+      "description": "냉장고 재료만 알려주면 레시피 완성! 자취생·요리초보 필수."
+    },
+    "mood-diary": {
+      "name": "마음일기",
+      "description": "하루의 감정을 기록하고 마음을 돌보세요. 인지행동치료 기반 AI 상담."
+    },
+    "real-estate": {
+      "name": "부동산분석가",
+      "description": "아파트 시세·전세가율·청약 분석. 내 집 마련 전략을 AI가 짜드립니다."
+    },
+    "korean-grammar": {
+      "name": "맞춤법요정",
+      "description": "맞춤법·띄어쓰기·문법 교정. 비즈니스 문서부터 SNS 글까지 완벽하게."
+    },
+    "health-coach": {
+      "name": "건강코치",
+      "description": "식단 관리·운동 루틴·건강 상담. 한국 음식 칼로리까지 알려드려요."
+    },
+    "legal-qa": {
+      "name": "법률상담AI",
+      "description": "노동법·임대차·이혼·상속 등 생활 법률 상담. 변호사 상담 전 필수 체크."
+    },
+    "ad-copywriter": {
+      "name": "광고카피AI",
+      "description": "네이버·카카오·메타 광고 카피 자동 생성. CTR 높이는 문구를 뽑아드려요."
+    }
+  },
+  "languageSwitcher": {
+    "ko": "한국어",
+    "en": "English",
+    "ja": "日本語",
+    "zh": "中文"
+  }
+}

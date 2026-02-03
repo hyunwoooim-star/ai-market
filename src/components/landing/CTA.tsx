@@ -1,9 +1,12 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Link from 'next/link';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 export default function CTA() {
+  const t = useTranslations('cta');
+
   return (
     <section className="py-16 sm:py-20 px-6">
       <div className="max-w-2xl mx-auto">
@@ -14,23 +17,21 @@ export default function CTA() {
         >
           <div className="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-3xl p-8 sm:p-10 md:p-14 text-center text-white break-keep">
             <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3">
-              지금 바로 시작하세요
+              {t('title')}
             </h2>
-            <p className="text-sm sm:text-base text-indigo-100 mb-6 sm:mb-8 leading-relaxed max-w-sm mx-auto">
-              회원가입 없이
-              <br />
-              무료로 체험할 수 있어요
+            <p className="text-sm sm:text-base text-indigo-100 mb-6 sm:mb-8 leading-relaxed max-w-sm mx-auto whitespace-pre-line">
+              {t('subtitle')}
             </p>
 
             <Link
               href="/agents"
               className="inline-flex px-7 sm:px-8 py-3 sm:py-3.5 rounded-xl bg-white text-indigo-600 font-semibold text-sm sm:text-base hover:bg-indigo-50 transition-all active:scale-98"
             >
-              무료로 시작하기 →
+              {t('button')}
             </Link>
 
             <p className="mt-5 sm:mt-6 text-[11px] sm:text-xs text-indigo-300/70">
-              카드 등록 불필요 · 데이터 안전 · 한국어 지원
+              {t('trust')}
             </p>
           </div>
         </motion.div>

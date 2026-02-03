@@ -2,13 +2,7 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useEffect, useState } from 'react';
-
-const STATS = [
-  { label: '등록 에이전트', value: 18, suffix: '개', icon: '🤖' },
-  { label: '누적 대화', value: 89432, suffix: '건', icon: '💬' },
-  { label: '평균 평점', value: 4.8, suffix: '/5', icon: '⭐', decimal: true },
-  { label: '월간 사용자', value: 24500, suffix: '명', icon: '👥' },
-];
+import { useTranslations } from 'next-intl';
 
 function AnimatedNumber({ value, decimal }: { value: number; decimal?: boolean }) {
   const [count, setCount] = useState(0);
@@ -41,6 +35,15 @@ function AnimatedNumber({ value, decimal }: { value: number; decimal?: boolean }
 }
 
 export default function Stats() {
+  const t = useTranslations('stats');
+
+  const STATS = [
+    { label: t('agents'), value: 18, suffix: t('agentSuffix'), icon: '🤖' },
+    { label: t('chats'), value: 89432, suffix: t('chatSuffix'), icon: '💬' },
+    { label: t('rating'), value: 4.8, suffix: t('ratingSuffix'), icon: '⭐', decimal: true },
+    { label: t('users'), value: 24500, suffix: t('userSuffix'), icon: '👥' },
+  ];
+
   return (
     <section className="py-16 px-6 bg-gradient-to-b from-transparent to-gray-50/50 dark:to-slate-900/30">
       <div className="max-w-5xl mx-auto">

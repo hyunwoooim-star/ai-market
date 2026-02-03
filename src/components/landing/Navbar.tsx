@@ -1,14 +1,17 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import UserMenu from '@/components/auth/UserMenu';
 import WalletButton from '@/components/wallet/WalletButton';
+import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
+  const t = useTranslations('nav');
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border-b border-gray-100 dark:border-gray-800">
@@ -17,15 +20,16 @@ export default function Navbar() {
           <div className="w-8 h-8 rounded-lg bg-indigo-600 flex items-center justify-center">
             <span className="text-white text-sm font-bold">A</span>
           </div>
-          <span className="font-bold text-gray-900 dark:text-white text-lg">에이전트마켓</span>
+          <span className="font-bold text-gray-900 dark:text-white text-lg">{t('brandName')}</span>
         </Link>
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-4">
           <Link href="/agents" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
-            에이전트
+            {t('agents')}
           </Link>
           <WalletButton />
+          <LanguageSwitcher />
           <ThemeToggle />
           <UserMenu />
         </div>
@@ -60,17 +64,20 @@ export default function Navbar() {
                 className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white py-2 font-medium"
                 onClick={() => setOpen(false)}
               >
-                에이전트
+                {t('agents')}
               </Link>
               <div className="py-2">
                 <WalletButton />
+              </div>
+              <div className="py-2">
+                <LanguageSwitcher />
               </div>
               <Link
                 href="/agents"
                 className="btn-primary px-5 py-2.5 text-sm text-center"
                 onClick={() => setOpen(false)}
               >
-                무료로 시작하기
+                {t('startFree')}
               </Link>
             </div>
           </motion.div>
