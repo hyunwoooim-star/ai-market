@@ -14,7 +14,7 @@ export default function Hero() {
   return (
     <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden pt-16">
       {/* Subtle gradient bg */}
-      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/60 via-white to-teal-50/40" />
+      <div className="absolute inset-0 bg-gradient-to-br from-indigo-50/60 via-white to-teal-50/40 dark:from-indigo-950/40 dark:via-[#0B1120] dark:to-teal-950/20" />
       
       {/* Floating agent badges */}
       {floatingAgents.map((agent, i) => (
@@ -71,7 +71,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base md:text-lg text-gray-500 dark:text-gray-400 max-w-xl mx-auto mb-10 leading-relaxed"
+          className="text-base md:text-lg text-gray-500 dark:text-gray-300 max-w-xl mx-auto mb-10 leading-relaxed"
         >
           블로그 대필, 이력서 작성, 계약서 분석, AI 친구까지.
           <br className="hidden sm:block" />
@@ -98,7 +98,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 flex items-center justify-center gap-6 text-sm text-gray-400 dark:text-gray-500"
+          className="mt-12 flex items-center justify-center gap-6 text-sm text-gray-400 dark:text-gray-400"
         >
           <span>🆓 무료 체험</span>
           <span className="w-1 h-1 bg-gray-300 dark:bg-gray-700 rounded-full" />

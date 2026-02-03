@@ -21,18 +21,18 @@
 }
 
 .dark {
-  --background: #0F172A;
-  --foreground: #F1F5F9;
+  --background: #0B1120;
+  --foreground: #F8FAFC;
   --accent: #818CF8;
   --accent-light: #A5B4FC;
   --accent-bg: #1E1B4B;
-  --surface: #1E293B;
-  --surface-2: #334155;
-  --surface-3: #475569;
-  --border: #334155;
-  --text-primary: #F1F5F9;
-  --text-secondary: #94A3B8;
-  --text-tertiary: #64748B;
+  --surface: #1A2332;
+  --surface-2: #243044;
+  --surface-3: #334155;
+  --border: #2A3A50;
+  --text-primary: #F8FAFC;
+  --text-secondary: #B0BEC5;
+  --text-tertiary: #78909C;
   --success: #34D399;
   color-scheme: dark;
 }
@@ -85,7 +85,31 @@ body {
 
 .dark .card:hover {
   border-color: #4338CA;
-  box-shadow: 0 4px 24px rgba(129, 140, 248, 0.12);
+  box-shadow: 0 4px 24px rgba(129, 140, 248, 0.15);
+}
+
+/* Dark mode badge overrides */
+.dark .badge-indigo { background: rgba(99, 102, 241, 0.15); color: #A5B4FC; }
+.dark .badge-teal { background: rgba(20, 184, 166, 0.15); color: #5EEAD4; }
+.dark .badge-coral { background: rgba(244, 63, 94, 0.15); color: #FDA4AF; }
+.dark .badge-amber { background: rgba(245, 158, 11, 0.15); color: #FCD34D; }
+
+/* Dark mode buttons */
+.dark .btn-primary {
+  background: #6366F1;
+  box-shadow: 0 2px 12px rgba(99, 102, 241, 0.3);
+}
+.dark .btn-primary:hover {
+  background: #818CF8;
+  box-shadow: 0 4px 20px rgba(99, 102, 241, 0.4);
+}
+
+/* Dark mode gradient text - brighter */
+.dark .gradient-text {
+  background: linear-gradient(135deg, #818CF8, #A78BFA, #F472B6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Soft shadow */

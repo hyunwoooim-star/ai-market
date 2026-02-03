@@ -54,12 +54,12 @@ export default function Navbar() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="md:hidden border-t border-gray-100 bg-white/95 backdrop-blur-xl"
+            className="md:hidden border-t border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl"
           >
             <div className="px-6 py-4 flex flex-col gap-3">
               <Link
                 href="/agents"
-                className="text-sm text-gray-600 hover:text-gray-900 py-2 font-medium"
+                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white py-2 font-medium"
                 onClick={() => setOpen(false)}
               >
                 에이전트
