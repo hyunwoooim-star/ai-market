@@ -1,67 +1,67 @@
 'use client';
 
 import { createContext, useContext, useEffect, useState, ReactNode } from 'react';
-import { createClient } from '@/lib/supabase';
-import type { User, Session } from '@supabase/supabase-js';
+
+interface KakaoUser {
+  id: string;
+  nickname: string;
+  profileImage: string;
+  thumbnailImage: string;
+}
 
 interface AuthContextType {
-  user: User | null;
-  session: Session | null;
+  user: KakaoUser | null;
   loading: boolean;
-  signInWithKakao: () => Promise<void>;
-  signOut: () => Promise<void>;
+  signInWithKakao: () => void;
+  signOut: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   user: null,
-  session: null,
   loading: true,
-  signInWithKakao: async () => {},
-  signOut: async () => {},
+  signInWithKakao: () => {},
+  signOut: () => {},
 });
 
+function getCookie(name: string): string | null {
+  const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+  return match ? decodeURIComponent(match[2]) : null;
+}
+
+function deleteCookie(name: string) {
+  document.cookie = `${name}=; path=/; max-age=0`;
+}
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
-  const [session, setSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<KakaoUser | null>(null);
   const [loading, setLoading] = useState(true);
-  const supabase = createClient();
 
   useEffect(() => {
-    // 현재 세션 가져오기
-    supabase.auth.getSession().then(({ data: { session } }) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
+    // 쿠키에서 유저 정보 읽기
+    try {
+      const raw = getCookie('kakao_user');
+      if (raw) {
+        const parsed = JSON.parse(raw);
+        setUser(parsed);
+      }
+    } catch {
+      // ignore
+    }
+    setLoading(false);
+  }, []);
 
-    // Auth 상태 변경 리스너
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-      setUser(session?.user ?? null);
-      setLoading(false);
-    });
-
-    return () => subscription.unsubscribe();
-  }, [supabase.auth]);
-
-  const signInWithKakao = async () => {
-    await supabase.auth.signInWithOAuth({
-      provider: 'kakao',
-      options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
-        scopes: 'profile_nickname profile_image',
-      },
-    });
+  const signInWithKakao = () => {
+    // 커스텀 카카오 OAuth 라우트로 리다이렉트
+    window.location.href = '/api/auth/kakao';
   };
 
-  const signOut = async () => {
-    await supabase.auth.signOut();
+  const signOut = () => {
+    deleteCookie('kakao_user');
     setUser(null);
-    setSession(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, session, loading, signInWithKakao, signOut }}>
+    <AuthContext.Provider value={{ user, loading, signInWithKakao, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -37,24 +37,21 @@ export default function UserMenu() {
     );
   }
 
-  const avatarUrl = user.user_metadata?.avatar_url;
-  const nickname = user.user_metadata?.name || user.email?.split('@')[0] || '사용자';
-
   return (
     <div ref={menuRef} className="relative">
       <button
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 hover:opacity-80 transition-opacity"
       >
-        {avatarUrl ? (
+        {user.profileImage ? (
           <img
-            src={avatarUrl}
-            alt={nickname}
+            src={user.profileImage}
+            alt={user.nickname}
             className="w-8 h-8 rounded-full border-2 border-indigo-200 dark:border-indigo-700"
           />
         ) : (
           <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-sm font-bold text-indigo-600 dark:text-indigo-300">
-            {nickname[0]}
+            {user.nickname[0]}
           </div>
         )}
       </button>
@@ -62,8 +59,8 @@ export default function UserMenu() {
       {open && (
         <div className="absolute right-0 top-10 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg py-2 z-50">
           <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-            <p className="text-sm font-bold text-gray-900 dark:text-white">{nickname}</p>
-            <p className="text-xs text-gray-400 truncate">{user.email}</p>
+            <p className="text-sm font-bold text-gray-900 dark:text-white">{user.nickname}</p>
+            <p className="text-xs text-gray-400">카카오 로그인</p>
           </div>
           <div className="py-1">
             <button
