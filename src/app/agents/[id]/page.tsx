@@ -1,13 +1,14 @@
 'use client';
 
 import { useState, useRef, useEffect, use, useCallback } from 'react';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
 import { getAgent } from '@/data/agents';
 import { CATEGORY_LABELS } from '@/types/agent';
 import MarkdownRenderer from '@/components/chat/MarkdownRenderer';
 import Navbar from '@/components/landing/Navbar';
 import PricingModal from '@/components/payment/PricingModal';
+import * as chatHistory from '@/lib/chatHistory';
 
 interface Message {
   id: string;
@@ -46,8 +47,27 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
   const [loading, setLoading] = useState(false);
   const [streamingContent, setStreamingContent] = useState('');
   const [showPricing, setShowPricing] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [currentConvId, setCurrentConvId] = useState<string | null>(null);
+  const [conversations, setConversations] = useState<chatHistory.Conversation[]>([]);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+
+  // 대화 목록 로드
+  useEffect(() => {
+    if (agent) {
+      setConversations(chatHistory.getConversations(agent.id));
+    }
+  }, [agent]);
+
+  // 현재 대화 메시지 저장
+  useEffect(() => {
+    if (!currentConvId || !agent || messages.length === 0) return;
+    const lastMsg = messages[messages.length - 1];
+    chatHistory.addMessage(agent.id, currentConvId, lastMsg);
+    setConversations(chatHistory.getConversations(agent.id));
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [messages.length]);
 
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -79,6 +99,12 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
   const handleSend = async (text?: string) => {
     const msgText = text || input.trim();
     if (!msgText || loading) return;
+
+    // 새 대화면 자동 생성
+    if (!currentConvId && agent) {
+      const conv = chatHistory.createConversation(agent.id);
+      setCurrentConvId(conv.id);
+    }
 
     const userMsg: Message = {
       id: crypto.randomUUID(),
@@ -204,7 +230,25 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
     setMessages([]);
     setStreamingContent('');
     setInput('');
+    setCurrentConvId(null);
     inputRef.current?.focus();
+  };
+
+  const loadConversation = (conv: chatHistory.Conversation) => {
+    setMessages(conv.messages);
+    setCurrentConvId(conv.id);
+    setShowHistory(false);
+    setStreamingContent('');
+  };
+
+  const deleteConv = (convId: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (!agent) return;
+    chatHistory.deleteConversation(agent.id, convId);
+    setConversations(chatHistory.getConversations(agent.id));
+    if (currentConvId === convId) {
+      handleNewChat();
+    }
   };
 
   const prompts = SUGGESTED_PROMPTS[agent.id] || [];
@@ -244,23 +288,69 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
                 </p>
               </div>
             </div>
-            <div className="flex items-center gap-2">
-              {messages.length > 0 && (
+            <div className="flex items-center gap-1.5">
+              {conversations.length > 0 && (
                 <button
-                  onClick={handleNewChat}
-                  className="text-xs text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
+                  onClick={() => setShowHistory(!showHistory)}
+                  className="text-xs text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+                  title="대화 히스토리"
                 >
-                  + 새 대화
+                  📋 {conversations.length}
                 </button>
               )}
               <button
+                onClick={handleNewChat}
+                className="text-xs text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors px-2.5 py-1.5 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
+              >
+                + 새 대화
+              </button>
+              <button
                 onClick={() => setShowPricing(true)}
-                className="text-xs font-medium text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-all"
+                className="text-xs font-medium text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 px-2.5 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-all"
               >
                 💎 요금제
               </button>
             </div>
           </motion.div>
+
+          {/* History drawer */}
+          <AnimatePresence>
+            {showHistory && conversations.length > 0 && (
+              <motion.div
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                className="mb-2 bg-white dark:bg-gray-900 rounded-xl border border-gray-200 dark:border-gray-800 shadow-soft overflow-hidden"
+              >
+                <div className="p-3 max-h-48 overflow-y-auto space-y-1">
+                  {conversations.map(conv => (
+                    <div
+                      key={conv.id}
+                      onClick={() => loadConversation(conv)}
+                      className={`flex items-center justify-between px-3 py-2 rounded-lg cursor-pointer transition-colors text-sm ${
+                        conv.id === currentConvId
+                          ? 'bg-indigo-50 dark:bg-indigo-900/30 text-indigo-600 dark:text-indigo-400'
+                          : 'hover:bg-gray-50 dark:hover:bg-gray-800 text-gray-600 dark:text-gray-400'
+                      }`}
+                    >
+                      <div className="flex-1 min-w-0">
+                        <p className="truncate font-medium text-xs">{conv.title}</p>
+                        <p className="text-[10px] text-gray-400 dark:text-gray-500">
+                          {conv.messages.length}개 메시지 · {new Date(conv.updatedAt).toLocaleDateString('ko-KR')}
+                        </p>
+                      </div>
+                      <button
+                        onClick={(e) => deleteConv(conv.id, e)}
+                        className="ml-2 text-gray-300 hover:text-red-400 dark:text-gray-600 dark:hover:text-red-400 text-xs shrink-0"
+                      >
+                        ✕
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
 
           {/* Chat area */}
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-soft overflow-hidden" style={{ minHeight: '70vh' }}>
