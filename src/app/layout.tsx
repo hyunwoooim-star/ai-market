@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { SolanaWalletProvider } from "@/contexts/WalletContext";
 import "./globals.css";
 
 const geistMono = Geist_Mono({
@@ -36,9 +37,11 @@ export default function RootLayout({
       <body
         className={`${geistMono.variable} antialiased`}
       >
-        <AuthProvider>
-          {children}
-        </AuthProvider>
+        <SolanaWalletProvider>
+          <AuthProvider>
+            {children}
+          </AuthProvider>
+        </SolanaWalletProvider>
       </body>
     </html>
   );

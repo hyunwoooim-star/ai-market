@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import UserMenu from '@/components/auth/UserMenu';
+import WalletButton from '@/components/wallet/WalletButton';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -24,6 +25,7 @@ export default function Navbar() {
           <Link href="/agents" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
             에이전트
           </Link>
+          <WalletButton />
           <ThemeToggle />
           <UserMenu />
         </div>
@@ -60,6 +62,9 @@ export default function Navbar() {
               >
                 에이전트
               </Link>
+              <div className="py-2">
+                <WalletButton />
+              </div>
               <Link
                 href="/agents"
                 className="btn-primary px-5 py-2.5 text-sm text-center"
