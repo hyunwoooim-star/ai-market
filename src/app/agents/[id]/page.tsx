@@ -239,14 +239,22 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
                 </p>
               </div>
             </div>
-            {messages.length > 0 && (
+            <div className="flex items-center gap-2">
+              {messages.length > 0 && (
+                <button
+                  onClick={handleNewChat}
+                  className="text-xs text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
+                >
+                  + 새 대화
+                </button>
+              )}
               <button
-                onClick={handleNewChat}
-                className="text-xs text-gray-400 hover:text-indigo-500 dark:hover:text-indigo-400 transition-colors px-3 py-1.5 rounded-lg hover:bg-indigo-50 dark:hover:bg-indigo-900/30"
+                onClick={() => setShowPricing(true)}
+                className="text-xs font-medium text-indigo-500 dark:text-indigo-400 hover:text-indigo-600 dark:hover:text-indigo-300 px-3 py-1.5 rounded-lg bg-indigo-50 dark:bg-indigo-900/30 hover:bg-indigo-100 dark:hover:bg-indigo-900/50 transition-all"
               >
-                + 새 대화
+                💎 요금제
               </button>
-            )}
+            </div>
           </motion.div>
 
           {/* Chat area */}
@@ -377,14 +385,27 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
                     ) : '전송'}
                   </button>
                 </div>
-                <p className="text-[10px] text-gray-300 dark:text-gray-600 mt-1.5 text-center">
-                  AI가 생성한 답변은 참고용이며, 정확성을 보장하지 않습니다.
-                </p>
+                <div className="flex items-center justify-between mt-1.5">
+                  <p className="text-[10px] text-gray-300 dark:text-gray-600">
+                    AI가 생성한 답변은 참고용이며, 정확성을 보장하지 않습니다.
+                  </p>
+                  <button
+                    onClick={() => setShowPricing(true)}
+                    className="text-[10px] text-indigo-400 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300 font-medium transition-colors"
+                  >
+                    💎 Pro 업그레이드
+                  </button>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </main>
+      <PricingModal
+        isOpen={showPricing}
+        onClose={() => setShowPricing(false)}
+        agentName={agent.nameKo}
+      />
     </>
   );
 }
