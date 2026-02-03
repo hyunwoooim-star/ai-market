@@ -9,6 +9,8 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@scure/base": "^2.0.0",
+    "@solana/kit": "^5.5.1",
     "@solana/wallet-adapter-base": "^0.9.27",
     "@solana/wallet-adapter-phantom": "^0.9.28",
     "@solana/wallet-adapter-react": "^0.15.39",
@@ -17,6 +19,9 @@
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.93.3",
     "@tosspayments/payment-sdk": "^1.9.2",
+    "@x402/core": "^2.2.0",
+    "@x402/next": "^2.2.0",
+    "@x402/svm": "^2.2.0",
     "bs58": "^6.0.0",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",

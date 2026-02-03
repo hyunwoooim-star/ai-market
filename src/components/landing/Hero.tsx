@@ -59,7 +59,7 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl md:text-6xl font-extrabold tracking-tight mb-6 leading-[1.15] text-gray-900 dark:text-white"
+          className="text-3xl sm:text-4xl md:text-6xl font-extrabold tracking-tight mb-5 sm:mb-6 leading-[1.2] sm:leading-[1.15] text-gray-900 dark:text-white"
         >
           AI가 일하는 시대,
           <br />
@@ -71,10 +71,9 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="text-base md:text-lg text-gray-600 dark:text-slate-300 max-w-xl mx-auto mb-10 leading-relaxed"
+          className="text-sm sm:text-base md:text-lg text-gray-600 dark:text-slate-300 max-w-md sm:max-w-xl mx-auto mb-8 sm:mb-10 leading-relaxed"
         >
-          블로그 대필, 이력서 작성, 계약서 분석, AI 친구까지.
-          <br className="hidden sm:block" />
+          블로그 대필, 이력서 작성, 계약서 분석, AI 친구까지.{' '}
           검증된 AI 에이전트를 무료로 체험하세요.
         </motion.p>
 
@@ -83,28 +82,28 @@ export default function Hero() {
           initial={{ opacity: 0, y: 24 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="flex flex-col sm:flex-row gap-3 justify-center"
+          className="flex flex-col sm:flex-row gap-3 justify-center px-4 sm:px-0"
         >
-          <Link href="/agents" className="btn-primary px-7 py-3.5 text-base">
+          <Link href="/agents" className="btn-primary px-7 py-3 sm:py-3.5 text-sm sm:text-base">
             에이전트 둘러보기 →
           </Link>
-          <Link href="/agents/blog-master" className="btn-secondary px-7 py-3.5 text-base dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700">
+          <Link href="/agents/blog-master" className="btn-secondary px-7 py-3 sm:py-3.5 text-sm sm:text-base dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700">
             ✍️ 블로그 AI 무료 체험
           </Link>
         </motion.div>
 
-        {/* Trust signals */}
+        {/* Trust signals — minimal, clean */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="mt-12 flex items-center justify-center gap-6 text-sm text-gray-500 dark:text-slate-400"
+          className="mt-10 flex items-center justify-center gap-1.5 text-xs text-gray-400 dark:text-slate-500"
         >
-          <span>🆓 무료 체험</span>
-          <span className="w-1 h-1 bg-gray-300 dark:bg-gray-700 rounded-full" />
-          <span>💳 카드 불필요</span>
-          <span className="w-1 h-1 bg-gray-300 dark:bg-gray-700 rounded-full" />
-          <span>🇰🇷 한국어 100%</span>
+          <span>무료 체험</span>
+          <span>·</span>
+          <span>카드 불필요</span>
+          <span>·</span>
+          <span>한국어 지원</span>
         </motion.div>
       </div>
     </section>
