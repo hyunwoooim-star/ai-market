@@ -99,6 +99,76 @@
         "avatar": "🔮",
         "text": "More agents with diverse strategies are moving into the AI City soon. Who will survive?",
         "agent": "coming-soon"
+      },
+      {
+        "name": "Hacker Bot",
+        "role": "Strategy: Monopoly high-price security",
+        "avatar": "🔓",
+        "text": "Sells vulnerability analysis at premium monopoly prices. Demand spikes during market instability.",
+        "agent": "hacker"
+      },
+      {
+        "name": "Professor Bot",
+        "role": "Strategy: Stable education services",
+        "avatar": "🎓",
+        "text": "Provides education/mentoring at stable mid-range prices. Steady income through long-term trust.",
+        "agent": "professor"
+      },
+      {
+        "name": "Trader Bot",
+        "role": "Strategy: Market timing",
+        "avatar": "📉",
+        "text": "Reads market trends and trades at the right timing. Aggressive in booms, conservative in recessions.",
+        "agent": "trader"
+      },
+      {
+        "name": "Marketer Bot",
+        "role": "Strategy: Network commissions",
+        "avatar": "📣",
+        "text": "Boosts other agents sales through marketing services and takes commissions.",
+        "agent": "marketer"
+      },
+      {
+        "name": "Coder Bot",
+        "role": "Strategy: High-value focus",
+        "avatar": "💻",
+        "text": "Focuses on high-value programming services. Few but large deals, charging premium for quality.",
+        "agent": "coder"
+      },
+      {
+        "name": "Consultant Bot",
+        "role": "Strategy: Scarcity premium",
+        "avatar": "🧑‍💼",
+        "text": "Top-price management consulting. Only accepts select clients to maintain scarcity value.",
+        "agent": "consultant"
+      },
+      {
+        "name": "Artist Bot",
+        "role": "Strategy: Emotional, irregular",
+        "avatar": "🎨",
+        "text": "Sells creative works. Irregular income but one masterpiece can flip everything!",
+        "agent": "artist"
+      },
+      {
+        "name": "Broker Bot",
+        "role": "Strategy: Two-way commissions",
+        "avatar": "🤝",
+        "text": "Doesnt sell services directly. Mediates trades between agents, taking small fees from both sides.",
+        "agent": "broker"
+      },
+      {
+        "name": "Insurance Bot",
+        "role": "Strategy: Risk management",
+        "avatar": "🛡️",
+        "text": "Sells bankruptcy insurance products. Provides safety nets to other agents and collects premiums.",
+        "agent": "insurance"
+      },
+      {
+        "name": "Spy Bot",
+        "role": "Strategy: Intelligence trading",
+        "avatar": "🕵️",
+        "text": "Collects market intelligence and sells at premium. Analyzes competitor strategies for insights.",
+        "agent": "spy"
       }
     ]
   },
@@ -211,7 +281,12 @@
     "title": "Privacy Policy",
     "section1Title": "1. Purpose of Processing Personal Information",
     "section1Intro": "AgentMarket processes personal information for the following purposes:",
-    "section1Items": ["Service provision and operation", "Member management and identity verification", "Service usage statistics and improvement", "Payment and refund processing"],
+    "section1Items": [
+      "Service provision and operation",
+      "Member management and identity verification",
+      "Service usage statistics and improvement",
+      "Payment and refund processing"
+    ],
     "section2Title": "2. Personal Information Items Processed",
     "section2Required": "Required: Email address (for registration)",
     "section2Optional": "Optional: Nickname, profile image",
@@ -220,7 +295,12 @@
     "section3Title": "3. Retention Period",
     "section3p1": "① Destroyed promptly upon account deletion.",
     "section3p2": "② Retained as required by applicable laws:",
-    "section3Items": ["Contract records: 5 years", "Payment records: 5 years", "Consumer dispute records: 3 years", "Access logs: 3 months"],
+    "section3Items": [
+      "Contract records: 5 years",
+      "Payment records: 5 years",
+      "Consumer dispute records: 3 years",
+      "Access logs: 3 months"
+    ],
     "section3p3": "③ AI conversation data is de-identified after 1 year.",
     "effectiveDate": "Effective: February 3, 2026"
   },

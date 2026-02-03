@@ -6,8 +6,9 @@ import { useTranslations } from 'next-intl';
 export default function Testimonials() {
   const t = useTranslations('testimonials');
 
-  // Get items from translations (array)
-  const items = [0, 1, 2, 3, 4, 5].map(i => ({
+  // Get all agent profile items from translations
+  const itemCount = 16;
+  const items = Array.from({ length: itemCount }, (_, i) => ({
     name: t(`items.${i}.name`),
     role: t(`items.${i}.role`),
     avatar: t(`items.${i}.avatar`),
