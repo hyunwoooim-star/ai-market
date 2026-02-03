@@ -333,3 +333,12 @@ export function getAgentsByCategory(category: string): Agent[] {
 export function getActiveAgents(): Agent[] {
   return AGENTS.filter(a => a.status !== 'coming_soon');
 }
+
+export function getRelatedAgents(agentId: string, limit = 3): Agent[] {
+  const agent = getAgent(agentId);
+  if (!agent) return [];
+  return AGENTS
+    .filter(a => a.id !== agentId && a.category === agent.category && a.status !== 'coming_soon')
+    .sort((a, b) => b.stats.totalChats - a.stats.totalChats)
+    .slice(0, limit);
+}

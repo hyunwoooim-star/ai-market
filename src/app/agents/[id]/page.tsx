@@ -3,7 +3,8 @@
 import { useState, useRef, useEffect, use, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useRouter } from 'next/navigation';
-import { getAgent } from '@/data/agents';
+import Link from 'next/link';
+import { getAgent, getRelatedAgents } from '@/data/agents';
 import { CATEGORY_LABELS } from '@/types/agent';
 import MarkdownRenderer from '@/components/chat/MarkdownRenderer';
 import Navbar from '@/components/landing/Navbar';
@@ -38,9 +39,41 @@ const SUGGESTED_PROMPTS: Record<string, string[]> = {
   'ad-copywriter': ['카페 오픈 광고 문구 써줘', '네이버 검색광고 카피 만들어줘', '할인 이벤트 SNS 문구 추천'],
 };
 
+// ── Helper: format numbers like 12,847 or 1.2만
+function formatCount(n: number): string {
+  if (n >= 10000) return `${(n / 10000).toFixed(1)}만`;
+  return n.toLocaleString('ko-KR');
+}
+
+// ── Star rating component
+function StarRating({ rating }: { rating: number }) {
+  return (
+    <span className="inline-flex items-center gap-0.5" aria-label={`${rating}점`}>
+      {[1, 2, 3, 4, 5].map(i => {
+        const fill = Math.min(Math.max(rating - (i - 1), 0), 1);
+        return (
+          <svg key={i} viewBox="0 0 20 20" className="w-4 h-4" aria-hidden>
+            <defs>
+              <linearGradient id={`star-fill-${i}`}>
+                <stop offset={`${fill * 100}%`} stopColor="#FBBF24" />
+                <stop offset={`${fill * 100}%`} stopColor="#D1D5DB" className="dark:stop-color-[#4B5563]" />
+              </linearGradient>
+            </defs>
+            <path
+              d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"
+              fill={`url(#star-fill-${i})`}
+            />
+          </svg>
+        );
+      })}
+    </span>
+  );
+}
+
 export default function AgentPage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = use(params);
   const agent = getAgent(id);
+  const relatedAgents = getRelatedAgents(id, 3);
   const router = useRouter();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
@@ -122,7 +155,6 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
     setStreamingContent('');
 
     try {
-      // Try streaming first
       const res = await fetch('/api/chat/stream', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -167,7 +199,6 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
         }
       }
 
-      // Finalize message
       if (accumulated) {
         setMessages(prev => [
           ...prev,
@@ -180,7 +211,6 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
         ]);
       }
     } catch {
-      // Fallback to non-streaming
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
@@ -258,7 +288,7 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
       <Navbar />
       <main className="min-h-screen pt-20 bg-gray-50/30 dark:bg-[#0B1120]">
         <div className="max-w-3xl mx-auto px-4">
-          {/* Agent header */}
+          {/* ═══ Agent header ═══ */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -313,7 +343,7 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
             </div>
           </motion.div>
 
-          {/* History drawer */}
+          {/* ═══ History drawer ═══ */}
           <AnimatePresence>
             {showHistory && conversations.length > 0 && (
               <motion.div
@@ -352,27 +382,72 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
             )}
           </AnimatePresence>
 
-          {/* Chat area */}
+          {/* ═══ Chat area ═══ */}
           <div className="bg-white dark:bg-gray-900 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-soft overflow-hidden" style={{ minHeight: '70vh' }}>
             <div className="flex flex-col" style={{ height: '70vh' }}>
               {/* Messages */}
               <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                {/* ─── Empty state: Agent detail info ─── */}
                 {messages.length === 0 && !loading && (
                   <div className="flex flex-col items-center justify-center h-full text-center px-4">
+                    {/* Icon + name */}
                     <div
-                      className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl mb-4"
-                      style={{ background: `${agent.color}12` }}
+                      className="w-20 h-20 rounded-2xl flex items-center justify-center text-4xl mb-4 shadow-lg"
+                      style={{ background: `linear-gradient(135deg, ${agent.color}22, ${agent.color}08)` }}
                     >
                       {agent.icon}
                     </div>
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white mb-2">
+                    <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-1">
                       {agent.nameKo}
                     </h3>
-                    <p className="text-sm text-gray-400 max-w-sm mb-6 leading-relaxed">
+                    <p className="text-sm text-gray-400 dark:text-gray-500 max-w-sm mb-5 leading-relaxed">
                       {agent.descriptionKo}
                     </p>
 
-                    {/* Suggested prompts */}
+                    {/* ── Stats row ── */}
+                    <div className="flex flex-wrap items-center justify-center gap-2 mb-5">
+                      {/* Rating */}
+                      {agent.stats.rating > 0 && (
+                        <div className="flex items-center gap-1.5 bg-amber-50 dark:bg-amber-900/20 border border-amber-200/60 dark:border-amber-700/40 rounded-full px-3 py-1.5">
+                          <StarRating rating={agent.stats.rating} />
+                          <span className="text-sm font-semibold text-amber-700 dark:text-amber-300">{agent.stats.rating}</span>
+                          <span className="text-[11px] text-amber-500/70 dark:text-amber-400/60">({formatCount(agent.stats.reviews)})</span>
+                        </div>
+                      )}
+                      {/* Total chats */}
+                      <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full px-3 py-1.5 text-xs text-gray-600 dark:text-gray-300">
+                        <span>💬</span>
+                        <span className="font-semibold">{formatCount(agent.stats.totalChats)}</span>
+                        <span className="text-gray-400 dark:text-gray-500">대화</span>
+                      </div>
+                      {/* Monthly users */}
+                      <div className="flex items-center gap-1 bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full px-3 py-1.5 text-xs text-gray-600 dark:text-gray-300">
+                        <span>👥</span>
+                        <span className="font-semibold">{formatCount(agent.stats.monthlyUsers)}</span>
+                        <span className="text-gray-400 dark:text-gray-500">월간</span>
+                      </div>
+                    </div>
+
+                    {/* ── Tags ── */}
+                    {agent.tags.length > 0 && (
+                      <div className="flex flex-wrap justify-center gap-1.5 mb-7">
+                        {agent.tags.map(tag => (
+                          <span
+                            key={tag}
+                            className="text-[11px] px-2.5 py-1 rounded-md font-medium transition-colors"
+                            style={{
+                              background: `${agent.color}10`,
+                              color: agent.color,
+                              border: `1px solid ${agent.color}25`,
+                            }}
+                          >
+                            #{tag}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* ── Suggested prompts ── */}
                     <div className="w-full max-w-md space-y-2">
                       {prompts.map((prompt, i) => (
                         <button
@@ -380,7 +455,7 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
                           className="w-full text-left px-4 py-3 text-sm rounded-xl bg-gray-50 dark:bg-gray-800 border border-gray-100 dark:border-gray-700 text-gray-600 dark:text-gray-300 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-indigo-400 hover:border-indigo-200 dark:hover:border-indigo-800 transition-all group"
                           onClick={() => handleSend(prompt)}
                         >
-                          <span className="text-gray-300 group-hover:text-indigo-400 mr-2">→</span>
+                          <span className="text-gray-300 dark:text-gray-600 group-hover:text-indigo-400 mr-2">→</span>
                           {prompt}
                         </button>
                       ))}
@@ -395,7 +470,6 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
                     animate={{ opacity: 1, y: 0 }}
                     className={`flex gap-2.5 ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
-                    {/* Agent avatar */}
                     {msg.role === 'assistant' && (
                       <div
                         className="w-7 h-7 rounded-lg flex items-center justify-center text-sm shrink-0 mt-0.5"
@@ -432,7 +506,7 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
                   </motion.div>
                 )}
 
-                {/* Loading dots (before stream starts) */}
+                {/* Loading dots */}
                 {loading && !streamingContent && (
                   <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex gap-2.5 justify-start">
                     <div
@@ -494,6 +568,62 @@ export default function AgentPage({ params }: { params: Promise<{ id: string }> 
               </div>
             </div>
           </div>
+
+          {/* ═══ Related Agents ═══ */}
+          {relatedAgents.length > 0 && (
+            <motion.section
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.15 }}
+              className="mt-6 mb-10"
+            >
+              <h2 className="text-sm font-semibold text-gray-500 dark:text-gray-400 mb-3 flex items-center gap-1.5">
+                <span>✨</span> 비슷한 에이전트
+              </h2>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                {relatedAgents.map(ra => (
+                  <Link key={ra.id} href={`/agents/${ra.id}`}>
+                    <div className="group relative bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 rounded-xl p-4 hover:border-indigo-300 dark:hover:border-indigo-700 hover:shadow-md dark:hover:shadow-indigo-900/20 transition-all cursor-pointer">
+                      {/* top row */}
+                      <div className="flex items-center gap-2.5 mb-2.5">
+                        <div
+                          className="w-9 h-9 rounded-lg flex items-center justify-center text-lg shrink-0"
+                          style={{ background: `${ra.color}14` }}
+                        >
+                          {ra.icon}
+                        </div>
+                        <div className="min-w-0">
+                          <p className="text-sm font-semibold text-gray-900 dark:text-white truncate group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors">
+                            {ra.nameKo}
+                          </p>
+                          <p className="text-[11px] text-gray-400 dark:text-gray-500 truncate">{CATEGORY_LABELS[ra.category]}</p>
+                        </div>
+                      </div>
+                      {/* description */}
+                      <p className="text-xs text-gray-500 dark:text-gray-400 line-clamp-2 leading-relaxed mb-3">
+                        {ra.descriptionKo}
+                      </p>
+                      {/* bottom stats */}
+                      <div className="flex items-center gap-3 text-[11px] text-gray-400 dark:text-gray-500">
+                        {ra.stats.rating > 0 && (
+                          <span className="flex items-center gap-0.5">
+                            <span className="text-amber-400">★</span> {ra.stats.rating}
+                          </span>
+                        )}
+                        <span>💬 {formatCount(ra.stats.totalChats)}</span>
+                        <span>👥 {formatCount(ra.stats.monthlyUsers)}</span>
+                      </div>
+                      {/* hover arrow */}
+                      <span className="absolute top-4 right-4 text-gray-300 dark:text-gray-700 group-hover:text-indigo-400 dark:group-hover:text-indigo-500 transition-colors text-sm">
+                        →
+                      </span>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </motion.section>
+          )}
         </div>
       </main>
       <PricingModal
