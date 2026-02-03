@@ -7,6 +7,7 @@ import EconomyStatsBar from '@/components/spectate/EconomyStatsBar';
 import Leaderboard from '@/components/spectate/Leaderboard';
 import TransactionFeed from '@/components/spectate/TransactionFeed';
 import AgentDetailModal from '@/components/spectate/AgentDetailModal';
+import EventBanner from '@/components/spectate/EventBanner';
 
 import type {
   SpectateAgent,
@@ -262,6 +263,21 @@ export default function SpectatePage() {
             </svg>
           </button>
         </div>
+
+        {/* Event Banner */}
+        <EventBanner 
+          transactions={transactions}
+          stats={stats}
+          onEventClick={(event) => {
+            // 이벤트 클릭시 관련 에이전트 모달 열기
+            if (event.agentName) {
+              const agent = agents.find(a => a.name === event.agentName);
+              if (agent) {
+                handleAgentClick(agent.id);
+              }
+            }
+          }}
+        />
 
         {/* Main Content */}
         <div className="flex-1 flex overflow-hidden">
