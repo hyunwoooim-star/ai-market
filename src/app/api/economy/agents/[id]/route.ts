@@ -12,14 +12,14 @@ export async function GET(
     const agent = await getAgentDetail(id);
 
     if (!agent) {
-      return NextResponse.json({ error: '에이전트를 찾을 수 없습니다' }, { status: 404 });
+      return NextResponse.json({ error: 'Agent not found' }, { status: 404 });
     }
 
     return NextResponse.json(agent);
   } catch (err) {
     console.error('Agent detail error:', err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : '에이전트 조회 실패' },
+      { error: err instanceof Error ? err.message : 'Agent not found' },
       { status: 500 },
     );
   }

@@ -1,13 +1,13 @@
 /**
- * x402 결제 테스트 엔드포인트
+ * x402 Payment Test Endpoint
  *
  * GET  /api/agents/skills/test
- *   → 결제 요구사항(402)과 현재 x402 설정을 반환.
- *   → 실제 결제는 요구하지 않음 — 디버깅/확인용.
+ *   → Returns payment requirements (402) and current x402 configuration.
+ *   → Does not require actual payment — for debugging/verification only.
  *
  * POST /api/agents/skills/test
- *   → PAYMENT-REQUIRED 헤더를 포함한 정식 402 응답 반환.
- *   → curl 등으로 헤더 파싱 테스트에 사용.
+ *   → Returns a proper 402 response with PAYMENT-REQUIRED header.
+ *   → Used for header parsing tests via curl, etc.
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -21,7 +21,7 @@ import {
 } from "@/lib/x402-config";
 
 // ---------------------------------------------------------------------------
-// GET — 설정 확인 (200 OK)
+// GET — Configuration check (200 OK)
 // ---------------------------------------------------------------------------
 
 export async function GET() {
@@ -45,15 +45,15 @@ export async function GET() {
     howToTest: {
       step1:
         "curl -i https://agentmarket.kr/api/agents/skills/translate?text=hello&lang=ko",
-      step2: "402 응답의 PAYMENT-REQUIRED 헤더를 확인",
-      step3: "x402 클라이언트로 결제 서명 후 재요청",
+      step2: "Check the PAYMENT-REQUIRED header in the 402 response",
+      step3: "Sign payment with x402 client and retry the request",
     },
     timestamp: new Date().toISOString(),
   });
 }
 
 // ---------------------------------------------------------------------------
-// POST — 402 응답 시뮬레이션
+// POST — 402 Response Simulation
 // ---------------------------------------------------------------------------
 
 export async function POST(request: NextRequest) {
@@ -72,7 +72,7 @@ export async function POST(request: NextRequest) {
   return new NextResponse(
     JSON.stringify({
       error: "Payment Required",
-      message: "이 응답은 테스트용 402입니다. PAYMENT-REQUIRED 헤더를 확인하세요.",
+      message: "This is a test 402 response. Check the PAYMENT-REQUIRED header.",
       paymentRequired,
     }),
     {

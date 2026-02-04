@@ -27,14 +27,14 @@ export async function POST(req: NextRequest) {
     const rl = checkRateLimit(`min:${ip}`, RATE_LIMIT_PER_MIN, 60_000);
     if (!rl.allowed) {
       return NextResponse.json(
-        { error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.' },
+        { error: 'Too many requests. Please try again later.' },
         { status: 429 }
       );
     }
 
     if (isDailyLimitReached()) {
       return NextResponse.json(
-        { error: '오늘 서비스 사용량이 한도에 도달했습니다.' },
+        { error: 'Daily usage limit reached.' },
         { status: 503 }
       );
     }
@@ -42,17 +42,17 @@ export async function POST(req: NextRequest) {
     const { agentId, message, history = [] } = await req.json();
 
     if (!message || typeof message !== 'string' || !agentId) {
-      return NextResponse.json({ error: '잘못된 요청입니다' }, { status: 400 });
+      return NextResponse.json({ error: 'Invalid request' }, { status: 400 });
     }
 
     const cleanMessage = message.trim().slice(0, MAX_MESSAGE_LENGTH);
     if (!cleanMessage) {
-      return NextResponse.json({ error: '메시지를 입력해주세요' }, { status: 400 });
+      return NextResponse.json({ error: 'Please enter a message' }, { status: 400 });
     }
 
     const agent = getAgent(agentId);
     if (!agent || agent.status === 'coming_soon') {
-      return NextResponse.json({ error: '사용할 수 없는 에이전트입니다' }, { status: 400 });
+      return NextResponse.json({ error: 'Agent not available' }, { status: 400 });
     }
 
     if (!GEMINI_API_KEY) {
@@ -97,7 +97,7 @@ export async function POST(req: NextRequest) {
 
     if (!geminiRes.ok) {
       console.error('Gemini API error:', geminiRes.status);
-      return NextResponse.json({ error: 'AI 응답 중 오류가 발생했습니다' }, { status: 502 });
+      return NextResponse.json({ error: 'AI response error' }, { status: 502 });
     }
 
     trackUsage(ip);
@@ -111,6 +111,6 @@ export async function POST(req: NextRequest) {
     );
   } catch (err) {
     console.error('Chat API error:', err);
-    return NextResponse.json({ error: '서버 오류가 발생했습니다' }, { status: 500 });
+    return NextResponse.json({ error: 'Internal server error' }, { status: 500 });
   }
 }

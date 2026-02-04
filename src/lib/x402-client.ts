@@ -1,11 +1,11 @@
 /**
- * x402 Agent Client — 에이전트가 다른 에이전트의 유료 스킬을 호출할 때 사용
+ * x402 Agent Client — Used when an agent calls another agent's paid skill
  *
- * Solana Devnet 서명을 지원하는 x402 fetch 래퍼.
- * 402 응답을 받으면 자동으로 결제 서명을 생성하여 재요청한다.
+ * An x402 fetch wrapper that supports Solana Devnet signatures.
+ * Automatically generates a payment signature and retries upon receiving a 402 response.
  *
- * NOTE: Phase 0에서는 가상 잔고 기반이므로 이 클라이언트는 Phase 1 이후에 활성화.
- * 현재는 타입 정의 + 스캐폴딩만 제공.
+ * NOTE: Phase 0 uses virtual balances, so this client will be activated from Phase 1 onward.
+ * Currently provides type definitions + scaffolding only.
  */
 
 import {
@@ -19,45 +19,45 @@ import {
 
 export interface X402AgentClient {
   /**
-   * x402 결제를 자동 처리하는 fetch 래퍼.
-   * 첫 번째 요청에서 402를 받으면 서명 후 재요청한다.
+   * A fetch wrapper that automatically handles x402 payments.
+   * Signs and retries the request upon receiving a 402 on the first attempt.
    */
   fetch: (url: string, init?: RequestInit) => Promise<Response>;
 }
 
 // ---------------------------------------------------------------------------
-// Client Factory (Phase 1 이후 활성화)
+// Client Factory (Activated from Phase 1 onward)
 // ---------------------------------------------------------------------------
 
 /**
- * Solana 비밀키(Base58)로 x402 클라이언트를 생성한다.
+ * Creates an x402 client using a Solana private key (Base58).
  *
- * @param solanaPrivateKeyBase58 - Solana 비밀키 (Base58 인코딩)
+ * @param solanaPrivateKeyBase58 - Solana private key (Base58 encoded)
  */
 export async function createX402AgentClient(
   solanaPrivateKeyBase58: string,
 ): Promise<X402AgentClient> {
   const wrappedFetch: X402AgentClient["fetch"] = async (url, init) => {
-    // 1) 첫 번째 요청
+    // 1) First request
     const firstResponse = await fetch(url, init);
 
     if (firstResponse.status !== 402) {
-      return firstResponse; // 결제 불필요
+      return firstResponse; // No payment required
     }
 
-    // 2) PAYMENT-REQUIRED 헤더 파싱
+    // 2) Parse PAYMENT-REQUIRED header
     const paymentRequiredHeader =
       firstResponse.headers.get("payment-required") ??
       firstResponse.headers.get("PAYMENT-REQUIRED");
 
     if (!paymentRequiredHeader) {
-      throw new Error("402 응답이지만 PAYMENT-REQUIRED 헤더가 없음");
+      throw new Error("Received 402 response but missing PAYMENT-REQUIRED header");
     }
 
-    // Phase 1: 여기서 @x402/svm 클라이언트 스킴으로 서명 생성
-    // Phase 0: 가상 잔고 모드에서는 이 코드패스에 도달하지 않음
+    // Phase 1: Generate signature using @x402/svm client scheme here
+    // Phase 0: This code path is not reached in virtual balance mode
     throw new Error(
-      "x402 실결제는 Phase 1 이후 활성화 예정. 현재는 가상 잔고 모드 사용."
+      "x402 real payments will be activated from Phase 1 onward. Currently using virtual balance mode."
     );
   };
 
@@ -65,11 +65,11 @@ export async function createX402AgentClient(
 }
 
 // ---------------------------------------------------------------------------
-// Convenience: 단순 호출 (1회성)
+// Convenience: Single-use call
 // ---------------------------------------------------------------------------
 
 /**
- * 단일 요청을 x402 결제와 함께 수행한다.
+ * Performs a single request with x402 payment.
  */
 export async function x402Fetch(
   url: string,

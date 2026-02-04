@@ -32,7 +32,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
-    keywords: ["AI", "에이전트", "에이전트마켓", "AgentMarket", "AI agent"],
+    keywords: ["AI", "agent", "AgentMarket", "AI agent", "economy", "simulation"],
     openGraph: {
       title: t("ogTitle"),
       description: t("ogDescription"),

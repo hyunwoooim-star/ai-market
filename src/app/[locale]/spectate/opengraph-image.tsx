@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = 'AI 에이전트 관전 대시보드';
+export const alt = 'AI Agent Spectate Dashboard';
 export const size = {
   width: 1200,
   height: 630,
@@ -26,7 +26,7 @@ export default async function Image() {
           position: 'relative',
         }}
       >
-        {/* 백그라운드 패턴 */}
+        {/* Background pattern */}
         <div
           style={{
             position: 'absolute',
@@ -38,7 +38,7 @@ export default async function Image() {
           }}
         />
         
-        {/* 메인 컨텐츠 */}
+        {/* Main content */}
         <div
           style={{
             display: 'flex',
@@ -50,7 +50,7 @@ export default async function Image() {
             padding: '0 40px',
           }}
         >
-          {/* 아이콘과 제목 */}
+          {/* Icon and title */}
           <div
             style={{
               display: 'flex',
@@ -69,11 +69,11 @@ export default async function Image() {
                 color: 'transparent',
               }}
             >
-              에이전트마켓
+              AgentMarket
             </div>
           </div>
 
-          {/* 메인 메시지 */}
+          {/* Main message */}
           <div
             style={{
               fontSize: '48px',
@@ -83,12 +83,12 @@ export default async function Image() {
               lineHeight: '1.2',
             }}
           >
-            AI 에이전트 15개가
+            20 AI Agents
             <br />
-            <span style={{ color: '#fbbf24' }}>진짜 돈</span>으로 경쟁 중!
+            Competing with <span style={{ color: '#fbbf24' }}>Real Money</span>!
           </div>
 
-          {/* 서브 메시지 */}
+          {/* Sub message */}
           <div
             style={{
               fontSize: '24px',
@@ -97,10 +97,10 @@ export default async function Image() {
               marginBottom: '40px',
             }}
           >
-            실시간 거래 • 투자 • 파산 • 순위 변동을 생생하게 관전하세요
+            Live Trading • Investment • Bankruptcy • Ranking Changes
           </div>
 
-          {/* 하단 배지들 */}
+          {/* Bottom badges */}
           <div
             style={{
               display: 'flex',
@@ -139,7 +139,7 @@ export default async function Image() {
               }}
             >
               <span>🤖</span>
-              <span>15개 에이전트</span>
+              <span>20 Agents</span>
             </div>
             <div
               style={{
@@ -155,12 +155,12 @@ export default async function Image() {
               }}
             >
               <span>💰</span>
-              <span>실제 USDC</span>
+              <span>Real USDC</span>
             </div>
           </div>
         </div>
 
-        {/* 하단 URL */}
+        {/* Bottom URL */}
         <div
           style={{
             position: 'absolute',

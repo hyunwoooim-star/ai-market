@@ -7,12 +7,12 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 const GEMINI_STREAM_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse';
 
-// 보안 상수
-const MAX_MESSAGE_LENGTH = 3000;   // 메시지 최대 3,000자
-const MAX_HISTORY_LENGTH = 20;     // 히스토리 최대 20턴
-const MAX_HISTORY_CHARS = 15000;   // 히스토리 총 15,000자
-const RATE_LIMIT_PER_MIN = 10;     // IP당 분당 10회
-const RATE_LIMIT_PER_HOUR = 60;    // IP당 시간당 60회
+// Security constants
+const MAX_MESSAGE_LENGTH = 3000;   // Max 3,000 chars per message
+const MAX_HISTORY_LENGTH = 20;     // Max 20 turns of history
+const MAX_HISTORY_CHARS = 15000;   // Max 15,000 chars total history
+const RATE_LIMIT_PER_MIN = 10;     // 10 requests per minute per IP
+const RATE_LIMIT_PER_HOUR = 60;    // 60 requests per hour per IP
 
 interface ChatHistory {
   role: 'user' | 'assistant';
@@ -28,7 +28,7 @@ function getClientIP(req: NextRequest): string {
 }
 
 function sanitizeInput(text: string): string {
-  // 기본 sanitization — 제어 문자 제거
+  // Basic sanitization — remove control characters
   return text.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '').trim();
 }
 
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
   try {
     const ip = getClientIP(req);
 
-    // === 보안 체크 1: Origin 검증 ===
+    // === Security check 1: Origin validation ===
     const origin = req.headers.get('origin') || '';
     const allowedOrigins = [
       'https://agentmarket.kr',
@@ -44,25 +44,25 @@ export async function POST(req: NextRequest) {
       'http://localhost:3000',
       'http://localhost:3001',
     ];
-    // Vercel preview deployments도 허용
+    // Also allow Vercel preview deployments
     const isAllowed =
       allowedOrigins.includes(origin) ||
       origin.includes('.vercel.app') ||
-      !origin; // 서버사이드 호출
+      !origin; // Server-side calls
 
     if (!isAllowed) {
-      return new Response(JSON.stringify({ error: '접근이 거부되었습니다' }), {
+      return new Response(JSON.stringify({ error: 'Access denied' }), {
         status: 403,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // === 보안 체크 2: Rate Limiting ===
+    // === Security check 2: Rate Limiting ===
     const minuteCheck = checkRateLimit(`min:${ip}`, RATE_LIMIT_PER_MIN, 60_000);
     if (!minuteCheck.allowed) {
       return new Response(
         JSON.stringify({
-          error: '요청이 너무 많습니다. 잠시 후 다시 시도해주세요.',
+          error: 'Too many requests. Please try again later.',
           retryAfter: Math.ceil((minuteCheck.resetAt - Date.now()) / 1000),
         }),
         {
@@ -79,7 +79,7 @@ export async function POST(req: NextRequest) {
     if (!hourCheck.allowed) {
       return new Response(
         JSON.stringify({
-          error: '시간당 사용 한도를 초과했습니다. 잠시 후 다시 시도해주세요.',
+          error: 'Hourly usage limit exceeded. Please try again later.',
           retryAfter: Math.ceil((hourCheck.resetAt - Date.now()) / 1000),
         }),
         {
@@ -92,45 +92,45 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // === 보안 체크 3: 일일 전체 한도 ===
+    // === Security check 3: Daily global limit ===
     if (isDailyLimitReached()) {
       return new Response(
-        JSON.stringify({ error: '오늘 서비스 사용량이 한도에 도달했습니다. 내일 다시 이용해주세요.' }),
+        JSON.stringify({ error: 'Daily usage limit reached. Please try again tomorrow.' }),
         { status: 503, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
-    // === 입력 검증 ===
+    // === Input validation ===
     const body = await req.json();
     const { agentId, message, history = [] } = body;
 
     if (!message || typeof message !== 'string' || !agentId || typeof agentId !== 'string') {
-      return new Response(JSON.stringify({ error: '잘못된 요청입니다' }), {
+      return new Response(JSON.stringify({ error: 'Invalid request' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // 메시지 길이 제한
+    // Message length limit
     const cleanMessage = sanitizeInput(message);
     if (cleanMessage.length > MAX_MESSAGE_LENGTH) {
       return new Response(
-        JSON.stringify({ error: `메시지는 ${MAX_MESSAGE_LENGTH}자 이내로 작성해주세요.` }),
+        JSON.stringify({ error: `Message must be ${MAX_MESSAGE_LENGTH} characters or fewer.` }),
         { status: 400, headers: { 'Content-Type': 'application/json' } }
       );
     }
 
     if (cleanMessage.length === 0) {
-      return new Response(JSON.stringify({ error: '메시지를 입력해주세요.' }), {
+      return new Response(JSON.stringify({ error: 'Please enter a message.' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // 에이전트 검증
+    // Agent validation
     const agent = getAgent(agentId);
     if (!agent || agent.status === 'coming_soon') {
-      return new Response(JSON.stringify({ error: '사용할 수 없는 에이전트입니다' }), {
+      return new Response(JSON.stringify({ error: 'Agent not available' }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' },
       });
@@ -143,11 +143,11 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    // 히스토리 검증 + 제한
+    // History validation + limits
     let safeHistory: ChatHistory[] = [];
     if (Array.isArray(history)) {
       safeHistory = history
-        .slice(-MAX_HISTORY_LENGTH) // 최근 N턴만
+        .slice(-MAX_HISTORY_LENGTH) // Keep only last N turns
         .filter(
           (h: ChatHistory) =>
             h &&
@@ -156,10 +156,10 @@ export async function POST(req: NextRequest) {
         )
         .map((h: ChatHistory) => ({
           role: h.role,
-          content: sanitizeInput(h.content).slice(0, 2000), // 턴당 2,000자 제한
+          content: sanitizeInput(h.content).slice(0, 2000), // 2,000 chars per turn limit
         }));
 
-      // 총 히스토리 문자수 제한
+      // Total history character limit
       let totalChars = 0;
       const trimmedHistory: ChatHistory[] = [];
       for (let i = safeHistory.length - 1; i >= 0; i--) {
@@ -195,7 +195,7 @@ export async function POST(req: NextRequest) {
           temperature: agentId === 'soul-friend' || agentId === 'mood-diary' ? 0.9 : 0.7,
           topP: 0.95,
           topK: 40,
-          maxOutputTokens: 2048, // 4096 → 2048로 축소 (비용 절감)
+          maxOutputTokens: 2048, // Reduced from 4096 for cost savings
         },
         safetySettings: [
           { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
@@ -209,13 +209,13 @@ export async function POST(req: NextRequest) {
     if (!geminiRes.ok) {
       const errText = await geminiRes.text();
       console.error('Gemini stream error:', geminiRes.status, errText);
-      return new Response(JSON.stringify({ error: 'AI 응답 중 오류가 발생했습니다' }), {
+      return new Response(JSON.stringify({ error: 'AI response error' }), {
         status: 502,
         headers: { 'Content-Type': 'application/json' },
       });
     }
 
-    // 사용량 추적
+    // Track usage
     trackUsage(ip);
 
     // Transform Gemini SSE → clean SSE for the client
@@ -270,7 +270,7 @@ export async function POST(req: NextRequest) {
     });
   } catch (err) {
     console.error('Stream API error:', err);
-    return new Response(JSON.stringify({ error: '서버 오류가 발생했습니다' }), {
+    return new Response(JSON.stringify({ error: 'Internal server error' }), {
       status: 500,
       headers: { 'Content-Type': 'application/json' },
     });

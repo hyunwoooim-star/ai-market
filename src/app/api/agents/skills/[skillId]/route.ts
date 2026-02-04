@@ -1,11 +1,11 @@
 /**
- * 에이전트 스킬 API 엔드포인트 — x402 결제 보호
+ * Agent Skill API Endpoint — x402 Payment Protected
  *
- * x402 프로토콜로 보호되는 유료 API.
- * 결제 없이 호출하면 402 Payment Required를 반환하고,
- * 유효한 결제 서명이 있으면 스킬을 실행한 뒤 정산한다.
+ * A paid API protected by the x402 protocol.
+ * Returns 402 Payment Required when called without payment.
+ * Executes the skill and settles payment when a valid payment signature is provided.
  *
- * PoC: 간단한 번역 스킬 ("translate")
+ * PoC: Simple translation skill ("translate")
  */
 
 import { NextRequest, NextResponse } from "next/server";
@@ -21,7 +21,7 @@ import {
 } from "@/lib/x402-config";
 
 // ---------------------------------------------------------------------------
-// x402 Resource Server (싱글턴)
+// x402 Resource Server (Singleton)
 // ---------------------------------------------------------------------------
 
 const facilitatorClient = new HTTPFacilitatorClient({
@@ -49,10 +49,10 @@ const routeConfig = {
 };
 
 // ---------------------------------------------------------------------------
-// 스킬 핸들러 — 결제 검증 후 실행됨
+// Skill Handler — Executed after payment verification
 // ---------------------------------------------------------------------------
 
-/** 지원하는 언어 코드 (PoC용 간이 사전) */
+/** Supported language codes (simple dictionary for PoC) */
 const TRANSLATIONS: Record<string, Record<string, string>> = {
   ko: {
     hello: "안녕하세요",
@@ -91,7 +91,7 @@ async function skillHandler(
   const text = searchParams.get("text") ?? searchParams.get("q") ?? "hello";
   const targetLang = searchParams.get("lang") ?? "ko";
 
-  // PoC: translate 스킬만 지원
+  // PoC: Only translate skill is supported
   if (skillId !== "translate") {
     return NextResponse.json(
       {
@@ -120,7 +120,7 @@ async function skillHandler(
 }
 
 // ---------------------------------------------------------------------------
-// Export — withX402 로 감싸서 결제 보호
+// Export — Wrapped with withX402 for payment protection
 // ---------------------------------------------------------------------------
 
 export const GET = withX402(skillHandler, routeConfig, resourceServer);

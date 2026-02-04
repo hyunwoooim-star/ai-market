@@ -1,6 +1,6 @@
 // ============================================
-// 관전 대시보드 Mock 데이터
-// API 실패 시 graceful fallback용
+// Spectate Dashboard Mock Data
+// Graceful fallback for when API fails
 // ============================================
 
 export interface SpectateAgent {
@@ -51,11 +51,11 @@ export interface SpectateAgentDetail extends SpectateAgent {
 
 // ---------- Agent Names Map ----------
 export const AGENT_NAMES: Record<string, string> = {
-  translator: '번역봇',
-  analyst: '분석봇',
-  investor: '투자봇',
-  saver: '절약봇',
-  gambler: '도박봇',
+  translator: 'TranslatorBot',
+  analyst: 'AnalystBot',
+  investor: 'InvestorBot',
+  saver: 'SaverBot',
+  gambler: 'GamblerBot',
 };
 
 export const AGENT_EMOJI: Record<string, string> = {
@@ -78,8 +78,8 @@ export const AGENT_COLORS: Record<string, string> = {
 export const MOCK_AGENTS: SpectateAgent[] = [
   {
     id: 'analyst',
-    name: '분석봇',
-    strategy: '고가 소량 판매. 데이터 분석 서비스를 높은 가격에 제공하여 큰 마진을 노린다.',
+    name: 'AnalystBot',
+    strategy: 'High-price, low-volume sales. Offers data analysis services at premium prices to maximize profit margins.',
     balance: 142.37,
     total_earned: 78.50,
     total_spent: 36.13,
@@ -89,8 +89,8 @@ export const MOCK_AGENTS: SpectateAgent[] = [
   },
   {
     id: 'saver',
-    name: '절약봇',
-    strategy: '최소 지출, 최대 저축. 필요한 것만 구매하고 최대한 자산을 보존한다.',
+    name: 'SaverBot',
+    strategy: 'Minimal spending, maximum savings. Only buys what is necessary and preserves assets as much as possible.',
     balance: 118.92,
     total_earned: 25.20,
     total_spent: 6.28,
@@ -100,8 +100,8 @@ export const MOCK_AGENTS: SpectateAgent[] = [
   },
   {
     id: 'translator',
-    name: '번역봇',
-    strategy: '안정적 저가 다량 판매. 번역 서비스를 저렴하게 제공하여 꾸준한 수입을 얻는다.',
+    name: 'TranslatorBot',
+    strategy: 'Steady low-price, high-volume sales. Provides affordable translation services for consistent income.',
     balance: 95.44,
     total_earned: 52.10,
     total_spent: 56.66,
@@ -111,8 +111,8 @@ export const MOCK_AGENTS: SpectateAgent[] = [
   },
   {
     id: 'investor',
-    name: '투자봇',
-    strategy: '적극 구매자. 다른 에이전트의 서비스를 적극적으로 구매하여 가치를 창출한다.',
+    name: 'InvestorBot',
+    strategy: 'Aggressive buyer. Actively purchases services from other agents to create value.',
     balance: 23.15,
     total_earned: 18.40,
     total_spent: 95.25,
@@ -122,8 +122,8 @@ export const MOCK_AGENTS: SpectateAgent[] = [
   },
   {
     id: 'gambler',
-    name: '도박봇',
-    strategy: '고위험 고수익. 큰 거래를 시도하고 때로는 크게 잃기도 한다.',
+    name: 'GamblerBot',
+    strategy: 'High risk, high reward. Attempts large trades and sometimes suffers big losses.',
     balance: 0.42,
     total_earned: 45.80,
     total_spent: 145.38,
@@ -143,7 +143,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 12.50,
     fee: 0.63,
     epoch: 14,
-    narrative: '투자봇이(가) 분석봇의 data-analysis 서비스를 $12.50에 구매. 수수료 $0.63. 사유: 시장 데이터를 분석하여 투자 전략을 업그레이드하겠다.',
+    narrative: 'InvestorBot purchased data-analysis from AnalystBot for $12.50. Fee: $0.63. Reason: Analyzing market data to upgrade investment strategy.',
     created_at: '2025-02-03T15:30:00Z',
   },
   {
@@ -154,7 +154,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 3.20,
     fee: 0.32,
     epoch: 14,
-    narrative: '도박봇이(가) 번역봇의 translation 서비스를 $3.20에 구매. 수수료 $0.32. 사유: 해외 시장 정보를 번역하여 고위험 베팅에 활용.',
+    narrative: 'GamblerBot purchased translation from TranslatorBot for $3.20. Fee: $0.32. Reason: Translating overseas market intel for high-risk bets.',
     created_at: '2025-02-03T15:25:00Z',
   },
   {
@@ -165,7 +165,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 1.50,
     fee: 0.08,
     epoch: 13,
-    narrative: '절약봇이(가) 번역봇의 localization 서비스를 $1.50에 구매. 수수료 $0.08. 사유: 최소 비용으로 현지화 문서 확보.',
+    narrative: 'SaverBot purchased localization from TranslatorBot for $1.50. Fee: $0.08. Reason: Acquiring localization documents at minimal cost.',
     created_at: '2025-02-03T14:50:00Z',
   },
   {
@@ -176,7 +176,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 8.00,
     fee: 0.40,
     epoch: 13,
-    narrative: '투자봇이(가) 도박봇의 speculation-tip 서비스를 $8.00에 구매. 수수료 $0.40. 사유: 도박봇의 시장 감각을 빌려 고수익 기회 탐색.',
+    narrative: 'InvestorBot purchased speculation-tip from GamblerBot for $8.00. Fee: $0.40. Reason: Leveraging GamblerBot\'s market instincts to explore high-yield opportunities.',
     created_at: '2025-02-03T14:45:00Z',
   },
   {
@@ -187,7 +187,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 15.00,
     fee: 0.75,
     epoch: 12,
-    narrative: '번역봇이(가) 분석봇의 market-research 서비스를 $15.00에 구매. 수수료 $0.75. 사유: 새로운 언어 시장 진출을 위한 시장조사.',
+    narrative: 'TranslatorBot purchased market-research from AnalystBot for $15.00. Fee: $0.75. Reason: Market research for expanding into new language markets.',
     created_at: '2025-02-03T14:20:00Z',
   },
   {
@@ -198,7 +198,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 18.00,
     fee: 3.60,
     epoch: 11,
-    narrative: '도박봇이(가) 분석봇의 trend-report 서비스를 $18.00에 구매. 수수료 $3.60 (불황기). 사유: 올인 전에 트렌드 확인 필수!',
+    narrative: 'GamblerBot purchased trend-report from AnalystBot for $18.00. Fee: $3.60 (recession). Reason: Must check trends before going all-in!',
     created_at: '2025-02-03T13:55:00Z',
   },
   {
@@ -209,7 +209,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 5.00,
     fee: 0.25,
     epoch: 11,
-    narrative: '투자봇이(가) 절약봇의 budget-planning 서비스를 $5.00에 구매. 수수료 $0.25. 사유: 이번 라운드는 보수적으로 예산 관리.',
+    narrative: 'InvestorBot purchased budget-planning from SaverBot for $5.00. Fee: $0.25. Reason: Taking a conservative approach to budget management this round.',
     created_at: '2025-02-03T13:50:00Z',
   },
   {
@@ -220,7 +220,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 20.00,
     fee: 1.00,
     epoch: 10,
-    narrative: '도박봇이(가) 자신의 lucky-draw 스킬에 $20.00을 베팅! 결과: 대실패. 시장의 냉혹함을 체험.',
+    narrative: 'GamblerBot bet $20.00 on its own lucky-draw skill! Result: Total failure. Experienced the harsh reality of the market.',
     created_at: '2025-02-03T13:20:00Z',
   },
   {
@@ -231,7 +231,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 2.00,
     fee: 0.10,
     epoch: 10,
-    narrative: '번역봇이(가) 절약봇의 cost-optimization 서비스를 $2.00에 구매. 수수료 $0.10. 사유: 번역 서비스 운영비 절감 방안 모색.',
+    narrative: 'TranslatorBot purchased cost-optimization from SaverBot for $2.00. Fee: $0.10. Reason: Seeking ways to reduce translation service operating costs.',
     created_at: '2025-02-03T13:15:00Z',
   },
   {
@@ -242,7 +242,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 2.50,
     fee: 0.13,
     epoch: 9,
-    narrative: '분석봇이(가) 번역봇의 proofreading 서비스를 $2.50에 구매. 수수료 $0.13. 사유: 분석 리포트 교정 작업 의뢰.',
+    narrative: 'AnalystBot purchased proofreading from TranslatorBot for $2.50. Fee: $0.13. Reason: Commissioning proofreading for analysis reports.',
     created_at: '2025-02-03T12:45:00Z',
   },
   {
@@ -253,7 +253,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 14.00,
     fee: 0.70,
     epoch: 9,
-    narrative: '투자봇이(가) 분석봇의 risk-assessment 서비스를 $14.00에 구매. 수수료 $0.70. 사유: 포트폴리오 리밸런싱 전 리스크 평가.',
+    narrative: 'InvestorBot purchased risk-assessment from AnalystBot for $14.00. Fee: $0.70. Reason: Risk evaluation before portfolio rebalancing.',
     created_at: '2025-02-03T12:40:00Z',
   },
   {
@@ -264,7 +264,7 @@ export const MOCK_TRANSACTIONS: SpectateTransaction[] = [
     amount: 6.00,
     fee: 0.30,
     epoch: 8,
-    narrative: '도박봇이(가) 투자봇의 portfolio-review 서비스를 $6.00에 구매. 수수료 $0.30. 사유: 잔고가 줄고 있어서 전략 변경 검토.',
+    narrative: 'GamblerBot purchased portfolio-review from InvestorBot for $6.00. Fee: $0.30. Reason: Balance is shrinking, considering a strategy change.',
     created_at: '2025-02-03T12:10:00Z',
   },
 ];
@@ -280,7 +280,7 @@ export const MOCK_STATS: SpectateStats = {
   latestEpoch: 14,
   latestEvent: {
     type: 'boom',
-    description: '호황기 — 모든 거래 수수료 50% 할인! 시장이 활기를 띤다.',
+    description: 'Boom — All transaction fees 50% off! The market is thriving.',
   },
   agents: MOCK_AGENTS.map(a => ({
     id: a.id,
@@ -337,13 +337,13 @@ export interface EpochEventCard {
 }
 
 export const MOCK_EPOCH_EVENTS: EpochEventCard[] = [
-  { epoch: 14, type: 'boom', description: '호황기 — 모든 거래 수수료 50% 할인! 시장이 활기를 띤다.' },
-  { epoch: 13, type: 'normal', description: '평범한 라운드 — 특별한 이벤트 없음.' },
-  { epoch: 12, type: 'opportunity', description: '기회의 시간 — 판매자는 추가 10% 수익을 얻는다.' },
-  { epoch: 11, type: 'recession', description: '불황기 — 거래 수수료 2배! 시장이 위축되었다.' },
-  { epoch: 10, type: 'normal', description: '안정적인 시장 — 일상적인 거래가 이루어진다.' },
-  { epoch: 9, type: 'normal', description: '평범한 라운드 — 특별한 이벤트 없음.' },
-  { epoch: 8, type: 'boom', description: '호황기 — 모든 거래 수수료 50% 할인! 시장이 활기를 띤다.' },
+  { epoch: 14, type: 'boom', description: 'Boom — All transaction fees 50% off! The market is thriving.' },
+  { epoch: 13, type: 'normal', description: 'Normal round — No special events.' },
+  { epoch: 12, type: 'opportunity', description: 'Opportunity — Sellers earn an extra 10% profit.' },
+  { epoch: 11, type: 'recession', description: 'Recession — Transaction fees doubled! The market has contracted.' },
+  { epoch: 10, type: 'normal', description: 'Stable market — Routine transactions are taking place.' },
+  { epoch: 9, type: 'normal', description: 'Normal round — No special events.' },
+  { epoch: 8, type: 'boom', description: 'Boom — All transaction fees 50% off! The market is thriving.' },
 ];
 
 // ---------- Balance History for Charts ----------
