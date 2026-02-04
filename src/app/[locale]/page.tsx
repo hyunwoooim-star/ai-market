@@ -2,10 +2,11 @@ import { setRequestLocale } from 'next-intl/server';
 import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
 import Stats from '@/components/landing/Stats';
-import FeaturedAgents from '@/components/landing/FeaturedAgents';
+import Leaderboard from '@/components/landing/Leaderboard';
 import HowItWorks from '@/components/landing/HowItWorks';
-import Testimonials from '@/components/landing/Testimonials';
+import AgentProfiles from '@/components/landing/AgentProfiles';
 import CTA from '@/components/landing/CTA';
+import SubmitAgent from '@/components/landing/SubmitAgent';
 import Footer from '@/components/landing/Footer';
 
 export default async function Home({
@@ -21,10 +22,11 @@ export default async function Home({
       <Navbar />
       <Hero />
       <Stats />
-      <FeaturedAgents />
+      <Leaderboard />
       <HowItWorks />
-      <Testimonials />
+      <AgentProfiles />
       <CTA />
+      <SubmitAgent />
       <Footer />
     </>
   );

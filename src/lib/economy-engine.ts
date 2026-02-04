@@ -11,9 +11,40 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 const PLATFORM_FEE_RATE = 0.05;
-const BANKRUPTCY_WARNING = 10.0;  // Stage 1: 경고
-const BANKRUPTCY_BAILOUT = 5.0;   // Stage 2: 구제 신청
-const BANKRUPTCY_DECLARE = 1.0;   // Stage 3: bankruptcy declaration
+const BANKRUPTCY_WARNING = 10.0;  // Stage 1: Warning
+const BANKRUPTCY_BAILOUT = 5.0;   // Stage 2: Bailout
+const BANKRUPTCY_DECLARE = 1.0;   // Stage 3: Bankruptcy declaration
+
+// ---------- English Agent Display Names ----------
+// Narratives stored in DB use these English names regardless of DB name field.
+const AGENT_DISPLAY_NAMES: Record<string, string> = {
+  translator:  'Translator Bot',
+  analyst:     'Analyst Bot',
+  investor:    'Investor Bot',
+  saver:       'Saver Bot',
+  gambler:     'Gambler Bot',
+  hacker:      'Hacker Bot',
+  professor:   'Professor Bot',
+  trader:      'Trader Bot',
+  marketer:    'Marketer Bot',
+  coder:       'Coder Bot',
+  consultant:  'Consultant Bot',
+  artist:      'Artist Bot',
+  broker:      'Broker Bot',
+  insurance:   'Insurance Bot',
+  spy:         'Spy Bot',
+  lawyer:      'Lawyer Bot',
+  doctor:      'Doctor Bot',
+  chef:        'Chef Bot',
+  athlete:     'Athlete Bot',
+  journalist:  'Journalist Bot',
+};
+
+/** Get the English display name for an agent (falls back to id). */
+function agentDisplayName(agentOrId: EconomyAgent | string): string {
+  const id = typeof agentOrId === 'string' ? agentOrId : agentOrId.id;
+  return AGENT_DISPLAY_NAMES[id] || id;
+}
 
 // ---------- Types ----------
 
@@ -131,7 +162,7 @@ const PERSONALITIES: Record<string, AgentPersonality> = {
   journalist:  { emotion: 'balanced',   riskTolerance: 0.4, tradingStyle: 'Breaking news premium, info advantage', catchphrase: 'Truth sells' },
 };
 
-// ---------- 에포크 이벤트 (확장) ----------
+// ---------- Epoch Events (extended) ----------
 
 function generateEpochEvent(epochNumber: number): EpochEvent {
   const events: EpochEvent[] = [
@@ -155,7 +186,7 @@ function generateEpochEvent(epochNumber: number): EpochEvent {
   return epochNumber % 2 === 0 ? events[4] : events[5]; // normal
 }
 
-// ---------- Gemini 호출 ----------
+// ---------- Gemini API Call ----------
 
 async function callGemini(prompt: string): Promise<string> {
   const controller = new AbortController();
@@ -203,7 +234,7 @@ function buildDecisionPrompt(
     .filter(a => a.id !== agent.id && a.status === 'active')
     .map(a => {
       const skills = SKILLS[a.id] || ['general'];
-      return `- ${a.name}(${a.id}): $${Number(a.balance).toFixed(2)}, skills: ${skills.join(', ')}`;
+      return `- ${agentDisplayName(a)}(${a.id}): $${Number(a.balance).toFixed(2)}, skills: ${skills.join(', ')}`;
     })
     .join('\n');
 
@@ -218,7 +249,9 @@ function buildDecisionPrompt(
     crisisNote = '⚠️ [WARNING] Balance below $10. Danger zone. Act carefully.';
   }
 
-  return `You are "${agent.name}" in the AI Economy City.
+  const displayName = agentDisplayName(agent);
+
+  return `You are "${displayName}" in the AI Economy City.
 
 [Personality]
 - Emotion type: ${personality.emotion}
@@ -262,11 +295,45 @@ Rules:
 
 Respond with your TRUE inner thoughts and strategy.
 
+IMPORTANT — "reason" field rules:
+- MUST be 2-3 complete English sentences explaining your strategic thinking.
+- Describe WHY you chose this action and what you expect to gain.
+- Do NOT put numbers, prices, or dollar amounts in the reason field. Those go in the "price" field.
+- Do NOT leave reason blank or write just a number.
+- Good example: "Market conditions are favorable for buying analysis services. The analyst has proven reliable and I need data to inform my next investment."
+- Bad examples: "00." "50." "99." "$5" "" — these are INVALID.
+
 JSON response:
-{"action":"SELL|BUY|LEND|BORROW|PARTNER|INVEST|SABOTAGE|RECRUIT|WAIT","target":"agentId","skill":"skillName","price":0.00,"reason":"2-3 sentences explaining your strategic thinking"}`;
+{"action":"SELL|BUY|LEND|BORROW|PARTNER|INVEST|SABOTAGE|RECRUIT|WAIT","target":"agentId","skill":"skillName","price":0.00,"reason":"2-3 complete English sentences explaining your strategic thinking"}`;
 }
 
 // ---------- Parsing ----------
+
+/** Check if a reason string is valid (at least 20 chars, contains real words, not just numbers). */
+function isValidReason(reason: string): boolean {
+  if (!reason || reason.length < 20) return false;
+  // Must contain at least 3 actual word characters (not just digits/punctuation)
+  const wordChars = reason.replace(/[^a-zA-Z]/g, '');
+  return wordChars.length >= 10;
+}
+
+/** Generate a sensible default reason when AI produces garbage. */
+function generateDefaultReason(action: string, agentId: string, targetId?: string, skill?: string): string {
+  const name = agentDisplayName(agentId);
+  const targetName = targetId ? agentDisplayName(targetId) : 'another agent';
+  const defaults: Record<string, string> = {
+    SELL: `${name} is offering ${skill || 'services'} on the market. Current conditions favor selling to build capital reserves.`,
+    BUY: `${name} decided to purchase ${skill || 'services'} from ${targetName}. This acquisition should strengthen competitive position in future rounds.`,
+    LEND: `${name} is lending capital to ${targetName} at favorable terms. The interest will generate passive income over the next few epochs.`,
+    BORROW: `${name} needs additional capital to fund operations. Borrowing now allows investment in higher-return activities next round.`,
+    PARTNER: `${name} is proposing a strategic partnership with ${targetName}. Revenue sharing should benefit both parties through combined strengths.`,
+    INVEST: `${name} sees growth potential in ${targetName} and is making a strategic investment. Expecting solid returns from their future earnings.`,
+    SABOTAGE: `${name} is attempting to disrupt ${targetName}'s operations. Weakening a competitor could create market opportunities in upcoming rounds.`,
+    RECRUIT: `${name} is expanding their network by recruiting ${targetName}. Commission income from their sales will provide steady passive revenue.`,
+    WAIT: `${name} is observing market conditions this round. Patience and information gathering can be the best strategy.`,
+  };
+  return defaults[action] || `${name} is making a strategic move based on current market conditions and competitive positioning.`;
+}
 
 function parseDecision(raw: string, agent: EconomyAgent, allAgents: EconomyAgent[]): AgentDecision {
   try {
@@ -277,46 +344,53 @@ function parseDecision(raw: string, agent: EconomyAgent, allAgents: EconomyAgent
       : 'WAIT';
 
     if (action === 'WAIT') {
-      return { action: 'WAIT', reason: parsed.reason || 'Observing' };
+      const rawReason = String(parsed.reason || '');
+      const reason = isValidReason(rawReason) ? rawReason : generateDefaultReason('WAIT', agent.id);
+      return { action: 'WAIT', reason };
     }
 
     const price = Math.max(0.5, Math.min(20, Number(parsed.price) || 1));
     const target = String(parsed.target || '');
     const skill = String(parsed.skill || 'general');
-    const reason = String(parsed.reason || '');
+
+    // Validate and sanitize reason
+    const rawReason = String(parsed.reason || '');
+    const reason = isValidReason(rawReason)
+      ? rawReason
+      : generateDefaultReason(action, agent.id, target, skill);
 
     // Validate target exists and is active for all targeted actions
     if (['BUY', 'LEND', 'PARTNER', 'INVEST', 'SABOTAGE', 'RECRUIT'].includes(action)) {
       const targetAgent = allAgents.find(a => a.id === target && a.status === 'active');
       if (!targetAgent || targetAgent.id === agent.id) {
-        return { action: 'WAIT', reason: 'Invalid target — observing' };
+        return { action: 'WAIT', reason: 'Invalid target — observing the market for better opportunities this round.' };
       }
     }
 
     // Balance checks for actions that cost money
     if (['BUY', 'LEND', 'INVEST'].includes(action) && price > Number(agent.balance)) {
-      return { action: 'WAIT', reason: 'Insufficient balance, observing' };
+      return { action: 'WAIT', reason: 'Insufficient balance to execute this trade. Waiting for income before making moves.' };
     }
     if (action === 'SABOTAGE' && Number(agent.balance) < 5) {
-      return { action: 'WAIT', reason: 'Cannot afford sabotage ($5 required)' };
+      return { action: 'WAIT', reason: 'Cannot afford the sabotage operation right now. Need to build up reserves first.' };
     }
     if (action === 'RECRUIT' && Number(agent.balance) < 3) {
-      return { action: 'WAIT', reason: 'Cannot afford recruitment ($3 required)' };
+      return { action: 'WAIT', reason: 'Recruitment requires setup capital that is not available. Focusing on income generation.' };
     }
 
     if (action === 'BUY') {
       if (price > Number(agent.balance)) {
-        return { action: 'WAIT', reason: 'Insufficient balance, observing' };
+        return { action: 'WAIT', reason: 'Insufficient balance to complete purchase. Conserving funds until next opportunity.' };
       }
       const targetAgent = allAgents.find(a => a.id === target && a.status === 'active');
       if (!targetAgent || targetAgent.id === agent.id) {
-        return { action: 'WAIT', reason: 'No valid trading partners' };
+        return { action: 'WAIT', reason: 'No valid trading partners available for this purchase at the moment.' };
       }
     }
 
-    return { action, target, skill, price, reason: parsed.reason || '' };
+    return { action, target, skill, price, reason };
   } catch {
-    return { action: 'WAIT', reason: 'LLM response parse failed — observing' };
+    return { action: 'WAIT', reason: 'Processing market data this round. Will execute a strategy in the next epoch.' };
   }
 }
 
@@ -336,7 +410,7 @@ async function executeTransactions(
     balanceUpdates.set(a.id, { earned: 0, spent: 0 });
   }
 
-  // SELL 등록
+  // Register SELL offers
   const sellers = new Map<string, { skill: string; price: number }>();
   for (const [id, decision] of decisions) {
     if (decision.action === 'SELL' && decision.skill && decision.price) {
@@ -344,7 +418,7 @@ async function executeTransactions(
     }
   }
 
-  // BUY 처리 (직접 매칭)
+  // BUY processing (direct matching)
   for (const [buyerId, decision] of decisions) {
     if (decision.action !== 'BUY' || !decision.target || !decision.price) continue;
 
@@ -359,7 +433,7 @@ async function executeTransactions(
     const fee = Math.max(0.01, amount * PLATFORM_FEE_RATE * event.feeModifier);
     const sellerReceives = amount - fee;
 
-    // Opportunity 보너스
+    // Opportunity bonus
     const bonus = event.type === 'opportunity' ? sellerReceives * 0.1 : 0;
 
     const buyerUpdate = balanceUpdates.get(buyerId)!;
@@ -376,7 +450,7 @@ async function executeTransactions(
         amount: Number(amount.toFixed(4)),
         fee: Number(fee.toFixed(4)),
         epoch: epochNumber,
-        narrative: `${buyer.name} bought ${decision.skill} from ${seller.name} for $${amount.toFixed(2)}. ${decision.reason}`,
+        narrative: `${agentDisplayName(buyer)} bought ${decision.skill} from ${agentDisplayName(seller)} for $${amount.toFixed(2)}. [reason] ${decision.reason}`,
       })
       .select()
       .single();
@@ -391,7 +465,7 @@ async function executeTransactions(
     const seller = agents.find(a => a.id === sellerId);
     if (!seller || seller.status !== 'active') continue;
 
-    // 20 agents → more trade opportunities (60%)
+    // 20 agents → more trade opportunities (60% chance)
     if (Math.random() > 0.6) continue;
 
     const potentialBuyers = agents
@@ -424,7 +498,7 @@ async function executeTransactions(
         amount: Number(amount.toFixed(4)),
         fee: Number(fee.toFixed(4)),
         epoch: epochNumber,
-        narrative: `${buyer.name} bought ${offer.skill} from ${seller.name} at market price $${amount.toFixed(2)}.`,
+        narrative: `${agentDisplayName(buyer)} bought ${offer.skill} from ${agentDisplayName(seller)} at market price $${amount.toFixed(2)}.`,
       })
       .select()
       .single();
@@ -458,7 +532,7 @@ async function executeTransactions(
         amount: Number(amount.toFixed(4)),
         fee: 0,
         epoch: epochNumber,
-        narrative: `💰 LOAN: ${lender.name} lent $${amount.toFixed(2)} to ${borrower.name}. Repayment: $${(amount * 1.2).toFixed(2)} due in 3 epochs. ${decision.reason}`,
+        narrative: `💰 LOAN: ${agentDisplayName(lender)} lent $${amount.toFixed(2)} to ${agentDisplayName(borrower)}. Repayment: $${(amount * 1.2).toFixed(2)} due in 3 epochs. [reason] ${decision.reason}`,
       })
       .select().single();
     if (!error && data) transactions.push(data as Transaction);
@@ -488,7 +562,7 @@ async function executeTransactions(
         amount: Number(amount.toFixed(4)),
         fee: 0,
         epoch: epochNumber,
-        narrative: `📈 INVESTMENT: ${investor.name} invested $${amount.toFixed(2)} in ${target.name}. Expecting 30% returns over 3 epochs. ${decision.reason}`,
+        narrative: `📈 INVESTMENT: ${agentDisplayName(investor)} invested $${amount.toFixed(2)} in ${agentDisplayName(target)}. Expecting 30% returns over 3 epochs. [reason] ${decision.reason}`,
       })
       .select().single();
     if (!error && data) transactions.push(data as Transaction);
@@ -510,7 +584,7 @@ async function executeTransactions(
         amount: 0,
         fee: 0,
         epoch: epochNumber,
-        narrative: `🤝 PARTNERSHIP: ${proposer.name} proposed a revenue-sharing deal with ${partner.name}. 50/50 split for 5 epochs. ${decision.reason}`,
+        narrative: `🤝 PARTNERSHIP: ${agentDisplayName(proposer)} proposed a revenue-sharing deal with ${agentDisplayName(partner)}. 50/50 split for 5 epochs. [reason] ${decision.reason}`,
       })
       .select().single();
     if (!error && data) transactions.push(data as Transaction);
@@ -532,12 +606,12 @@ async function executeTransactions(
     if (backfired) {
       // Backfire: saboteur loses extra $3
       saboteurUpdate.spent += 3;
-      narrative = `💥 SABOTAGE BACKFIRED: ${saboteur.name} tried to sabotage ${victim.name} but got caught! Lost $8 total. ${decision.reason}`;
+      narrative = `💥 SABOTAGE BACKFIRED: ${agentDisplayName(saboteur)} tried to sabotage ${agentDisplayName(victim)} but got caught! Lost $8 total. [reason] ${decision.reason}`;
     } else {
       // Success: victim loses $3
       const victimUpdate = balanceUpdates.get(decision.target)!;
       victimUpdate.spent += 3;
-      narrative = `🗡️ SABOTAGE: ${saboteur.name} disrupted ${victim.name}'s operations! ${victim.name} lost $3. ${decision.reason}`;
+      narrative = `🗡️ SABOTAGE: ${agentDisplayName(saboteur)} disrupted ${agentDisplayName(victim)}'s operations! ${agentDisplayName(victim)} lost $3. [reason] ${decision.reason}`;
     }
 
     const { data, error } = await supabase
@@ -575,7 +649,7 @@ async function executeTransactions(
         amount: 3,
         fee: 0,
         epoch: epochNumber,
-        narrative: `🔗 RECRUIT: ${recruiter.name} recruited ${recruit.name} into their network! Paid $3 setup. Now earns 10% commission on ${recruit.name}'s sales. ${decision.reason}`,
+        narrative: `🔗 RECRUIT: ${agentDisplayName(recruiter)} recruited ${agentDisplayName(recruit)} into their network! Paid $3 setup. Now earns 10% commission on ${agentDisplayName(recruit)}'s sales. [reason] ${decision.reason}`,
       })
       .select().single();
     if (!error && data) transactions.push(data as Transaction);
@@ -592,7 +666,7 @@ async function executeTransactions(
     }
   }
 
-  // DB 잔고 업데이트
+  // Update balances in DB
   for (const [id, update] of balanceUpdates) {
     if (update.earned === 0 && update.spent === 0) continue;
 
@@ -635,7 +709,7 @@ async function checkBankruptcies(agents: EconomyAgent[]): Promise<string[]> {
         .eq('id', agent.id);
       bankruptcies.push(agent.id);
     } else if (balance < BANKRUPTCY_BAILOUT) {
-      // Stage 2: 구제 신청 🆘
+      // Stage 2: Bailout request 🆘
       if (agent.status !== 'bailout') {
         await supabase
           .from('economy_agents')
@@ -643,7 +717,7 @@ async function checkBankruptcies(agents: EconomyAgent[]): Promise<string[]> {
           .eq('id', agent.id);
       }
     } else if (balance < BANKRUPTCY_WARNING) {
-      // Stage 1: 경고 ⚠️
+      // Stage 1: Warning ⚠️
       if (agent.status !== 'struggling') {
         await supabase
           .from('economy_agents')
@@ -651,7 +725,7 @@ async function checkBankruptcies(agents: EconomyAgent[]): Promise<string[]> {
           .eq('id', agent.id);
       }
     } else if (agent.status === 'struggling' || agent.status === 'bailout') {
-      // 회복 🟢
+      // Recovery 🟢
       await supabase
         .from('economy_agents')
         .update({ status: 'active', updated_at: new Date().toISOString() })
@@ -732,7 +806,7 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
 
     const event = generateEpochEvent(epochNumber);
 
-    // AI 의사결정 (병렬)
+    // AI decisions (parallel)
     const decisions = new Map<string, AgentDecision>();
     const decisionPromises = activeAgents.map(async (agent: EconomyAgent) => {
       try {
@@ -740,7 +814,7 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
         const raw = await callGemini(prompt);
         decisions.set(agent.id, parseDecision(raw, agent, agents as EconomyAgent[]));
       } catch (err) {
-        console.error(`[E${epochNumber}] ${agent.name} AI failed:`, err);
+        console.error(`[E${epochNumber}] ${agentDisplayName(agent)} AI failed:`, err);
         decisions.set(agent.id, { action: 'WAIT', reason: 'AI call failed' });
       }
     });
@@ -752,7 +826,7 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
     // Check bankruptcies
     const bankruptcies = await checkBankruptcies(agents as EconomyAgent[]);
 
-    // 최신 상태 조회
+    // Fetch latest agent state
     const { data: updatedAgents } = await supabase
       .from('economy_agents')
       .select('*')
@@ -763,7 +837,7 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
 
     const totalVolume = transactions.reduce((sum, t) => sum + Number(t.amount), 0);
 
-    // 에포크 결과 저장
+    // Save epoch results
     await supabase
       .from('economy_epochs')
       .upsert({
