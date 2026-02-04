@@ -3,6 +3,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
+import { AGENT_NAMES } from '@/lib/spectate-mock-data';
 
 interface DiaryEntry {
   id: string;
@@ -80,7 +81,7 @@ export default function DiaryWidget() {
                     <div className="flex items-center gap-2 mb-1.5">
                       <span className="text-base">{entry.agent_emoji}</span>
                       <span className="text-xs font-bold text-[var(--text-primary)] truncate">
-                        {entry.agent_name}
+                        {AGENT_NAMES[entry.agent_id] || entry.agent_name}
                       </span>
                       <span className="text-base" title={entry.mood}>
                         {entry.mood_emoji}

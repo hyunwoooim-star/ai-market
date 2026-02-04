@@ -12,12 +12,13 @@ import EventBanner from '@/components/spectate/EventBanner';
 import SocialFeedWidget from '@/components/spectate/SocialFeedWidget';
 import DiaryWidget from '@/components/spectate/DiaryWidget';
 
-import type {
-  SpectateAgent,
-  SpectateTransaction,
-  SpectateStats,
-  SpectateAgentDetail,
-  EpochEventCard,
+import {
+  AGENT_NAMES,
+  type SpectateAgent,
+  type SpectateTransaction,
+  type SpectateStats,
+  type SpectateAgentDetail,
+  type EpochEventCard,
 } from '@/lib/spectate-mock-data';
 
 const POLL_INTERVAL = 10_000; // Refresh every 10 seconds
@@ -416,7 +417,7 @@ function MobileLeaderboard({ agents, onAgentClick }: {
                     {i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}`}
                   </span>
                   <span className="flex-1 text-sm font-semibold text-[var(--text-primary)]">
-                    {agent.name}
+                    {AGENT_NAMES[agent.id] || agent.name}
                   </span>
                   <span className={`font-mono text-sm font-bold ${agent.status === 'bankrupt' ? 'text-red-400' : 'text-[var(--text-primary)]'}`}>
                     ${agent.balance.toFixed(2)}

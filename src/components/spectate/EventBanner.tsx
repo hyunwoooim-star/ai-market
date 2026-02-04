@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import type { SpectateTransaction, SpectateStats } from '@/lib/spectate-mock-data';
+import { AGENT_NAMES, type SpectateTransaction, type SpectateStats } from '@/lib/spectate-mock-data';
 
 interface EventCard {
   id: string;
@@ -150,8 +150,8 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
           type: 'warning',
           emoji: '⚠️',
           title: t('warningSignal'),
-          description: t('agentWarning', { name: agent.name, balance: agent.balance.toFixed(2) }),
-          agentName: agent.name,
+          description: t('agentWarning', { name: AGENT_NAMES[agent.id] || agent.name, balance: agent.balance.toFixed(2) }),
+          agentName: AGENT_NAMES[agent.id] || agent.name,
           timestamp: new Date().toISOString(),
           priority: 50,
         });
@@ -166,8 +166,8 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
         type: 'ranking-change',
         emoji: '🔄',
         title: t('rankingChange'),
-        description: t('agentRankingChange', { name: randomAgent.name }),
-        agentName: randomAgent.name,
+        description: t('agentRankingChange', { name: AGENT_NAMES[randomAgent.id] || randomAgent.name }),
+        agentName: AGENT_NAMES[randomAgent.id] || randomAgent.name,
         timestamp: new Date().toISOString(),
         priority: 40,
       });
