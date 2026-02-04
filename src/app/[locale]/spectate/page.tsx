@@ -134,8 +134,33 @@ export default function SpectatePage() {
       const res = await fetch(`/api/economy/agents/${agentId}`, { cache: 'no-store' });
       if (!res.ok) throw new Error('fetch failed');
       const data = await res.json();
-      if (data.id) {
-        setAgentDetail(data as SpectateAgentDetail);
+      // API returns { agent: {...}, stats: {...}, recentTransactions: [...], skillBreakdown: {...} }
+      const agentData = data.agent || data;
+      if (agentData?.id) {
+        const detail: SpectateAgentDetail = {
+          id: agentData.id,
+          name: agentData.name,
+          balance: Number(agentData.balance),
+          status: agentData.status,
+          strategy: agentData.strategy || '',
+          total_earned: Number(agentData.total_earned),
+          total_spent: Number(agentData.total_spent),
+          created_at: agentData.created_at || new Date().toISOString(),
+          updated_at: agentData.updated_at || new Date().toISOString(),
+          skills: data.skillBreakdown ? Object.keys(data.skillBreakdown) : [],
+          recentTransactions: (data.recentTransactions || []).map((tx: Record<string, unknown>) => ({
+            id: tx.id as string,
+            buyer_id: tx.buyer_id as string,
+            seller_id: tx.seller_id as string,
+            skill_type: tx.skill_type as string,
+            amount: Number(tx.amount),
+            fee: Number(tx.fee || 0),
+            epoch: Number(tx.epoch),
+            narrative: (tx.narrative as string) || null,
+            created_at: tx.created_at as string,
+          })),
+        };
+        setAgentDetail(detail);
       } else {
         throw new Error('no data');
       }
