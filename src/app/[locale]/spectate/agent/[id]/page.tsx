@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { useParams } from 'next/navigation';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
-import { AGENT_EMOJI } from '@/lib/spectate-mock-data';
+import { AGENT_EMOJI, AGENT_NAMES } from '@/lib/spectate-mock-data';
 import Link from 'next/link';
 
 interface DiaryEntry {
@@ -335,7 +335,7 @@ export default function AgentChronicle() {
                         className="flex items-center gap-2 px-3 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-lg hover:border-[var(--accent)]/30 transition-colors"
                       >
                         <span>{AGENT_EMOJI[p.id] || '🤖'}</span>
-                        <span className="text-sm font-semibold">{p.id}</span>
+                        <span className="text-sm font-semibold">{AGENT_NAMES[p.id] || p.id}</span>
                         <span className="text-xs text-[var(--text-tertiary)]">{p.count} trades</span>
                       </Link>
                     ))}
@@ -372,7 +372,7 @@ export default function AgentChronicle() {
                             {isBuyer ? 'bought' : 'sold'} {tx.skill_type}
                           </span>
                           <span className="text-[var(--text-tertiary)]">{isBuyer ? 'from' : 'to'}</span>
-                          <span>{partnerEmoji} {partnerId}</span>
+                          <span>{partnerEmoji} {AGENT_NAMES[partnerId] || partnerId}</span>
                           {isSpecial && (
                             <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-[var(--accent)]/10 text-[var(--accent)]">
                               {tx.skill_type.toUpperCase()}
