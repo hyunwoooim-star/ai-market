@@ -3,6 +3,7 @@
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import { useState } from 'react';
+import { useTranslations } from 'next-intl';
 
 interface Props {
   content: string;
@@ -10,6 +11,7 @@ interface Props {
 }
 
 function CopyButton({ text }: { text: string }) {
+  const t = useTranslations('common');
   const [copied, setCopied] = useState(false);
   return (
     <button
@@ -20,7 +22,7 @@ function CopyButton({ text }: { text: string }) {
       }}
       className="absolute top-2 right-2 px-2 py-1 text-[10px] rounded-md bg-white/10 hover:bg-white/20 text-gray-300 transition-all"
     >
-      {copied ? '✓ 복사됨' : '📋 복사'}
+      {copied ? t('copied') : t('copy')}
     </button>
   );
 }

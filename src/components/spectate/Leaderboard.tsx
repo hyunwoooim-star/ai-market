@@ -1,6 +1,7 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import AnimatedNumber from './AnimatedNumber';
 import {
   AGENT_EMOJI,
@@ -32,6 +33,7 @@ const STATUS_CONFIG: Record<string, { label: string; className: string; dot: str
 };
 
 export default function Leaderboard({ agents, onAgentClick }: Props) {
+  const t = useTranslations('spectate');
   const sorted = [...agents].sort((a, b) => b.balance - a.balance);
 
   return (
@@ -39,7 +41,7 @@ export default function Leaderboard({ agents, onAgentClick }: Props) {
       <div className="px-4 py-3 border-b border-[var(--border)]">
         <h2 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-2">
           <span>🏆</span>
-          <span>리더보드</span>
+          <span>{t('leaderboard')}</span>
         </h2>
       </div>
 
@@ -88,12 +90,10 @@ function AgentRow({
         isBankrupt ? 'opacity-60' : ''
       }`}
     >
-      {/* Bankrupt flash overlay */}
       {isBankrupt && (
         <div className="absolute inset-0 bg-red-500/5 pointer-events-none" />
       )}
 
-      {/* Rank */}
       <div className="flex-shrink-0 w-6 text-center">
         {rank <= 3 ? (
           <span className="text-lg">
@@ -104,19 +104,16 @@ function AgentRow({
         )}
       </div>
 
-      {/* Avatar */}
       <div
         className="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-lg relative"
         style={{ backgroundColor: `${color}20`, borderColor: `${color}40`, borderWidth: 2 }}
       >
         {isBankrupt ? '💀' : emoji}
-        {/* Status dot */}
         <div
           className={`absolute -bottom-0.5 -right-0.5 w-3 h-3 rounded-full border-2 border-[var(--surface)] ${statusConf.dot}`}
         />
       </div>
 
-      {/* Info */}
       <div className="flex-1 min-w-0 text-left">
         <div className="flex items-center gap-2">
           <span className={`text-sm font-bold ${isBankrupt ? 'line-through text-[var(--text-tertiary)]' : 'text-[var(--text-primary)]'}`}>
@@ -134,7 +131,6 @@ function AgentRow({
         </div>
       </div>
 
-      {/* Balance */}
       <div className="flex-shrink-0 text-right">
         <AnimatedNumber
           value={agent.balance}
@@ -143,7 +139,6 @@ function AgentRow({
         />
       </div>
 
-      {/* Hover arrow */}
       <div className="flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity text-[var(--text-tertiary)]">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
           <path d="M9 18l6-6-6-6" />

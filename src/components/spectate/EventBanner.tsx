@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import type { SpectateTransaction, SpectateStats } from '@/lib/spectate-mock-data';
 
 interface EventCard {
@@ -13,7 +14,7 @@ interface EventCard {
   agentName?: string;
   amount?: number;
   timestamp: string;
-  priority: number; // 높을수록 우선순위
+  priority: number;
 }
 
 interface Props {
@@ -23,14 +24,20 @@ interface Props {
 }
 
 export default function EventBanner({ transactions, stats, onEventClick }: Props) {
+  const t = useTranslations('spectate');
+  const tAgents = useTranslations('agents');
+
   const [events, setEvents] = useState<EventCard[]>([]);
   const [currentEventIndex, setCurrentEventIndex] = useState(0);
 
-  // 이벤트 생성 로직
+  const getAgentName = (agentId: string): string => {
+    try { return tAgents(`${agentId}.name`); } catch { return agentId; }
+  };
+
   useEffect(() => {
     const newEvents: EventCard[] = [];
 
-    // 1. 파산 이벤트 감지
+    // 1. Bankruptcy events
     transactions.forEach(tx => {
       if (tx.narrative && (tx.narrative.includes('bankruptcy') || tx.narrative.includes('파산'))) {
         const agentName = getAgentName(tx.buyer_id);
@@ -38,8 +45,8 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
           id: `bankruptcy-${tx.id}`,
           type: 'bankruptcy',
           emoji: '💀',
-          title: '파산 발생!',
-          description: `${agentName}이(가) 파산했습니다`,
+          title: t('bankruptcyEvent'),
+          description: t('agentBankrupt', { name: agentName }),
           agentName,
           timestamp: tx.created_at,
           priority: 100,
@@ -47,7 +54,7 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
       }
     });
 
-    // 2. 대형거래 이벤트 ($10 이상)
+    // 2. Large trade events ($10+)
     transactions.forEach(tx => {
       if (tx.amount >= 10) {
         const buyerName = getAgentName(tx.buyer_id);
@@ -56,8 +63,8 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
           id: `large-trade-${tx.id}`,
           type: 'large-trade',
           emoji: '💰',
-          title: '대형 거래 발생!',
-          description: `${buyerName} → ${sellerName} $${tx.amount.toFixed(2)}`,
+          title: t('largeTradeEvent'),
+          description: t('agentLargeTrade', { buyer: buyerName, seller: sellerName, amount: tx.amount.toFixed(2) }),
           amount: tx.amount,
           timestamp: tx.created_at,
           priority: 70,
@@ -65,15 +72,15 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
       }
     });
 
-    // 3. 경고 이벤트 (잔고 $10 이하)
+    // 3. Warning events (balance <= $10)
     stats.agents.forEach(agent => {
       if (agent.balance <= 10 && agent.balance > 0 && agent.status !== 'bankrupt') {
         newEvents.push({
           id: `warning-${agent.id}`,
           type: 'warning',
           emoji: '⚠️',
-          title: '위험 신호',
-          description: `${agent.name}의 잔고가 $${agent.balance.toFixed(2)}로 위험 수준`,
+          title: t('warningSignal'),
+          description: t('agentWarning', { name: agent.name, balance: agent.balance.toFixed(2) }),
           agentName: agent.name,
           timestamp: new Date().toISOString(),
           priority: 50,
@@ -81,50 +88,39 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
       }
     });
 
-    // 4. 순위 변동 이벤트 (임시로 랜덤 생성 - 실제로는 이전 순위와 비교)
-    if (Math.random() > 0.7) { // 30% 확률로 순위 변동 이벤트
+    // 4. Ranking change events
+    if (Math.random() > 0.7) {
       const randomAgent = stats.agents[Math.floor(Math.random() * stats.agents.length)];
       newEvents.push({
         id: `ranking-${Date.now()}`,
         type: 'ranking-change',
         emoji: '🔄',
-        title: '순위 대변동!',
-        description: `${randomAgent.name}이(가) 순위에서 큰 변화를 보였습니다`,
+        title: t('rankingChange'),
+        description: t('agentRankingChange', { name: randomAgent.name }),
         agentName: randomAgent.name,
         timestamp: new Date().toISOString(),
         priority: 40,
       });
     }
 
-    // 우선순위별 정렬 및 최대 5개로 제한
     const sortedEvents = newEvents
       .sort((a, b) => b.priority - a.priority)
       .slice(0, 5);
 
     setEvents(sortedEvents);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [transactions, stats]);
 
-  // 자동 슬라이드
+  // Auto-slide
   useEffect(() => {
     if (events.length <= 1) return;
 
     const interval = setInterval(() => {
       setCurrentEventIndex((prev) => (prev + 1) % events.length);
-    }, 4000); // 4초마다 변경
+    }, 4000);
 
     return () => clearInterval(interval);
   }, [events.length]);
-
-  const getAgentName = (agentId: string): string => {
-    const agentNames: Record<string, string> = {
-      translator: '번역봇',
-      analyst: '분석봇',
-      investor: '투자봇',
-      saver: '절약봇',
-      gambler: '도박봇',
-    };
-    return agentNames[agentId] || agentId;
-  };
 
   if (events.length === 0) return null;
 
@@ -146,7 +142,6 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             className="flex items-center justify-between"
           >
-            {/* 이벤트 내용 */}
             <div 
               className="flex items-center gap-3 cursor-pointer hover:scale-[1.02] transition-transform"
               onClick={() => onEventClick?.(currentEvent)}
@@ -175,14 +170,12 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
                 </span>
               </div>
 
-              {/* 실시간 펄스 */}
               <div className="relative flex h-3 w-3">
                 <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-red-400 opacity-75" />
                 <span className="relative inline-flex rounded-full h-3 w-3 bg-red-500" />
               </div>
             </div>
 
-            {/* 네비게이션 */}
             {events.length > 1 && (
               <div className="flex items-center gap-2">
                 <div className="flex gap-1">

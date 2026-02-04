@@ -57,11 +57,11 @@ export default function PricingModal({ isOpen, onClose, agentName }: Props) {
       const tossPayments = await loadTossPayments(clientKey);
       const orderId = `ORDER-${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
 
+      // '카드' is a TossPayments SDK enum value, not a display string
       await tossPayments.requestPayment('카드', {
         amount: plan.price,
         orderId: orderId,
         orderName: `${plan.name} Membership`,
-        customerName: '임현우',
         successUrl: `${window.location.origin}/checkout/success`,
         failUrl: `${window.location.origin}/checkout/fail`,
       });

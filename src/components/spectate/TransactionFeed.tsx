@@ -2,8 +2,8 @@
 
 import { useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import {
-  AGENT_NAMES,
   AGENT_EMOJI,
   type SpectateTransaction,
   type EpochEventCard,
@@ -14,7 +14,6 @@ interface Props {
   epochEvents: EpochEventCard[];
 }
 
-// Merge transactions and epoch events into a unified timeline
 interface FeedItem {
   type: 'transaction' | 'epoch';
   key: string;
@@ -24,9 +23,9 @@ interface FeedItem {
 }
 
 export default function TransactionFeed({ transactions, epochEvents }: Props) {
+  const t = useTranslations('spectate');
   const scrollRef = useRef<HTMLDivElement>(null);
 
-  // Build timeline
   const items: FeedItem[] = [];
 
   for (const tx of transactions) {
@@ -44,19 +43,17 @@ export default function TransactionFeed({ transactions, epochEvents }: Props) {
       type: 'epoch',
       key: `epoch-${ev.epoch}`,
       epoch: ev.epoch,
-      createdAt: '', // Will sort by epoch
+      createdAt: '',
       data: ev,
     });
   }
 
-  // Sort: newest first, epoch events before transactions in same epoch
   items.sort((a, b) => {
     if (a.epoch !== b.epoch) return b.epoch - a.epoch;
     if (a.type !== b.type) return a.type === 'epoch' ? -1 : 1;
     return 0;
   });
 
-  // Auto-scroll to top when new items
   useEffect(() => {
     scrollRef.current?.scrollTo({ top: 0, behavior: 'smooth' });
   }, [transactions.length]);
@@ -66,9 +63,9 @@ export default function TransactionFeed({ transactions, epochEvents }: Props) {
       <div className="px-4 py-3 border-b border-[var(--border)]">
         <h2 className="text-sm font-bold text-[var(--text-primary)] uppercase tracking-wider flex items-center gap-2">
           <span>📡</span>
-          <span>거래 피드</span>
+          <span>{t('transactionFeed')}</span>
           <span className="text-[10px] font-normal text-[var(--text-tertiary)]">
-            {transactions.length}건
+            {t('transactionCount', { count: transactions.length })}
           </span>
         </h2>
       </div>
@@ -87,7 +84,7 @@ export default function TransactionFeed({ transactions, epochEvents }: Props) {
         {items.length === 0 && (
           <div className="flex flex-col items-center justify-center h-48 text-[var(--text-tertiary)]">
             <span className="text-3xl mb-2">📭</span>
-            <span className="text-sm">아직 거래가 없습니다</span>
+            <span className="text-sm">{t('noTransactionsYet')}</span>
           </div>
         )}
       </div>
@@ -96,16 +93,21 @@ export default function TransactionFeed({ transactions, epochEvents }: Props) {
 }
 
 function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number }) {
-  const buyerName = AGENT_NAMES[tx.buyer_id] || tx.buyer_id;
-  const sellerName = AGENT_NAMES[tx.seller_id] || tx.seller_id;
+  const t = useTranslations('spectate');
+  const tAgents = useTranslations('agents');
+
+  let buyerName: string;
+  try { buyerName = tAgents(`${tx.buyer_id}.name`); } catch { buyerName = tx.buyer_id; }
+  let sellerName: string;
+  try { sellerName = tAgents(`${tx.seller_id}.name`); } catch { sellerName = tx.seller_id; }
+
   const buyerEmoji = AGENT_EMOJI[tx.buyer_id] || '🤖';
   const sellerEmoji = AGENT_EMOJI[tx.seller_id] || '🤖';
 
-  // 특별 이벤트 감지
   const isBankruptcyRelated = tx.narrative && (tx.narrative.includes('bankruptcy') || tx.narrative.includes('파산'));
   const isLargeTrade = tx.amount >= 10;
 
-  const timeStr = new Date(tx.created_at).toLocaleTimeString('ko-KR', {
+  const timeStr = new Date(tx.created_at).toLocaleTimeString(undefined, {
     hour: '2-digit',
     minute: '2-digit',
   });
@@ -124,7 +126,6 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
           : 'bg-[var(--surface)] border-[var(--border)] hover:border-[var(--accent)]/30'
       }`}
     >
-      {/* Header: buyer → seller */}
       <div className="flex items-center gap-2 text-sm">
         <span className="flex items-center gap-1 font-semibold text-[var(--text-primary)]">
           <span>{buyerEmoji}</span>
@@ -146,7 +147,6 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
         </span>
       </div>
 
-      {/* Skill + Amount */}
       <div className="flex items-center gap-2 mt-2 flex-wrap">
         <span className="px-2 py-0.5 bg-[var(--accent)]/10 text-[var(--accent)] text-xs rounded-md font-semibold">
           {tx.skill_type}
@@ -157,17 +157,16 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
           ${tx.amount.toFixed(2)}
         </span>
         <span className="text-[10px] text-[var(--text-tertiary)] font-mono">
-          수수료 ${tx.fee.toFixed(2)}
+          {t('fee')} ${tx.fee.toFixed(2)}
         </span>
         
-        {/* 특별 태그들 */}
         {isBankruptcyRelated && (
           <motion.span 
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             className="px-2 py-0.5 bg-red-500/20 text-red-400 text-[10px] rounded-md font-bold border border-red-500/30"
           >
-            💀 파산 관련
+            💀 {t('bankruptcyRelated')}
           </motion.span>
         )}
         {isLargeTrade && !isBankruptcyRelated && (
@@ -176,12 +175,11 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
             animate={{ scale: 1 }}
             className="px-2 py-0.5 bg-emerald-500/20 text-emerald-400 text-[10px] rounded-md font-bold border border-emerald-500/30"
           >
-            💰 대형거래
+            💰 {t('largeTrade')}
           </motion.span>
         )}
       </div>
 
-      {/* Narrative */}
       {tx.narrative && (
         <div className={`mt-2 pt-2 border-t ${
           isBankruptcyRelated ? 'border-red-500/20' : 'border-[var(--border)]'
@@ -196,6 +194,8 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
 }
 
 function EpochEventRow({ event, index }: { event: EpochEventCard; index: number }) {
+  const t = useTranslations('spectate');
+
   const styleMap: Record<string, { 
     bg: string; 
     border: string; 
@@ -252,12 +252,10 @@ function EpochEventRow({ event, index }: { event: EpochEventCard; index: number 
       }}
       className={`relative ${style.bg} ${style.border} ${style.shadowColor} border rounded-xl p-4 text-center shadow-lg overflow-hidden`}
     >
-      {/* 백그라운드 패턴 */}
       <div className="absolute inset-0 opacity-5">
         <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent" />
       </div>
 
-      {/* 메인 컨텐츠 */}
       <div className="relative z-10">
         <div className="flex items-center justify-center gap-3 mb-2">
           <motion.span 
@@ -275,7 +273,7 @@ function EpochEventRow({ event, index }: { event: EpochEventCard; index: number 
             {style.icon}
           </motion.span>
           <span className={`text-sm font-bold uppercase tracking-widest ${style.textColor}`}>
-            에포크 #{event.epoch}
+            {t('epochLabel', { epoch: event.epoch })}
           </span>
           <motion.span 
             className="text-2xl"
@@ -298,7 +296,6 @@ function EpochEventRow({ event, index }: { event: EpochEventCard; index: number 
           {event.description}
         </p>
 
-        {/* 특별 이벤트 강조 */}
         {event.type !== 'normal' && (
           <motion.div
             initial={{ width: 0 }}
@@ -313,7 +310,6 @@ function EpochEventRow({ event, index }: { event: EpochEventCard; index: number 
         )}
       </div>
 
-      {/* 펄스 효과 */}
       {style.pulse && (
         <motion.div
           className="absolute inset-0 rounded-xl border-2 border-current opacity-20"

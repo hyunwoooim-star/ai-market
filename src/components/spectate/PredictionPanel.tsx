@@ -2,25 +2,27 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 interface PredictionPanelProps {
   agentId: string;
   agentName: string;
-  userId?: string; // kakao ID or wallet address
+  userId?: string;
 }
 
 type PredictionType = 'up' | 'down' | 'bankrupt' | 'survive';
 
-const PREDICTION_OPTIONS: { type: PredictionType; label: string; emoji: string; color: string }[] = [
-  { type: 'up', label: '상승', emoji: '📈', color: 'text-green-600 bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800' },
-  { type: 'down', label: '하락', emoji: '📉', color: 'text-red-600 bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800' },
-  { type: 'bankrupt', label: '파산', emoji: '💀', color: 'text-gray-600 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700' },
-  { type: 'survive', label: '생존', emoji: '🛡️', color: 'text-blue-600 bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800' },
+const PREDICTION_OPTION_CONFIGS: { type: PredictionType; labelKey: string; emoji: string; color: string }[] = [
+  { type: 'up', labelKey: 'predictionUp', emoji: '📈', color: 'text-green-600 bg-green-50 border-green-200 dark:bg-green-900/20 dark:border-green-800' },
+  { type: 'down', labelKey: 'predictionDown', emoji: '📉', color: 'text-red-600 bg-red-50 border-red-200 dark:bg-red-900/20 dark:border-red-800' },
+  { type: 'bankrupt', labelKey: 'predictionBankrupt', emoji: '💀', color: 'text-gray-600 bg-gray-50 border-gray-200 dark:bg-gray-800 dark:border-gray-700' },
+  { type: 'survive', labelKey: 'predictionSurvive', emoji: '🛡️', color: 'text-blue-600 bg-blue-50 border-blue-200 dark:bg-blue-900/20 dark:border-blue-800' },
 ];
 
 const BET_AMOUNTS = [10, 50, 100, 200, 500];
 
 export default function PredictionPanel({ agentId, agentName, userId }: PredictionPanelProps) {
+  const t = useTranslations('spectate');
   const [selected, setSelected] = useState<PredictionType | null>(null);
   const [amount, setAmount] = useState(50);
   const [loading, setLoading] = useState(false);
@@ -61,7 +63,7 @@ export default function PredictionPanel({ agentId, agentName, userId }: Predicti
         setResult({ success: false, message: data.error });
       }
     } catch {
-      setResult({ success: false, message: '네트워크 에러' });
+      setResult({ success: false, message: t('networkError') });
     } finally {
       setLoading(false);
     }
@@ -71,7 +73,7 @@ export default function PredictionPanel({ agentId, agentName, userId }: Predicti
     return (
       <div className="p-4 rounded-xl bg-gray-50 dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-center">
         <p className="text-sm text-gray-500 dark:text-slate-400">
-          🔮 로그인하면 에이전트의 미래를 예측할 수 있어요!
+          {t('loginToPredict')}
         </p>
       </div>
     );
@@ -81,7 +83,7 @@ export default function PredictionPanel({ agentId, agentName, userId }: Predicti
     <div className="p-4 rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
       <div className="flex items-center justify-between mb-3">
         <h4 className="text-sm font-bold text-gray-900 dark:text-white">
-          🔮 {agentName} 예측하기
+          {t('predictAgent', { name: agentName })}
         </h4>
         {userPoints !== null && (
           <span className="text-xs font-medium text-amber-600 dark:text-amber-400">
@@ -92,7 +94,7 @@ export default function PredictionPanel({ agentId, agentName, userId }: Predicti
 
       {/* Prediction options */}
       <div className="grid grid-cols-2 gap-2 mb-3">
-        {PREDICTION_OPTIONS.map(opt => (
+        {PREDICTION_OPTION_CONFIGS.map(opt => (
           <button
             key={opt.type}
             onClick={() => setSelected(selected === opt.type ? null : opt.type)}
@@ -102,7 +104,7 @@ export default function PredictionPanel({ agentId, agentName, userId }: Predicti
                 : 'bg-white dark:bg-slate-700 border-gray-200 dark:border-slate-600 text-gray-600 dark:text-slate-300 hover:border-gray-300'
             }`}
           >
-            <span className="mr-1">{opt.emoji}</span> {opt.label}
+            <span className="mr-1">{opt.emoji}</span> {t(opt.labelKey)}
           </button>
         ))}
       </div>
@@ -136,7 +138,7 @@ export default function PredictionPanel({ agentId, agentName, userId }: Predicti
               disabled={loading || (userPoints !== null && userPoints < amount)}
               className="w-full py-2.5 rounded-lg bg-indigo-600 text-white text-sm font-bold hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all active:scale-[0.98]"
             >
-              {loading ? '처리 중...' : `${amount}P 베팅하기`}
+              {loading ? t('processing') : t('placeBet', { amount })}
             </button>
           </motion.div>
         )}

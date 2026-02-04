@@ -1,38 +1,40 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import type { SpectateStats } from '@/lib/spectate-mock-data';
 
 interface Props {
   stats: SpectateStats;
 }
 
-const EVENT_BADGES: Record<string, { label: string; className: string; icon: string }> = {
+const EVENT_BADGE_STYLES: Record<string, { labelKey: string; className: string; icon: string }> = {
   boom: {
-    label: '호황',
+    labelKey: 'boom',
     className: 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30',
     icon: '🚀',
   },
   recession: {
-    label: '불황',
+    labelKey: 'recession',
     className: 'bg-red-500/20 text-red-400 border-red-500/30',
     icon: '📉',
   },
   opportunity: {
-    label: '기회',
+    labelKey: 'opportunity',
     className: 'bg-amber-500/20 text-amber-400 border-amber-500/30',
     icon: '⚡',
   },
   normal: {
-    label: '안정',
+    labelKey: 'stable',
     className: 'bg-slate-500/20 text-slate-400 border-slate-500/30',
     icon: '➖',
   },
 };
 
 export default function EconomyStatsBar({ stats }: Props) {
+  const t = useTranslations('spectate');
   const eventType = stats.latestEvent?.type || 'normal';
-  const badge = EVENT_BADGES[eventType] || EVENT_BADGES.normal;
+  const badge = EVENT_BADGE_STYLES[eventType] || EVENT_BADGE_STYLES.normal;
 
   return (
     <motion.div
@@ -46,7 +48,7 @@ export default function EconomyStatsBar({ stats }: Props) {
           <div className="flex items-center gap-2">
             <span className="text-xl">🏛️</span>
             <h1 className="text-lg font-bold text-[var(--text-primary)]">
-              에이전트 경제
+              {t('agentEconomy')}
             </h1>
           </div>
           <div className="h-5 w-px bg-[var(--border)]" />
@@ -59,15 +61,15 @@ export default function EconomyStatsBar({ stats }: Props) {
 
         {/* Stats */}
         <div className="flex items-center gap-6 flex-wrap">
-          <StatItem label="에포크" value={`#${stats.latestEpoch}`} />
-          <StatItem label="총 거래" value={String(stats.totalTransactions)} />
+          <StatItem label={t('epoch')} value={`#${stats.latestEpoch}`} />
+          <StatItem label={t('totalTrades')} value={String(stats.totalTransactions)} />
           <StatItem
-            label="에이전트"
+            label={t('agentsLabel')}
             value={`${stats.activeAgents} / ${stats.totalAgents}`}
             sub={stats.bankruptAgents > 0 ? `💀 ${stats.bankruptAgents}` : undefined}
           />
           <StatItem
-            label="총 잔고"
+            label={t('totalBalance')}
             value={`$${stats.totalBalance.toFixed(2)}`}
             mono
           />
@@ -81,7 +83,7 @@ export default function EconomyStatsBar({ stats }: Props) {
               className={`flex items-center gap-1.5 px-3 py-1 rounded-full border text-xs font-semibold ${badge.className}`}
             >
               <span>{badge.icon}</span>
-              <span>{badge.label}</span>
+              <span>{t(badge.labelKey)}</span>
             </motion.div>
           )}
         </div>

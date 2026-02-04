@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 interface LeaderboardEntry {
   user_id: string;
@@ -13,6 +14,7 @@ interface LeaderboardEntry {
 }
 
 export default function PredictionLeaderboard() {
+  const t = useTranslations('spectate');
   const [leaders, setLeaders] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -44,7 +46,7 @@ export default function PredictionLeaderboard() {
       <div className="p-4 rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700 text-center">
         <p className="text-2xl mb-2">🔮</p>
         <p className="text-sm text-gray-500 dark:text-slate-400">
-          아직 예측한 사람이 없어요.<br />첫 번째 예측자가 되어보세요!
+          {t('noPredictorsYet')}<br />{t('beFirstPredictor')}
         </p>
       </div>
     );
@@ -55,7 +57,7 @@ export default function PredictionLeaderboard() {
   return (
     <div className="p-4 rounded-xl bg-white dark:bg-slate-800 border border-gray-200 dark:border-slate-700">
       <h3 className="text-sm font-bold text-gray-900 dark:text-white mb-3">
-        🔮 예측왕 리더보드
+        {t('predictionLeaderboard')}
       </h3>
       <div className="space-y-1.5">
         {leaders.slice(0, 10).map((entry, i) => {

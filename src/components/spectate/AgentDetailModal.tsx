@@ -1,10 +1,10 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 import {
   AGENT_EMOJI,
   AGENT_COLORS,
-  AGENT_NAMES,
   type SpectateAgentDetail,
 } from '@/lib/spectate-mock-data';
 
@@ -14,6 +14,8 @@ interface Props {
 }
 
 export default function AgentDetailModal({ agent, onClose }: Props) {
+  const t = useTranslations('spectate');
+
   if (!agent) return null;
 
   return (
@@ -43,14 +45,14 @@ export default function AgentDetailModal({ agent, onClose }: Props) {
             {/* Content */}
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
               {/* Strategy */}
-              <Section title="전략">
+              <Section title={t('strategy')}>
                 <p className="text-sm text-[var(--text-secondary)] leading-relaxed">
                   {agent.strategy}
                 </p>
               </Section>
 
               {/* Skills */}
-              <Section title="보유 스킬">
+              <Section title={t('skills')}>
                 <div className="flex flex-wrap gap-2">
                   {agent.skills.map(skill => (
                     <span
@@ -64,7 +66,7 @@ export default function AgentDetailModal({ agent, onClose }: Props) {
               </Section>
 
               {/* Balance Chart */}
-              <Section title="잔고 히스토리">
+              <Section title={t('balanceHistory')}>
                 <MiniChart
                   agentId={agent.id}
                   currentBalance={agent.balance}
@@ -73,22 +75,22 @@ export default function AgentDetailModal({ agent, onClose }: Props) {
               </Section>
 
               {/* Financial Summary */}
-              <Section title="재무 요약">
+              <Section title={t('financialSummary')}>
                 <div className="grid grid-cols-3 gap-3">
                   <FinancialCard
-                    label="총 수입"
+                    label={t('totalIncome')}
                     value={agent.total_earned}
                     color="text-emerald-400"
                     icon="📈"
                   />
                   <FinancialCard
-                    label="총 지출"
+                    label={t('totalExpense')}
                     value={agent.total_spent}
                     color="text-red-400"
                     icon="📉"
                   />
                   <FinancialCard
-                    label="순 P&L"
+                    label={t('netPnl')}
                     value={agent.total_earned - agent.total_spent}
                     color={agent.total_earned - agent.total_spent >= 0 ? 'text-emerald-400' : 'text-red-400'}
                     icon={agent.total_earned - agent.total_spent >= 0 ? '💰' : '💸'}
@@ -97,9 +99,9 @@ export default function AgentDetailModal({ agent, onClose }: Props) {
               </Section>
 
               {/* Recent Transactions */}
-              <Section title="최근 거래">
+              <Section title={t('recentTrades')}>
                 {agent.recentTransactions.length === 0 ? (
-                  <p className="text-sm text-[var(--text-tertiary)]">거래 내역 없음</p>
+                  <p className="text-sm text-[var(--text-tertiary)]">{t('noTransactions')}</p>
                 ) : (
                   <div className="space-y-2">
                     {agent.recentTransactions.map(tx => (
@@ -139,7 +141,6 @@ function AgentHeader({ agent, onClose }: { agent: SpectateAgentDetail; onClose: 
           style={{ backgroundColor: `${color}20`, borderColor: `${color}40`, borderWidth: 2 }}
         >
           {isBankrupt ? '💀' : emoji}
-          {/* 상태별 펄스 효과 */}
           {agent.status === 'active' && (
             <div className="absolute -top-1 -right-1">
               <div className="relative flex h-3 w-3">
@@ -158,7 +159,6 @@ function AgentHeader({ agent, onClose }: { agent: SpectateAgentDetail; onClose: 
             <span className="font-mono text-lg font-bold text-[var(--text-primary)]">
               ${agent.balance.toFixed(2)}
             </span>
-            {/* P&L 표시 */}
             <span className={`text-sm font-semibold ${
               agent.total_earned - agent.total_spent >= 0 
                 ? 'text-emerald-400' 
@@ -234,14 +234,15 @@ function MiniChart({ agentId, currentBalance, transactions }: {
   currentBalance: number;
   transactions: { buyer_id: string; seller_id: string; amount: number; fee: number; epoch: number }[];
 }) {
+  const t = useTranslations('spectate');
+
   if (transactions.length < 2) return (
     <div className="bg-[var(--surface-2)] rounded-xl p-4 text-center">
       <span className="text-2xl">📊</span>
-      <p className="text-xs text-[var(--text-tertiary)] mt-2">거래 데이터 수집 중...</p>
+      <p className="text-xs text-[var(--text-tertiary)] mt-2">{t('collectingData')}</p>
     </div>
   );
 
-  // Compute balance history by walking backward from current balance
   const rawPoints: { epoch: number; balance: number }[] = [];
   let balance = currentBalance;
   const latestEpoch = transactions[0]?.epoch || 0;
@@ -249,14 +250,13 @@ function MiniChart({ agentId, currentBalance, transactions }: {
 
   for (const tx of transactions) {
     if (tx.buyer_id === agentId) {
-      balance += tx.amount; // Before buying, balance was higher
+      balance += tx.amount;
     } else if (tx.seller_id === agentId) {
-      balance -= (tx.amount - tx.fee); // Before selling, balance was lower
+      balance -= (tx.amount - tx.fee);
     }
     rawPoints.push({ epoch: tx.epoch, balance: Math.max(0, balance) });
   }
 
-  // Reverse to chronological order and dedupe by epoch (keep earliest per epoch)
   rawPoints.reverse();
   const seen = new Set<number>();
   const history = rawPoints.filter(p => {
@@ -265,7 +265,7 @@ function MiniChart({ agentId, currentBalance, transactions }: {
     return true;
   });
 
-  if (history.length < 2) return <p className="text-xs text-[var(--text-tertiary)]">데이터 부족</p>;
+  if (history.length < 2) return <p className="text-xs text-[var(--text-tertiary)]">{t('insufficientData')}</p>;
 
   const maxBal = Math.max(...history.map(h => h.balance));
   const minBal = Math.min(...history.map(h => h.balance));
@@ -275,7 +275,6 @@ function MiniChart({ agentId, currentBalance, transactions }: {
   const chartWidth = 300;
   const padding = 10;
 
-  // Grid lines
   const gridLines: string[] = [];
   for (let i = 0; i <= 4; i++) {
     const y = padding + (i / 4) * (chartHeight - padding * 2);
@@ -301,33 +300,26 @@ function MiniChart({ agentId, currentBalance, transactions }: {
 
   return (
     <div className="bg-[var(--surface-2)] rounded-xl p-4">
-      {/* 차트 헤더 */}
       <div className="flex justify-between items-center mb-3">
-        <span className="text-sm font-semibold text-[var(--text-primary)]">잔고 추이</span>
+        <span className="text-sm font-semibold text-[var(--text-primary)]">{t('balanceTrend')}</span>
         <div className="flex items-center gap-2">
           <span className={`text-xs font-bold ${isPositive ? 'text-emerald-400' : 'text-red-400'}`}>
             {change >= 0 ? '+' : ''}{change.toFixed(1)}%
           </span>
           <span className="text-xs text-[var(--text-tertiary)]">
-            {history.length}개 에포크
+            {t('epochCount', { count: history.length })}
           </span>
         </div>
       </div>
 
-      {/* SVG 차트 */}
       <div className="w-full">
         <svg viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="w-full h-20">
-          {/* Grid */}
           <g stroke="var(--border)" strokeWidth="0.5" opacity="0.3">
             {gridLines.map((path, i) => (
               <path key={i} d={path} />
             ))}
           </g>
-          
-          {/* Fill area */}
           <polygon points={fillPoints} fill={fillColor} />
-          
-          {/* Line */}
           <polyline
             points={pathPoints}
             fill="none"
@@ -336,8 +328,6 @@ function MiniChart({ agentId, currentBalance, transactions }: {
             strokeLinecap="round"
             strokeLinejoin="round"
           />
-          
-          {/* Points */}
           {points.map((point, i) => (
             <g key={i}>
               <circle 
@@ -352,7 +342,6 @@ function MiniChart({ agentId, currentBalance, transactions }: {
         </svg>
       </div>
 
-      {/* 범례 */}
       <div className="flex justify-between text-[10px] text-[var(--text-tertiary)] font-mono mt-2">
         <span>E{history[0].epoch}: ${startBalance.toFixed(2)}</span>
         <span>E{history[history.length - 1].epoch}: ${endBalance.toFixed(2)}</span>
@@ -362,17 +351,21 @@ function MiniChart({ agentId, currentBalance, transactions }: {
 }
 
 function MiniTransaction({ tx, agentId }: { tx: { id: string; buyer_id: string; seller_id: string; skill_type: string; amount: number; fee: number; epoch: number; narrative: string | null; created_at: string }; agentId: string }) {
+  const t = useTranslations('spectate');
+  const tAgents = useTranslations('agents');
+
   const isBuyer = tx.buyer_id === agentId;
-  const otherName = AGENT_NAMES[isBuyer ? tx.seller_id : tx.buyer_id] || (isBuyer ? tx.seller_id : tx.buyer_id);
-  const otherEmoji = AGENT_EMOJI[isBuyer ? tx.seller_id : tx.buyer_id] || '🤖';
+  const otherId = isBuyer ? tx.seller_id : tx.buyer_id;
+
+  let otherName: string;
+  try { otherName = tAgents(`${otherId}.name`); } catch { otherName = otherId; }
+
+  const otherEmoji = AGENT_EMOJI[otherId] || '🤖';
   
-  // 파산 관련 거래 체크
   const isBankruptcyRelated = tx.narrative && (tx.narrative.includes('bankruptcy') || tx.narrative.includes('파산'));
-  
-  // 대형 거래 체크 ($10 이상)
   const isLargeTrade = tx.amount >= 10;
 
-  const timeStr = new Date(tx.created_at).toLocaleTimeString('ko-KR', {
+  const timeStr = new Date(tx.created_at).toLocaleTimeString(undefined, {
     hour: '2-digit',
     minute: '2-digit',
   });
@@ -385,27 +378,25 @@ function MiniTransaction({ tx, agentId }: { tx: { id: string; buyer_id: string; 
         ? 'bg-emerald-500/10 border border-emerald-500/20'
         : 'bg-[var(--surface-2)] border border-transparent'
     }`}>
-      {/* 헤더 */}
       <div className="flex items-center gap-3">
         <span className="text-sm">{otherEmoji}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 text-xs">
             <span className={`font-semibold ${isBuyer ? 'text-red-400' : 'text-emerald-400'}`}>
-              {isBuyer ? '구매' : '판매'}
+              {isBuyer ? t('buy') : t('sell')}
             </span>
             <span className="text-[var(--text-secondary)]">{otherName}</span>
             <span className="px-1.5 py-0.5 bg-[var(--accent)]/10 text-[var(--accent)] rounded text-[10px] font-semibold">
               {tx.skill_type}
             </span>
-            {/* 특별 태그 */}
             {isBankruptcyRelated && (
               <span className="px-1.5 py-0.5 bg-red-500/20 text-red-400 rounded text-[10px] font-bold">
-                💀 파산
+                💀 {t('bankruptLabel')}
               </span>
             )}
             {isLargeTrade && !isBankruptcyRelated && (
               <span className="px-1.5 py-0.5 bg-emerald-500/20 text-emerald-400 rounded text-[10px] font-bold">
-                💰 대형거래
+                💰 {t('largeTrade')}
               </span>
             )}
           </div>
@@ -420,7 +411,6 @@ function MiniTransaction({ tx, agentId }: { tx: { id: string; buyer_id: string; 
         </div>
       </div>
 
-      {/* Narrative (축약해서 표시) */}
       {tx.narrative && (
         <div className="mt-2 pt-2 border-t border-[var(--border)]/50">
           <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-2">
