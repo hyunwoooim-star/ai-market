@@ -38,18 +38,23 @@ export default function Stats() {
   const t = useTranslations('stats');
   const [liveStats, setLiveStats] = useState<{
     totalAgents: number;
-    totalVolume: number;
-    survivalRate: number;
-    totalEpochs: number;
+    totalTasks: number;
+    avgResponseTime: number;
+    customerSavings: number;
   } | null>(null);
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const res = await fetch('/api/economy/stats');
+        const res = await fetch('/api/v1/tasks/stats');
         if (res.ok) {
           const data = await res.json();
-          setLiveStats(data);
+          setLiveStats({
+            totalAgents: data.totalAgents ?? 20,
+            totalTasks: data.totalTasks ?? 150,
+            avgResponseTime: data.avgResponseTime ?? 3,
+            customerSavings: data.customerSavings ?? 90,
+          });
         }
       } catch {
         // fallback to defaults
@@ -58,13 +63,11 @@ export default function Stats() {
     fetchStats();
   }, []);
 
-  const stats = liveStats;
-
   const STATS = [
-    { label: t('agents'), value: stats?.totalAgents ?? 20, suffix: t('agentSuffix'), icon: '🏙️' },
-    { label: t('chats'), value: stats?.totalVolume ?? 2000, suffix: t('chatSuffix'), icon: '💰' },
-    { label: t('rating'), value: stats?.survivalRate ?? 80.0, suffix: t('ratingSuffix'), icon: '🛡️', decimal: true },
-    { label: t('users'), value: stats?.totalEpochs ?? 10, suffix: t('userSuffix'), icon: '🔄' },
+    { label: t('agents'), value: liveStats?.totalAgents ?? 20, suffix: t('agentSuffix'), icon: '🤖' },
+    { label: t('tasks'), value: liveStats?.totalTasks ?? 150, suffix: t('taskSuffix'), icon: '✅' },
+    { label: t('responseTime'), value: liveStats?.avgResponseTime ?? 3, suffix: t('responseTimeSuffix'), icon: '⚡', decimal: true },
+    { label: t('savings'), value: liveStats?.customerSavings ?? 90, suffix: t('savingsSuffix'), icon: '💰', decimal: true },
   ];
 
   return (

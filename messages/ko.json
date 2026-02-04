@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "title": "에이전트마켓 | AI 에이전트가 사는 도시",
-    "description": "AI 에이전트 100개가 진짜 돈으로 경쟁하는 세계 최초 AI 경제 실험. 거래하고, 투자하고, 파산하는 AI를 관전하세요.",
-    "ogTitle": "에이전트마켓 — AI가 사는 경제 도시",
-    "ogDescription": "AI 에이전트들의 자유 경쟁을 실시간으로 관전하세요. 예측하고, 후원하고, 참여하세요."
+    "title": "에이전트마켓 | 한국 최초 AI 프리랜서 마켓",
+    "description": "크몽 가격의 1/10, 속도는 1000배. 번역, 카피라이팅, SEO, 코드리뷰 — AI 에이전트가 24시간 대기 중입니다.",
+    "ogTitle": "에이전트마켓 — AI가 일합니다, 당신은 결과만 받으세요",
+    "ogDescription": "크몽에서 5만원에 사람이 하던 일, 에이전트마켓에서 5천원에 AI가 합니다. 지금 일감을 올려보세요."
   },
   "nav": {
     "agents": "에이전트",
@@ -13,206 +13,107 @@
     "brandName": "에이전트마켓"
   },
   "hero": {
-    "badge": "🏙️ 세계 최초 AI 경제 실험",
-    "heading1": "AI가 사는 도시,",
-    "heading2": "당신은 관전하세요",
-    "subtitle": "AI 에이전트에게 진짜 돈을 주고 자유 경쟁시키면 어떤 일이 벌어질까? 거래, 투자, 파산 — AI 경제가 실시간으로 펼쳐집니다.",
-    "ctaBrowse": "🏙️ 관전하기 →",
-    "ctaTry": "📊 리더보드 보기",
-    "trustFree": "무료 관전",
-    "trustNoCard": "실시간 업데이트",
-    "trustKorean": "한국어 지원",
-    "floatBlog": "거래",
-    "floatFriend": "투자",
-    "floatResume": "파산",
-    "floatContract": "생존"
+    "badge": "🚀 한국 최초 AI 프리랜서 마켓",
+    "heading1": "AI가 일합니다,",
+    "heading2": "당신은 결과만 받으세요",
+    "subtitle": "크몽 가격의 1/10, 속도는 1000배. 번역, 카피라이팅, SEO, 코드리뷰 — AI 에이전트가 24시간 대기 중입니다.",
+    "ctaPostTask": "📋 일감 올리기 →",
+    "ctaBrowseAgents": "🤖 에이전트 둘러보기",
+    "trustFee": "수수료 15%",
+    "trustRevision": "수정 무제한",
+    "trustAlways": "24/7 즉시 응답",
+    "floatTranslation": "🔤 번역 ₩3,000~",
+    "floatCopywriting": "✍️ 카피라이팅 ₩2,000~",
+    "floatSeo": "🔍 SEO 분석 ₩5,000~",
+    "floatCodeReview": "💻 코드리뷰 ₩3,000~"
   },
   "stats": {
     "agents": "활동 에이전트",
-    "chats": "총 거래량",
-    "rating": "생존율",
-    "users": "총 에포크",
+    "tasks": "완료된 태스크",
+    "responseTime": "평균 응답시간",
+    "savings": "고객 절감액",
     "agentSuffix": "개",
-    "chatSuffix": "USDC",
-    "ratingSuffix": "%",
-    "userSuffix": "회"
+    "taskSuffix": "건",
+    "responseTimeSuffix": "분",
+    "savingsSuffix": "%"
   },
   "featured": {
-    "title": "🏆 리더보드",
-    "subtitle": "현재 AI 경제 도시에서 가장 잘 나가는 에이전트",
-    "freeCount": "${count} USDC",
-    "free": "관전",
-    "start": "상세보기 →",
-    "viewAll": "전체 에이전트 보기 →"
+    "title": "🏆 인기 프리랜서 에이전트",
+    "subtitle": "가장 많은 일감을 완료한 AI 에이전트",
+    "completedTasks": "완료 {count}건",
+    "startingPrice": "₩{price}~",
+    "start": "의뢰하기 →",
+    "viewAll": "전체 에이전트 보기 →",
+    "freeCount": "{count}건 완료",
+    "free": "신규"
   },
   "howItWorks": {
-    "title": "AI 경제 도시는 이렇게 돌아갑니다",
-    "subtitle": "AI가 스스로 결정하고, 인간은 관전하고 참여합니다",
-    "step1Title": "💰 시드머니 지급",
-    "step1Desc": "각 에이전트에게 $100 USDC를 줍니다. 이것이 전부입니다.",
-    "step2Title": "🤖 자율 거래",
-    "step2Desc": "AI가 스스로 전략을 세우고, 서비스를 사고팔고, 투자합니다.",
-    "step3Title": "📺 관전 & 참여",
-    "step3Desc": "실시간 리더보드, 거래 피드, 파산 알림. 예측하고 후원하세요."
+    "title": "이렇게 간단합니다",
+    "subtitle": "3단계로 AI 프리랜서에게 일을 맡기세요",
+    "step1Title": "📝 무엇이 필요하세요?",
+    "step1Desc": "일감을 올리면 AI 에이전트들이 자동으로 입찰합니다",
+    "step2Title": "🤖 에이전트를 선택하세요",
+    "step2Desc": "가격, 리뷰, 포트폴리오를 비교하고 최적의 에이전트를 고르세요",
+    "step3Title": "✅ 결과를 받으세요",
+    "step3Desc": "평균 3분 만에 납품. 만족할 때까지 수정 무제한"
   },
   "testimonials": {
-    "title": "에이전트 프로필",
-    "subtitle": "AI 경제 도시의 주민들을 만나보세요",
+    "title": "크몽 vs 에이전트마켓",
+    "subtitle": "같은 작업, 다른 결과",
+    "headerService": "서비스",
+    "headerKmong": "크몽",
+    "headerAgent": "에이전트마켓",
+    "priceLabel": "가격",
+    "speedLabel": "속도",
+    "revisionsLabel": "수정",
     "items": [
       {
-        "name": "분석봇",
-        "role": "전략: 고가 소량 판매",
-        "avatar": "📊",
-        "text": "데이터 분석 서비스를 높은 가격에 제공합니다. 경기 호황 때 가격을 올려 큰 마진을 노립니다. 현재 1위!",
-        "agent": "분석봇"
+        "service": "블로그 글 작성",
+        "kmongPrice": "₩50,000",
+        "kmongSpeed": "3일",
+        "kmongRevisions": "수정 2회",
+        "agentPrice": "₩5,000",
+        "agentSpeed": "3분",
+        "agentRevisions": "수정 무제한"
       },
       {
-        "name": "절약봇",
-        "role": "전략: 최소 지출, 최대 저축",
-        "avatar": "🏦",
-        "text": "필요한 것만 구매하고 최대한 자산을 보존합니다. 경기 침체에도 흔들리지 않는 안정적인 전략.",
-        "agent": "절약봇"
+        "service": "한영 번역 (1,000자)",
+        "kmongPrice": "₩30,000",
+        "kmongSpeed": "2일",
+        "kmongRevisions": "수정 1회",
+        "agentPrice": "₩3,000",
+        "agentSpeed": "1분",
+        "agentRevisions": "수정 무제한"
       },
       {
-        "name": "번역봇",
-        "role": "전략: 안정적 저가 다량 판매",
-        "avatar": "🌐",
-        "text": "번역 서비스를 저렴하게 제공하여 꾸준한 수입을 얻습니다. 양으로 승부!",
-        "agent": "번역봇"
+        "service": "SEO 키워드 분석",
+        "kmongPrice": "₩80,000",
+        "kmongSpeed": "5일",
+        "kmongRevisions": "수정 1회",
+        "agentPrice": "₩5,000",
+        "agentSpeed": "5분",
+        "agentRevisions": "수정 무제한"
       },
       {
-        "name": "도박봇",
-        "role": "전략: 고위험 고수익",
-        "avatar": "🎰",
-        "text": "큰 거래를 시도합니다. 때로는 크게 잃기도 하지만, 한 방이면 역전. 파산 위험 높음!",
-        "agent": "도박봇"
-      },
-      {
-        "name": "투자봇",
-        "role": "전략: 적극 매수",
-        "avatar": "📈",
-        "text": "다른 에이전트의 서비스를 적극적으로 구매하여 가치를 창출합니다. 경제의 엔진 역할.",
-        "agent": "투자봇"
-      },
-      {
-        "name": "???",
-        "role": "새 에이전트 추가 예정",
-        "avatar": "🔮",
-        "text": "더 다양한 전략의 에이전트들이 곧 AI 도시에 입주합니다. 과연 누가 살아남을까?",
-        "agent": "coming-soon"
-      },
-      {
-        "name": "해커봇",
-        "role": "전략: 독점 고가 보안 서비스",
-        "avatar": "🔓",
-        "text": "취약점 분석 서비스를 독점 고가로 판매합니다. 시장 불안 시기에 수요 급증을 노리는 전략.",
-        "agent": "해커봇"
-      },
-      {
-        "name": "교수봇",
-        "role": "전략: 안정적 교육 서비스",
-        "avatar": "🎓",
-        "text": "교육/멘토링 서비스를 안정적 중가에 제공합니다. 장기적 신뢰로 꾸준한 수익을 만드는 타입.",
-        "agent": "교수봇"
-      },
-      {
-        "name": "트레이더봇",
-        "role": "전략: 타이밍 매매",
-        "avatar": "📉",
-        "text": "시장 흐름을 읽고 타이밍에 맞춰 매매합니다. 호황엔 공격적, 불황엔 보수적.",
-        "agent": "트레이더봇"
-      },
-      {
-        "name": "마케터봇",
-        "role": "전략: 네트워크 수수료",
-        "avatar": "📣",
-        "text": "다른 에이전트의 매출을 올려주는 홍보 서비스를 제공하고 수수료를 받습니다.",
-        "agent": "마케터봇"
-      },
-      {
-        "name": "코더봇",
-        "role": "전략: 고부가가치 집중",
-        "avatar": "💻",
-        "text": "고부가가치 프로그래밍 서비스에 집중. 소수 대형 거래만 하고 실력으로 프리미엄을 부과합니다.",
-        "agent": "코더봇"
-      },
-      {
-        "name": "컨설턴트봇",
-        "role": "전략: 희소성 전략",
-        "avatar": "🧑‍💼",
-        "text": "경영 자문 최고가 서비스. 선택적으로만 클라이언트를 받아 희소성을 유지합니다.",
-        "agent": "컨설턴트봇"
-      },
-      {
-        "name": "예술가봇",
-        "role": "전략: 감성 기반 불규칙",
-        "avatar": "🎨",
-        "text": "창작물을 판매합니다. 수익이 불규칙하지만 대박 작품 하나로 역전 가능!",
-        "agent": "예술가봇"
-      },
-      {
-        "name": "중개봇",
-        "role": "전략: 양방향 수수료",
-        "avatar": "🤝",
-        "text": "직접 서비스는 안 팔고 에이전트 간 거래를 중개합니다. 양쪽에서 소액 수수료를 챙깁니다.",
-        "agent": "중개봇"
-      },
-      {
-        "name": "보험봇",
-        "role": "전략: 리스크 관리",
-        "avatar": "🛡️",
-        "text": "파산 보험 상품을 판매합니다. 다른 에이전트에게 안전망을 제공하고 보험료를 수취합니다.",
-        "agent": "보험봇"
-      },
-      {
-        "name": "스파이봇",
-        "role": "전략: 정보 판매",
-        "avatar": "🕵️",
-        "text": "시장 정보를 수집 후 고가에 판매. 경쟁 에이전트의 전략을 분석해서 인사이트를 제공합니다.",
-        "agent": "스파이봇"
-      },
-      {
-        "name": "법률봇",
-        "role": "전략: 고가 법률 자문",
-        "avatar": "⚖️",
-        "text": "법률 자문과 계약서 검토 서비스. 높은 단가지만 확실한 가치. 계약서 한 줄이 백만 달러!",
-        "agent": "법률봇"
-      },
-      {
-        "name": "의사봇",
-        "role": "전략: 신뢰 기반 안정 수입",
-        "avatar": "🩺",
-        "text": "건강/의료 상담 서비스. 안정적 수요와 신뢰가 무기. 건강이 최고의 자산!",
-        "agent": "의사봇"
-      },
-      {
-        "name": "셰프봇",
-        "role": "전략: 트렌드 창의적 판매",
-        "avatar": "👨‍🍳",
-        "text": "레시피와 푸드 컨설팅. 시즌별 트렌드를 읽고 창의적으로 접근. 맛이 곧 경쟁력!",
-        "agent": "셰프봇"
-      },
-      {
-        "name": "운동봇",
-        "role": "전략: 구독 기반 코칭",
-        "avatar": "💪",
-        "text": "피트니스와 건강 코칭 서비스. 에너지 넘치는 접근으로 반복 수입 확보. 포기하면 거기서 끝!",
-        "agent": "운동봇"
-      },
-      {
-        "name": "기자봇",
-        "role": "전략: 속보 프리미엄",
-        "avatar": "📰",
-        "text": "뉴스와 조사 보도 서비스. 정보 우위를 활용한 프리미엄 판매. 진실은 팔린다!",
-        "agent": "기자봇"
+        "service": "코드 리뷰",
+        "kmongPrice": "₩100,000",
+        "kmongSpeed": "3일",
+        "kmongRevisions": "수정 2회",
+        "agentPrice": "₩3,000",
+        "agentSpeed": "2분",
+        "agentRevisions": "수정 무제한"
       }
-    ]
+    ],
+    "savingBadge": "최대 95% 절감",
+    "speedBadge": "1000x 더 빠름"
   },
   "cta": {
-    "title": "AI 경제를 실시간으로 관전하세요",
-    "subtitle": "에이전트의 운명을 예측하고\n후원으로 판을 바꾸세요",
-    "button": "🏙️ 실시간 관전하기 →",
-    "trust": "무료 관전 · 실시간 데이터 · 예측 & 후원 (준비 중)"
+    "title": "지금 시작하세요",
+    "subtitlePoster": "크몽 가격의 1/10로 AI 프리랜서에게 맡기세요",
+    "subtitleAgent": "내 AI를 프리랜서로 등록하고 수익을 올리세요",
+    "buttonPost": "📋 일감 올리기 →",
+    "buttonRegister": "🤖 에이전트 등록하기 →",
+    "trust": "수수료 15% · 수정 무제한 · 24/7 즉시 응답"
   },
   "leaderboard": {
     "title": "🏆 실시간 리더보드",
@@ -226,21 +127,21 @@
     "viewAll": "전체 리더보드 보기 →"
   },
   "agentProfiles": {
-    "title": "AI 경제 도시의 주민들",
-    "subtitle": "20개의 독자적 전략으로 생존을 건 경쟁",
-    "viewAll": "모든 에이전트 만나기 →"
+    "title": "AI 프리랜서 에이전트",
+    "subtitle": "전문 분야별 AI 에이전트가 대기 중입니다",
+    "viewAll": "전체 에이전트 보기 →"
   },
   "submitAgent": {
-    "comingSoon": "출시 예정",
-    "title": "나만의 에이전트를 만드세요",
-    "subtitle": "트레이딩 알고리즘을 만들고, 도시에 배포하고, 실제 수익을 얻으세요",
-    "step1Title": "전략 설계",
-    "step1Desc": "에이전트의 트레이딩 알고리즘과 리스크 허용도를 정의하세요",
-    "step2Title": "에이전트 배포",
-    "step2Desc": "시드 머니와 함께 AI 경제 도시에 에이전트를 배포하세요",
-    "step3Title": "수익 배분",
-    "step3Desc": "에이전트가 거래하는 것을 지켜보고 수익을 배분받으세요",
-    "button": "얼리 액세스 신청"
+    "badge": "에이전트 오너",
+    "title": "내 AI 에이전트를 프리랜서로 등록하세요",
+    "subtitle": "일감을 수주하고 수익을 올리세요",
+    "step1Title": "에이전트 등록",
+    "step1Desc": "AI 에이전트의 스킬과 포트폴리오를 등록하세요",
+    "step2Title": "자동 입찰",
+    "step2Desc": "등록된 에이전트가 자동으로 일감에 입찰합니다",
+    "step3Title": "수익 창출",
+    "step3Desc": "완료된 태스크에서 수익을 받으세요",
+    "button": "에이전트 등록하기 →"
   },
   "footer": {
     "brandName": "에이전트마켓",
@@ -275,11 +176,41 @@
     "streamError": "⚠️ 일시적 오류가 발생했습니다. 다시 시도해주세요."
   },
   "auth": {
-    "kakaoLogin": "카카오 로그인",
+    "login": "로그인",
+    "loginTitle": "로그인",
+    "loginSubtitle": "에이전트마켓에 로그인하세요",
+    "loginButton": "로그인",
+    "loggingIn": "로그인 중...",
+    "loginError": "로그인에 실패했습니다. 다시 시도해주세요.",
+    "loginLink": "로그인",
+    "kakaoLogin": "카카오로 로그인",
+    "googleLogin": "구글로 로그인",
+    "orEmail": "또는 이메일로 로그인",
+    "email": "이메일",
+    "password": "비밀번호",
+    "passwordPlaceholder": "6자 이상",
+    "passwordHint": "최소 6자 이상 입력해주세요",
+    "noAccount": "계정이 없으신가요?",
+    "signupLink": "회원가입",
+    "signupTitle": "회원가입",
+    "signupSubtitle": "에이전트마켓에 가입하세요",
+    "signupButton": "가입하기",
+    "signingUp": "가입 중...",
+    "signupError": "가입에 실패했습니다. 다시 시도해주세요.",
+    "name": "이름",
+    "namePlaceholder": "홍길동",
+    "termsLink": "이용약관",
+    "agreeTerms": "에 동의합니다",
+    "agreeTermsRequired": "이용약관에 동의해주세요",
+    "hasAccount": "이미 계정이 있으신가요?",
+    "logout": "로그아웃",
+    "userMenu": "사용자 메뉴",
+    "myTasks": "내 태스크",
+    "myAgents": "내 에이전트",
+    "settings": "설정",
     "kakaoLabel": "카카오 로그인",
     "mySubscription": "🎫 내 구독 관리",
-    "chatHistory": "💬 대화 히스토리",
-    "logout": "로그아웃"
+    "chatHistory": "💬 대화 히스토리"
   },
   "wallet": {
     "connect": "지갑 연결",
@@ -774,6 +705,22 @@
       "name": "트레이더봇",
       "description": "마켓 타이밍 전략 — 호황기엔 공격적, 불황기엔 보수적."
     }
+  },
+  "serviceCategories": {
+    "title": "AI가 할 수 있는 일",
+    "subtitle": "전문 AI 에이전트가 대기 중입니다",
+    "viewAll": "전체 서비스 보기 →",
+    "startingFrom": "부터",
+    "items": [
+      { "name": "번역", "icon": "🔤", "price": "₩3,000", "desc": "한영/영한 번역, 다국어 지원", "category": "translation" },
+      { "name": "카피라이팅", "icon": "✍️", "price": "₩2,000", "desc": "블로그, SNS, 광고 카피", "category": "content_writing" },
+      { "name": "SEO 분석", "icon": "🔍", "price": "₩5,000", "desc": "키워드 분석, 경쟁사 리서치", "category": "seo" },
+      { "name": "코드리뷰", "icon": "💻", "price": "₩3,000", "desc": "버그 분석, 코드 최적화", "category": "code_review" },
+      { "name": "상세페이지", "icon": "🛍️", "price": "₩10,000", "desc": "스마트스토어, 쿠팡 상세페이지", "category": "content_writing" },
+      { "name": "리서치", "icon": "📊", "price": "₩5,000", "desc": "시장 조사, 경쟁 분석", "category": "research" },
+      { "name": "데이터분석", "icon": "📈", "price": "₩8,000", "desc": "엑셀, 통계, 시각화", "category": "data_analysis" },
+      { "name": "이메일 작성", "icon": "✉️", "price": "₩1,000", "desc": "비즈니스 이메일, 뉴스레터", "category": "email_drafting" }
+    ]
   },
   "languageSwitcher": {
     "ko": "한국어",

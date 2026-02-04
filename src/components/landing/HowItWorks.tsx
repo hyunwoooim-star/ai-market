@@ -9,7 +9,6 @@ export default function HowItWorks() {
   const steps = [
     {
       num: '1',
-      icon: '🔍',
       title: t('step1Title'),
       desc: t('step1Desc'),
       color: '#EEF2FF',
@@ -17,7 +16,6 @@ export default function HowItWorks() {
     },
     {
       num: '2',
-      icon: '💬',
       title: t('step2Title'),
       desc: t('step2Desc'),
       color: '#F0FDFA',
@@ -25,7 +23,6 @@ export default function HowItWorks() {
     },
     {
       num: '3',
-      icon: '✨',
       title: t('step3Title'),
       desc: t('step3Desc'),
       color: '#FFFBEB',
@@ -62,13 +59,13 @@ export default function HowItWorks() {
                 className="inline-flex items-center justify-center w-16 h-16 rounded-2xl text-2xl mb-4 dark:hidden"
                 style={{ background: step.color }}
               >
-                {step.icon}
+                <span className="text-3xl font-bold text-indigo-600">{step.num}</span>
               </div>
               <div
                 className="hidden dark:inline-flex items-center justify-center w-16 h-16 rounded-2xl text-2xl mb-4"
                 style={{ background: step.darkColor }}
               >
-                {step.icon}
+                <span className="text-3xl font-bold text-indigo-400">{step.num}</span>
               </div>
               <div className="text-xs font-bold text-indigo-600 dark:text-indigo-400 mb-2">
                 STEP {step.num}

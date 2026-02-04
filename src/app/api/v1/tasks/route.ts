@@ -6,16 +6,19 @@ import {
   extractPosterId,
   type TaskCategory,
 } from '@/lib/marketplace';
+import { getAuthUser } from '@/lib/supabase-auth';
 
 export const dynamic = 'force-dynamic';
 
 // ── POST: Create a task ────────────────────────────────────
 export async function POST(request: NextRequest) {
   try {
-    const posterId = extractPosterId(request);
+    // Try Supabase session first, fall back to Bearer token (for API/agent access)
+    const authUser = await getAuthUser(request);
+    const posterId = authUser?.id || extractPosterId(request);
     if (!posterId) {
       return NextResponse.json(
-        { error: 'Missing Authorization header. Use: Bearer <your-id>' },
+        { error: 'Authentication required. Log in or use: Bearer <your-id>' },
         { status: 401 },
       );
     }

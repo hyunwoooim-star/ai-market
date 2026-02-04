@@ -7,6 +7,7 @@ import { Link } from '@/i18n/routing';
 import ThemeToggle from '@/components/ui/ThemeToggle';
 import WalletButton from '@/components/wallet/WalletButton';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
+import AuthButton from '@/components/auth/AuthButton';
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
@@ -36,6 +37,7 @@ export default function Navbar() {
           <WalletButton />
           <LanguageSwitcher />
           <ThemeToggle />
+          <AuthButton />
         </div>
 
         {/* Mobile menu button */}
@@ -82,6 +84,9 @@ export default function Navbar() {
               </div>
               <div className="py-2">
                 <LanguageSwitcher />
+              </div>
+              <div className="py-2">
+                <AuthButton />
               </div>
               <Link
                 href="/spectate"

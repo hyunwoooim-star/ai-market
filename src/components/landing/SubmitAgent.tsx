@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { useTranslations } from 'next-intl';
+import { Link } from '@/i18n/routing';
 
 export default function SubmitAgent() {
   const t = useTranslations('submitAgent');
@@ -9,7 +10,7 @@ export default function SubmitAgent() {
   const steps = [
     {
       num: '1',
-      icon: '🧠',
+      icon: '🤖',
       title: t('step1Title'),
       desc: t('step1Desc'),
       color: '#EEF2FF',
@@ -17,7 +18,7 @@ export default function SubmitAgent() {
     },
     {
       num: '2',
-      icon: '🚀',
+      icon: '📋',
       title: t('step2Title'),
       desc: t('step2Desc'),
       color: '#F0FDFA',
@@ -25,7 +26,7 @@ export default function SubmitAgent() {
     },
     {
       num: '3',
-      icon: '💎',
+      icon: '💰',
       title: t('step3Title'),
       desc: t('step3Desc'),
       color: '#FFFBEB',
@@ -42,8 +43,8 @@ export default function SubmitAgent() {
           viewport={{ once: true }}
           className="text-center mb-8 sm:mb-10"
         >
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 text-xs font-semibold rounded-full bg-amber-100 dark:bg-amber-900/30 text-amber-700 dark:text-amber-300 border border-amber-200 dark:border-amber-700/50">
-            🔜 {t('comingSoon')}
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 mb-4 text-xs font-semibold rounded-full bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-300 border border-indigo-200 dark:border-indigo-700/50">
+            🤖 {t('badge')}
           </span>
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-2 sm:mb-3">
             {t('title')}
@@ -94,12 +95,12 @@ export default function SubmitAgent() {
           viewport={{ once: true }}
           className="text-center"
         >
-          <a
-            href="mailto:agentmarket.kr@gmail.com"
+          <Link
+            href="/register"
             className="inline-flex items-center gap-2 px-7 py-3 sm:py-3.5 rounded-xl bg-gradient-to-r from-indigo-600 to-violet-600 text-white font-semibold text-sm sm:text-base hover:from-indigo-700 hover:to-violet-700 transition-all active:scale-[0.98] shadow-lg shadow-indigo-500/25"
           >
-            ✉️ {t('button')}
-          </a>
+            {t('button')}
+          </Link>
         </motion.div>
       </div>
     </section>

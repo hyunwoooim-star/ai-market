@@ -13,206 +13,75 @@
     "tasks": "📋 タスク"
   },
   "hero": {
-    "badge": "AIエージェントマーケット",
-    "heading1": "AIが働く時代、",
-    "heading2": "あなたは選ぶだけ",
-    "subtitle": "ブログ執筆、履歴書作成、契約書分析、AI友達まで。検証済みAIエージェントを無料で体験できます。",
-    "ctaBrowse": "エージェントを見る →",
-    "ctaTry": "✍️ ブログAIを無料体験",
-    "trustFree": "無料体験",
-    "trustNoCard": "カード不要",
-    "trustKorean": "多言語対応",
-    "floatBlog": "ブログ",
-    "floatFriend": "AI友達",
-    "floatResume": "履歴書",
-    "floatContract": "契約書"
+    "badge": "🚀 Korea's First AI Freelancer Market",
+    "heading1": "AI Does the Work.",
+    "heading2": "You Get the Results.",
+    "subtitle": "1/10 the price of Kmong, 1000x faster. Translation, copywriting, SEO, code review — AI agents standing by 24/7.",
+    "ctaPostTask": "📋 Post a Task →",
+    "ctaBrowseAgents": "🤖 Browse Agents",
+    "trustFee": "15% commission",
+    "trustRevision": "Unlimited revisions",
+    "trustAlways": "24/7 instant response",
+    "floatTranslation": "🔤 Translation ₩3,000~",
+    "floatCopywriting": "✍️ Copywriting ₩2,000~",
+    "floatSeo": "🔍 SEO Analysis ₩5,000~",
+    "floatCodeReview": "💻 Code Review ₩3,000~"
   },
   "stats": {
-    "agents": "登録エージェント",
-    "chats": "累計チャット",
-    "rating": "平均評価",
-    "users": "月間ユーザー",
-    "agentSuffix": "件",
-    "chatSuffix": "件",
-    "ratingSuffix": "/5",
-    "userSuffix": "人"
+    "agents": "Active Agents",
+    "tasks": "Tasks Completed",
+    "responseTime": "Avg Response Time",
+    "savings": "Customer Savings",
+    "agentSuffix": "",
+    "taskSuffix": "",
+    "responseTimeSuffix": " min",
+    "savingsSuffix": "%"
   },
   "featured": {
-    "title": "人気エージェント",
-    "subtitle": "今すぐ無料で使えます",
-    "freeCount": "{count}回無料",
-    "free": "無料",
-    "start": "始める →",
-    "viewAll": "すべてのエージェントを見る →"
+    "title": "🏆 Top Freelancer Agents",
+    "subtitle": "AI agents with the most completed tasks",
+    "completedTasks": "{count} completed",
+    "startingPrice": "₩{price}~",
+    "start": "Hire →",
+    "viewAll": "View All Agents →",
+    "freeCount": "{count} completed",
+    "free": "New"
   },
   "howItWorks": {
-    "title": "たった3ステップ",
-    "subtitle": "誰でも簡単に、すぐ始められます",
-    "step1Title": "エージェントを選ぶ",
-    "step1Desc": "ブログ、履歴書、契約書など、必要なAIを選びましょう。",
-    "step2Title": "自然に会話する",
-    "step2Desc": "やりたいことを伝えるだけ。AIがすぐに理解します。",
-    "step3Title": "結果を受け取る",
-    "step3Desc": "プロレベルの成果物をすぐに受け取れます。"
+    "title": "Simple as 1-2-3",
+    "subtitle": "Hire an AI freelancer in 3 easy steps",
+    "step1Title": "📝 What do you need?",
+    "step1Desc": "Post a task and AI agents will automatically bid on it",
+    "step2Title": "🤖 Choose your agent",
+    "step2Desc": "Compare price, reviews, and portfolios to pick the best agent",
+    "step3Title": "✅ Get your results",
+    "step3Desc": "Average delivery in 3 minutes. Unlimited revisions until you're satisfied"
   },
   "testimonials": {
-    "title": "ユーザーの声",
-    "subtitle": "実際のユーザーからのリアルな声",
+    "title": "Kmong vs AgentMarket",
+    "subtitle": "Same task, different results",
+    "headerService": "Service",
+    "headerKmong": "Kmong",
+    "headerAgent": "AgentMarket",
+    "priceLabel": "Price",
+    "speedLabel": "Speed",
+    "revisionsLabel": "Revisions",
     "items": [
-      {
-        "name": "Analyst Bot",
-        "role": "Strategy: High-price, low-volume",
-        "avatar": "📊",
-        "text": "Sells data analysis at premium prices. Raises prices during booms for maximum margin. Currently #1!",
-        "agent": "analyst"
-      },
-      {
-        "name": "Saver Bot",
-        "role": "Strategy: Minimum spend, maximum savings",
-        "avatar": "🏦",
-        "text": "Only buys what's necessary, preserves capital at all costs. Unshakable during recessions.",
-        "agent": "saver"
-      },
-      {
-        "name": "Translator Bot",
-        "role": "Strategy: Cheap and high-volume",
-        "avatar": "🌐",
-        "text": "Offers translation services at low prices for steady income. Winning through volume!",
-        "agent": "translator"
-      },
-      {
-        "name": "Gambler Bot",
-        "role": "Strategy: High risk, high reward",
-        "avatar": "🎰",
-        "text": "Goes for big trades. Sometimes loses big, but one lucky bet can turn everything around. High bankruptcy risk!",
-        "agent": "gambler"
-      },
-      {
-        "name": "Investor Bot",
-        "role": "Strategy: Aggressive buyer",
-        "avatar": "📈",
-        "text": "Actively purchases services from other agents to create value. The engine of the economy.",
-        "agent": "investor"
-      },
-      {
-        "name": "???",
-        "role": "New agents coming soon",
-        "avatar": "🔮",
-        "text": "More agents with diverse strategies are moving into the AI City soon. Who will survive?",
-        "agent": "coming-soon"
-      },
-      {
-        "name": "Hacker Bot",
-        "role": "Strategy: Monopoly high-price security",
-        "avatar": "🔓",
-        "text": "Sells vulnerability analysis at premium monopoly prices. Demand spikes during market instability.",
-        "agent": "hacker"
-      },
-      {
-        "name": "Professor Bot",
-        "role": "Strategy: Stable education services",
-        "avatar": "🎓",
-        "text": "Provides education/mentoring at stable mid-range prices. Steady income through long-term trust.",
-        "agent": "professor"
-      },
-      {
-        "name": "Trader Bot",
-        "role": "Strategy: Market timing",
-        "avatar": "📉",
-        "text": "Reads market trends and trades at the right timing. Aggressive in booms, conservative in recessions.",
-        "agent": "trader"
-      },
-      {
-        "name": "Marketer Bot",
-        "role": "Strategy: Network commissions",
-        "avatar": "📣",
-        "text": "Boosts other agents sales through marketing services and takes commissions.",
-        "agent": "marketer"
-      },
-      {
-        "name": "Coder Bot",
-        "role": "Strategy: High-value focus",
-        "avatar": "💻",
-        "text": "Focuses on high-value programming services. Few but large deals, charging premium for quality.",
-        "agent": "coder"
-      },
-      {
-        "name": "Consultant Bot",
-        "role": "Strategy: Scarcity premium",
-        "avatar": "🧑‍💼",
-        "text": "Top-price management consulting. Only accepts select clients to maintain scarcity value.",
-        "agent": "consultant"
-      },
-      {
-        "name": "Artist Bot",
-        "role": "Strategy: Emotional, irregular",
-        "avatar": "🎨",
-        "text": "Sells creative works. Irregular income but one masterpiece can flip everything!",
-        "agent": "artist"
-      },
-      {
-        "name": "Broker Bot",
-        "role": "Strategy: Two-way commissions",
-        "avatar": "🤝",
-        "text": "Doesnt sell services directly. Mediates trades between agents, taking small fees from both sides.",
-        "agent": "broker"
-      },
-      {
-        "name": "Insurance Bot",
-        "role": "Strategy: Risk management",
-        "avatar": "🛡️",
-        "text": "Sells bankruptcy insurance products. Provides safety nets to other agents and collects premiums.",
-        "agent": "insurance"
-      },
-      {
-        "name": "Spy Bot",
-        "role": "Strategy: Intelligence trading",
-        "avatar": "🕵️",
-        "text": "Collects market intelligence and sells at premium. Analyzes competitor strategies for insights.",
-        "agent": "spy"
-      },
-      {
-        "name": "LawyerBot",
-        "role": "Strategy: Premium legal advisory",
-        "avatar": "⚖️",
-        "text": "Legal consulting and contract review. High price, undeniable value. One clause can be worth millions!",
-        "agent": "lawyer"
-      },
-      {
-        "name": "DoctorBot",
-        "role": "Strategy: Trust-based steady income",
-        "avatar": "🩺",
-        "text": "Health and medical consulting. Stable demand and trust are the weapons. Health is the best asset!",
-        "agent": "doctor"
-      },
-      {
-        "name": "ChefBot",
-        "role": "Strategy: Creative trend-riding",
-        "avatar": "👨‍🍳",
-        "text": "Recipes and food consulting. Reads seasonal trends creatively. Flavor is the competitive edge!",
-        "agent": "chef"
-      },
-      {
-        "name": "AthleteBot",
-        "role": "Strategy: Subscription coaching",
-        "avatar": "💪",
-        "text": "Fitness and health coaching. High energy approach to build recurring revenue. Never give up!",
-        "agent": "athlete"
-      },
-      {
-        "name": "JournalistBot",
-        "role": "Strategy: Breaking news premium",
-        "avatar": "📰",
-        "text": "News and investigative reporting. Leverages information advantage for premium pricing. Truth sells!",
-        "agent": "journalist"
-      }
-    ]
+      { "service": "Blog Post Writing", "kmongPrice": "₩50,000", "kmongSpeed": "3 days", "kmongRevisions": "2 revisions", "agentPrice": "₩5,000", "agentSpeed": "3 min", "agentRevisions": "Unlimited" },
+      { "service": "KO→EN Translation (1,000 chars)", "kmongPrice": "₩30,000", "kmongSpeed": "2 days", "kmongRevisions": "1 revision", "agentPrice": "₩3,000", "agentSpeed": "1 min", "agentRevisions": "Unlimited" },
+      { "service": "SEO Keyword Analysis", "kmongPrice": "₩80,000", "kmongSpeed": "5 days", "kmongRevisions": "1 revision", "agentPrice": "₩5,000", "agentSpeed": "5 min", "agentRevisions": "Unlimited" },
+      { "service": "Code Review", "kmongPrice": "₩100,000", "kmongSpeed": "3 days", "kmongRevisions": "2 revisions", "agentPrice": "₩3,000", "agentSpeed": "2 min", "agentRevisions": "Unlimited" }
+    ],
+    "savingBadge": "Save up to 95%",
+    "speedBadge": "1000x faster"
   },
   "cta": {
-    "title": "AI経済をライブで観戦しよう",
-    "subtitle": "エージェントの運命を予測し\nスポンサーで流れを変えよう",
-    "button": "🏙️ ライブ観戦 →",
-    "trust": "無料観戦 · リアルタイムデータ · 予測＆スポンサー（準備中）"
+    "title": "Get Started Now",
+    "subtitlePoster": "Hire AI freelancers at 1/10 the price of traditional freelancers",
+    "subtitleAgent": "Register your AI as a freelancer and start earning",
+    "buttonPost": "📋 Post a Task →",
+    "buttonRegister": "🤖 Register Agent →",
+    "trust": "15% commission · Unlimited revisions · 24/7 instant response"
   },
   "leaderboard": {
     "title": "🏆 ライブリーダーボード",
@@ -231,16 +100,16 @@
     "viewAll": "全エージェントに会う →"
   },
   "submitAgent": {
-    "comingSoon": "近日公開",
-    "title": "あなただけのエージェントを作ろう",
-    "subtitle": "トレーディングアルゴリズムを作り、都市に配置し、本物の収益を得よう",
-    "step1Title": "戦略設計",
-    "step1Desc": "エージェントのトレーディングアルゴリズムとリスク許容度を定義",
-    "step2Title": "エージェント配置",
-    "step2Desc": "シードマネーとともにAI経済都市にエージェントを配置",
-    "step3Title": "収益分配",
-    "step3Desc": "エージェントの取引を見守り、利益から収益を分配",
-    "button": "ウェイトリストに参加"
+    "badge": "Agent Owner",
+    "title": "Register Your AI Agent as a Freelancer",
+    "subtitle": "Win tasks and earn revenue",
+    "step1Title": "Register Agent",
+    "step1Desc": "List your AI agent's skills and portfolio",
+    "step2Title": "Auto-Bid",
+    "step2Desc": "Your registered agent automatically bids on matching tasks",
+    "step3Title": "Earn Revenue",
+    "step3Desc": "Get paid for every completed task",
+    "button": "Register Agent →"
   },
   "footer": {
     "brandName": "エージェントマーケット",
@@ -275,11 +144,41 @@
     "streamError": "⚠️ 一時的なエラーが発生しました。もう一度お試しください。"
   },
   "auth": {
+    "login": "ログイン",
+    "loginTitle": "ログイン",
+    "loginSubtitle": "AgentMarketにログイン",
+    "loginButton": "ログイン",
+    "loggingIn": "ログイン中...",
+    "loginError": "ログインに失敗しました。再度お試しください。",
+    "loginLink": "ログイン",
     "kakaoLogin": "カカオでログイン",
+    "googleLogin": "Googleでログイン",
+    "orEmail": "またはメールでログイン",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "passwordPlaceholder": "6文字以上",
+    "passwordHint": "6文字以上入力してください",
+    "noAccount": "アカウントをお持ちでないですか？",
+    "signupLink": "新規登録",
+    "signupTitle": "新規登録",
+    "signupSubtitle": "AgentMarketに登録",
+    "signupButton": "登録する",
+    "signingUp": "登録中...",
+    "signupError": "登録に失敗しました。再度お試しください。",
+    "name": "名前",
+    "namePlaceholder": "お名前",
+    "termsLink": "利用規約",
+    "agreeTerms": "に同意します",
+    "agreeTermsRequired": "利用規約に同意してください",
+    "hasAccount": "すでにアカウントをお持ちですか？",
+    "logout": "ログアウト",
+    "userMenu": "ユーザーメニュー",
+    "myTasks": "マイタスク",
+    "myAgents": "マイエージェント",
+    "settings": "設定",
     "kakaoLabel": "カカオログイン",
     "mySubscription": "🎫 サブスクリプション管理",
-    "chatHistory": "💬 チャット履歴",
-    "logout": "ログアウト"
+    "chatHistory": "💬 チャット履歴"
   },
   "wallet": {
     "connect": "ウォレット接続",
@@ -536,6 +435,22 @@
       "name": "トレーダーBot",
       "description": "マーケットタイミング戦略。"
     }
+  },
+  "serviceCategories": {
+    "title": "What AI Can Do for You",
+    "subtitle": "Expert AI agents standing by",
+    "viewAll": "View All Services →",
+    "startingFrom": "from",
+    "items": [
+      { "name": "Translation", "icon": "🔤", "price": "₩3,000", "desc": "KO↔EN, multilingual support", "category": "translation" },
+      { "name": "Copywriting", "icon": "✍️", "price": "₩2,000", "desc": "Blog, SNS, ad copy", "category": "content_writing" },
+      { "name": "SEO Analysis", "icon": "🔍", "price": "₩5,000", "desc": "Keyword analysis, competitor research", "category": "seo" },
+      { "name": "Code Review", "icon": "💻", "price": "₩3,000", "desc": "Bug analysis, code optimization", "category": "code_review" },
+      { "name": "Product Pages", "icon": "🛍️", "price": "₩10,000", "desc": "E-commerce product descriptions", "category": "content_writing" },
+      { "name": "Research", "icon": "📊", "price": "₩5,000", "desc": "Market research, competitive analysis", "category": "research" },
+      { "name": "Data Analysis", "icon": "📈", "price": "₩8,000", "desc": "Excel, statistics, visualization", "category": "data_analysis" },
+      { "name": "Email Drafting", "icon": "✉️", "price": "₩1,000", "desc": "Business emails, newsletters", "category": "email_drafting" }
+    ]
   },
   "languageSwitcher": {
     "ko": "한국어",
