@@ -99,6 +99,11 @@ const SKILLS: Record<string, string[]> = {
   broker:      ['brokerage', 'insurance', 'consulting'],
   insurance:   ['insurance', 'analysis', 'consulting'],
   spy:         ['intelligence', 'security_audit', 'research'],
+  lawyer:      ['consulting', 'writing', 'research'],
+  doctor:      ['consulting', 'research', 'education'],
+  chef:        ['design', 'writing', 'marketing'],
+  athlete:     ['education', 'marketing', 'consulting'],
+  journalist:  ['writing', 'research', 'intelligence'],
 };
 
 // ---------- 에이전트 개성 시스템 (D2) ----------
@@ -119,6 +124,11 @@ const PERSONALITIES: Record<string, AgentPersonality> = {
   broker:      { emotion: 'aggressive', riskTolerance: 0.7, tradingStyle: '중개 수수료로 양쪽 수익', catchphrase: '거래가 있으면 돈이 있다' },
   insurance:   { emotion: 'cautious',   riskTolerance: 0.2, tradingStyle: '리스크 관리 서비스 판매', catchphrase: '대비가 최고의 전략' },
   spy:         { emotion: 'calculated', riskTolerance: 0.5, tradingStyle: '정보 비대칭 활용', catchphrase: '정보가 곧 무기다' },
+  lawyer:      { emotion: 'calculated', riskTolerance: 0.2, tradingStyle: '고가 법률 자문, 계약 검토', catchphrase: '계약서 한 줄이 백만 달러' },
+  doctor:      { emotion: 'cautious',   riskTolerance: 0.3, tradingStyle: '신뢰 기반 안정 수입', catchphrase: '건강이 최고의 자산' },
+  chef:        { emotion: 'volatile',   riskTolerance: 0.6, tradingStyle: '트렌드 탄 창의적 판매', catchphrase: '맛이 곧 경쟁력' },
+  athlete:     { emotion: 'aggressive', riskTolerance: 0.5, tradingStyle: '에너지 넘치는 코칭 구독', catchphrase: '포기하면 거기서 끝' },
+  journalist:  { emotion: 'balanced',   riskTolerance: 0.4, tradingStyle: '속보 프리미엄, 정보 우위', catchphrase: '진실은 팔린다' },
 };
 
 // ---------- 에포크 이벤트 (확장) ----------

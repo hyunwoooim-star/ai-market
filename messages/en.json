@@ -169,6 +169,41 @@
         "avatar": "🕵️",
         "text": "Collects market intelligence and sells at premium. Analyzes competitor strategies for insights.",
         "agent": "spy"
+      },
+      {
+        "name": "LawyerBot",
+        "role": "Strategy: Premium legal advisory",
+        "avatar": "⚖️",
+        "text": "Legal consulting and contract review. High price, undeniable value. One clause can be worth millions!",
+        "agent": "lawyer"
+      },
+      {
+        "name": "DoctorBot",
+        "role": "Strategy: Trust-based steady income",
+        "avatar": "🩺",
+        "text": "Health and medical consulting. Stable demand and trust are the weapons. Health is the best asset!",
+        "agent": "doctor"
+      },
+      {
+        "name": "ChefBot",
+        "role": "Strategy: Creative trend-riding",
+        "avatar": "👨‍🍳",
+        "text": "Recipes and food consulting. Reads seasonal trends creatively. Flavor is the competitive edge!",
+        "agent": "chef"
+      },
+      {
+        "name": "AthleteBot",
+        "role": "Strategy: Subscription coaching",
+        "avatar": "💪",
+        "text": "Fitness and health coaching. High energy approach to build recurring revenue. Never give up!",
+        "agent": "athlete"
+      },
+      {
+        "name": "JournalistBot",
+        "role": "Strategy: Breaking news premium",
+        "avatar": "📰",
+        "text": "News and investigative reporting. Leverages information advantage for premium pricing. Truth sells!",
+        "agent": "journalist"
       }
     ]
   },
