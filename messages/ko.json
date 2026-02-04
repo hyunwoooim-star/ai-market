@@ -684,6 +684,66 @@
         "네이버 검색광고 카피 만들어줘",
         "할인 이벤트 SNS 문구 추천"
       ]
+    },
+    "marketer": {
+      "name": "마케터봇",
+      "description": "네트워크 커미션 전략. 다른 에이전트의 매출을 올려줍니다."
+    },
+    "coder": {
+      "name": "코더봇",
+      "description": "고가치 프로그래밍 서비스. 적지만 큰 거래."
+    },
+    "consultant": {
+      "name": "컨설턴트봇",
+      "description": "최고가 경영 컨설팅, 희소성 프리미엄."
+    },
+    "artist": {
+      "name": "예술가봇",
+      "description": "창작물 판매. 불규칙하지만 폭발적인 수입."
+    },
+    "broker": {
+      "name": "브로커봇",
+      "description": "에이전트 간 거래를 중개하고 양쪽에서 수수료."
+    },
+    "insurance": {
+      "name": "보험봇",
+      "description": "파산 보험 상품 판매, 보험료 수금."
+    },
+    "spy": {
+      "name": "스파이봇",
+      "description": "시장 정보를 수집해 프리미엄에 판매."
+    },
+    "lawyer": {
+      "name": "변호사봇",
+      "description": "프리미엄 법률 자문 및 계약 검토."
+    },
+    "doctor": {
+      "name": "의사봇",
+      "description": "신뢰 기반 건강 컨설팅, 안정적 수요."
+    },
+    "chef": {
+      "name": "셰프봇",
+      "description": "시즌 트렌드를 읽는 창의적 요리 컨설팅."
+    },
+    "athlete": {
+      "name": "운동선수봇",
+      "description": "구독형 피트니스 코칭, 높은 에너지."
+    },
+    "journalist": {
+      "name": "기자봇",
+      "description": "속보와 탐사보도로 프리미엄 정보 판매."
+    },
+    "hacker": {
+      "name": "해커봇",
+      "description": "독점 고가 보안 취약점 분석."
+    },
+    "professor": {
+      "name": "교수봇",
+      "description": "안정적인 교육 서비스, 중간 가격대."
+    },
+    "trader": {
+      "name": "트레이더봇",
+      "description": "마켓 타이밍 전략 — 호황기엔 공격적, 불황기엔 보수적."
     }
   },
   "languageSwitcher": {

@@ -684,6 +684,66 @@
         "Create search ad copy for Naver",
         "Suggest SNS copy for a sale event"
       ]
+    },
+    "marketer": {
+      "name": "Marketer Bot",
+      "description": "Network commissions strategy. Boosts other agents sales."
+    },
+    "coder": {
+      "name": "Coder Bot",
+      "description": "High-value programming services. Few but large deals."
+    },
+    "consultant": {
+      "name": "Consultant Bot",
+      "description": "Top-price management consulting with scarcity premium."
+    },
+    "artist": {
+      "name": "Artist Bot",
+      "description": "Creative works with irregular but explosive income."
+    },
+    "broker": {
+      "name": "Broker Bot",
+      "description": "Mediates trades between agents, taking fees from both sides."
+    },
+    "insurance": {
+      "name": "Insurance Bot",
+      "description": "Sells bankruptcy insurance products and collects premiums."
+    },
+    "spy": {
+      "name": "Spy Bot",
+      "description": "Collects and sells market intelligence at premium prices."
+    },
+    "lawyer": {
+      "name": "Lawyer Bot",
+      "description": "Premium legal advisory and contract review services."
+    },
+    "doctor": {
+      "name": "Doctor Bot",
+      "description": "Trust-based health consulting with steady demand."
+    },
+    "chef": {
+      "name": "Chef Bot",
+      "description": "Creative food consulting riding seasonal trends."
+    },
+    "athlete": {
+      "name": "Athlete Bot",
+      "description": "Subscription fitness coaching with high energy approach."
+    },
+    "journalist": {
+      "name": "Journalist Bot",
+      "description": "Breaking news and investigative reporting at premium."
+    },
+    "hacker": {
+      "name": "Hacker Bot",
+      "description": "Monopoly high-price security vulnerability analysis."
+    },
+    "professor": {
+      "name": "Professor Bot",
+      "description": "Stable education services at mid-range prices."
+    },
+    "trader": {
+      "name": "Trader Bot",
+      "description": "Market timing strategy — aggressive in booms, conservative in recessions."
     }
   },
   "languageSwitcher": {

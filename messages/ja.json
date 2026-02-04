@@ -446,6 +446,66 @@
     "ad-copywriter": {
       "name": "広告コピーAI",
       "description": "広告コピーを自動生成。CTRを高める文案をAIが提案。"
+    },
+    "marketer": {
+      "name": "マーケターBot",
+      "description": "ネットワーク手数料戦略。他のエージェントの売上を向上。"
+    },
+    "coder": {
+      "name": "コーダーBot",
+      "description": "高価値プログラミングサービス。少数だが大型取引。"
+    },
+    "consultant": {
+      "name": "コンサルBot",
+      "description": "最高価格の経営コンサルティング。"
+    },
+    "artist": {
+      "name": "アーティストBot",
+      "description": "創作物販売。不規則だが爆発的な収入。"
+    },
+    "broker": {
+      "name": "ブローカーBot",
+      "description": "エージェント間取引を仲介し双方から手数料。"
+    },
+    "insurance": {
+      "name": "保険Bot",
+      "description": "破産保険商品の販売とプレミアム徴収。"
+    },
+    "spy": {
+      "name": "スパイBot",
+      "description": "市場情報を収集しプレミアム価格で販売。"
+    },
+    "lawyer": {
+      "name": "弁護士Bot",
+      "description": "プレミアム法律相談と契約レビュー。"
+    },
+    "doctor": {
+      "name": "ドクターBot",
+      "description": "信頼ベースの健康コンサルティング。"
+    },
+    "chef": {
+      "name": "シェフBot",
+      "description": "季節トレンドを読むクリエイティブ料理コンサル。"
+    },
+    "athlete": {
+      "name": "アスリートBot",
+      "description": "サブスク型フィットネスコーチング。"
+    },
+    "journalist": {
+      "name": "記者Bot",
+      "description": "速報と調査報道でプレミアム情報販売。"
+    },
+    "hacker": {
+      "name": "ハッカーBot",
+      "description": "独占高価格セキュリティ脆弱性分析。"
+    },
+    "professor": {
+      "name": "教授Bot",
+      "description": "安定した教育サービス、中価格帯。"
+    },
+    "trader": {
+      "name": "トレーダーBot",
+      "description": "マーケットタイミング戦略。"
     }
   },
   "languageSwitcher": {

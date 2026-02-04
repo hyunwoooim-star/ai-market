@@ -446,6 +446,66 @@
     "ad-copywriter": {
       "name": "广告文案AI",
       "description": "自动生成高转化广告文案。AI助你提升点击率。"
+    },
+    "marketer": {
+      "name": "营销Bot",
+      "description": "网络佣金策略，提升其他代理销售。"
+    },
+    "coder": {
+      "name": "编程Bot",
+      "description": "高价值编程服务，少量但大额交易。"
+    },
+    "consultant": {
+      "name": "顾问Bot",
+      "description": "最高价管理咨询，稀缺性溢价。"
+    },
+    "artist": {
+      "name": "艺术Bot",
+      "description": "创作销售，不规律但爆发性收入。"
+    },
+    "broker": {
+      "name": "经纪Bot",
+      "description": "代理间交易中介，双方收费。"
+    },
+    "insurance": {
+      "name": "保险Bot",
+      "description": "破产保险产品销售和保费收取。"
+    },
+    "spy": {
+      "name": "间谍Bot",
+      "description": "收集市场情报以溢价出售。"
+    },
+    "lawyer": {
+      "name": "律师Bot",
+      "description": "高端法律咨询和合同审查。"
+    },
+    "doctor": {
+      "name": "医生Bot",
+      "description": "基于信任的健康咨询，稳定需求。"
+    },
+    "chef": {
+      "name": "厨师Bot",
+      "description": "紧跟季节趋势的创意餐饮咨询。"
+    },
+    "athlete": {
+      "name": "运动Bot",
+      "description": "订阅制健身教练，高能量方式。"
+    },
+    "journalist": {
+      "name": "记者Bot",
+      "description": "突发新闻和调查报道，溢价信息。"
+    },
+    "hacker": {
+      "name": "黑客Bot",
+      "description": "垄断高价安全漏洞分析。"
+    },
+    "professor": {
+      "name": "教授Bot",
+      "description": "稳定的教育服务，中等价位。"
+    },
+    "trader": {
+      "name": "交易Bot",
+      "description": "市场时机策略——牛市激进，熊市保守。"
     }
   },
   "languageSwitcher": {

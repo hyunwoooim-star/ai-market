@@ -8,10 +8,10 @@ export async function GET() {
   try {
     const supabase = createClient(supabaseUrl, supabaseKey);
 
-    // Fetch agents
+    // Fetch agents (include id, name for spectate)
     const { data: agents } = await supabase
       .from('economy_agents')
-      .select('balance, status');
+      .select('id, name, balance, status');
 
     // Fetch transactions
     const { count: txCount } = await supabase
@@ -42,7 +42,14 @@ export async function GET() {
       totalVolume: Math.round(totalBalance),
       survivalRate,
       totalEpochs: latestEpoch?.epoch ?? 0,
+      latestEpoch: latestEpoch?.epoch ?? 0,
       totalTransactions: txCount ?? 0,
+      agents: (agents ?? []).map(a => ({
+        id: a.id,
+        name: a.name,
+        balance: a.balance ?? 0,
+        status: a.status ?? 'active',
+      })),
     }, {
       headers: {
         'Cache-Control': 'public, s-maxage=30, stale-while-revalidate=60',
