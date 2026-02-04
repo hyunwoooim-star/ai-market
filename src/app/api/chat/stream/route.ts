@@ -4,6 +4,7 @@ import { getSystemPrompt } from '@/data/prompts';
 import { checkRateLimit, trackUsage, isDailyLimitReached } from '@/lib/rate-limit';
 
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 const GEMINI_STREAM_URL =
   'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:streamGenerateContent?alt=sse';
 
@@ -136,7 +137,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    if (!GEMINI_API_KEY) {
+    if (!GROQ_API_KEY && !GEMINI_API_KEY) {
       return new Response(JSON.stringify({ error: 'API key not configured' }), {
         status: 500,
         headers: { 'Content-Type': 'application/json' },
@@ -171,8 +172,20 @@ export async function POST(req: NextRequest) {
     }
 
     const systemPrompt = getSystemPrompt(agentId);
+    const temperature = agentId === 'soul-friend' || agentId === 'mood-diary' ? 0.9 : 0.7;
 
-    const contents = [
+    // Build OpenAI-compatible messages for Groq
+    const groqMessages = [
+      { role: 'system' as const, content: systemPrompt },
+      ...safeHistory.map((msg) => ({
+        role: msg.role as 'user' | 'assistant',
+        content: msg.content,
+      })),
+      { role: 'user' as const, content: cleanMessage },
+    ];
+
+    // Build Gemini-format contents
+    const geminiContents = [
       ...safeHistory.map((msg) => ({
         role: msg.role === 'assistant' ? 'model' : 'user',
         parts: [{ text: msg.content }],
@@ -183,32 +196,70 @@ export async function POST(req: NextRequest) {
       },
     ];
 
-    const geminiRes = await fetch(`${GEMINI_STREAM_URL}&key=${GEMINI_API_KEY}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        systemInstruction: {
-          parts: [{ text: systemPrompt }],
-        },
-        contents,
-        generationConfig: {
-          temperature: agentId === 'soul-friend' || agentId === 'mood-diary' ? 0.9 : 0.7,
-          topP: 0.95,
-          topK: 40,
-          maxOutputTokens: 2048, // Reduced from 4096 for cost savings
-        },
-        safetySettings: [
-          { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-          { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-          { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-          { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
-        ],
-      }),
-    });
+    let llmRes: Response | null = null;
+    let useGroq = false;
 
-    if (!geminiRes.ok) {
-      const errText = await geminiRes.text();
-      console.error('Gemini stream error:', geminiRes.status, errText);
+    // Try Groq first
+    if (GROQ_API_KEY) {
+      try {
+        const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${GROQ_API_KEY}`,
+          },
+          body: JSON.stringify({
+            model: 'llama-3.3-70b-versatile',
+            messages: groqMessages,
+            temperature,
+            max_tokens: 2048,
+            stream: true,
+          }),
+        });
+        if (res.ok) {
+          llmRes = res;
+          useGroq = true;
+        } else {
+          console.warn('[Chat] Groq stream failed:', res.status, 'falling back to Gemini');
+        }
+      } catch (e) {
+        console.warn('[Chat] Groq stream error, falling back to Gemini:', e);
+      }
+    }
+
+    // Fallback to Gemini
+    if (!llmRes && GEMINI_API_KEY) {
+      const res = await fetch(`${GEMINI_STREAM_URL}&key=${GEMINI_API_KEY}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          systemInstruction: {
+            parts: [{ text: systemPrompt }],
+          },
+          contents: geminiContents,
+          generationConfig: {
+            temperature,
+            topP: 0.95,
+            topK: 40,
+            maxOutputTokens: 2048,
+          },
+          safetySettings: [
+            { category: 'HARM_CATEGORY_HARASSMENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_HATE_SPEECH', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_SEXUALLY_EXPLICIT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+            { category: 'HARM_CATEGORY_DANGEROUS_CONTENT', threshold: 'BLOCK_MEDIUM_AND_ABOVE' },
+          ],
+        }),
+      });
+      if (res.ok) {
+        llmRes = res;
+      } else {
+        const errText = await res.text();
+        console.error('Gemini stream error:', res.status, errText);
+      }
+    }
+
+    if (!llmRes) {
       return new Response(JSON.stringify({ error: 'AI response error' }), {
         status: 502,
         headers: { 'Content-Type': 'application/json' },
@@ -218,11 +269,11 @@ export async function POST(req: NextRequest) {
     // Track usage
     trackUsage(ip);
 
-    // Transform Gemini SSE → clean SSE for the client
+    // Transform SSE → clean SSE for the client
     const encoder = new TextEncoder();
     const stream = new ReadableStream({
       async start(controller) {
-        const reader = geminiRes.body!.getReader();
+        const reader = llmRes!.body!.getReader();
         const decoder = new TextDecoder();
         let buffer = '';
 
@@ -242,7 +293,14 @@ export async function POST(req: NextRequest) {
 
               try {
                 const data = JSON.parse(jsonStr);
-                const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                let text: string | undefined;
+                if (useGroq) {
+                  // OpenAI-compatible SSE: choices[0].delta.content
+                  text = data.choices?.[0]?.delta?.content;
+                } else {
+                  // Gemini SSE: candidates[0].content.parts[0].text
+                  text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                }
                 if (text) {
                   controller.enqueue(encoder.encode(`data: ${JSON.stringify({ text })}\n\n`));
                 }

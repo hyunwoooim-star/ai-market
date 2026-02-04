@@ -4,6 +4,56 @@ import { createClient } from '@supabase/supabase-js';
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+
+async function callLLM(prompt: string, temperature = 0.9, maxTokens = 1024): Promise<string | null> {
+  // Try Groq first
+  if (GROQ_API_KEY) {
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [{ role: 'user', content: prompt }],
+          temperature,
+          max_tokens: maxTokens,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        return data.choices?.[0]?.message?.content || null;
+      }
+      console.warn('[Memoir] Groq failed, falling back to Gemini:', res.status);
+    } catch (e) {
+      console.warn('[Memoir] Groq error, falling back to Gemini:', e);
+    }
+  }
+
+  // Fallback to Gemini
+  if (GEMINI_API_KEY) {
+    const res = await fetch(
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
+      {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contents: [{ parts: [{ text: prompt }] }],
+          generationConfig: { temperature, maxOutputTokens: maxTokens },
+        }),
+      }
+    );
+    if (res.ok) {
+      const data = await res.json();
+      return data.candidates?.[0]?.content?.parts?.[0]?.text || null;
+    }
+  }
+
+  return null;
+}
 
 export async function GET(
   request: NextRequest,
@@ -84,7 +134,7 @@ export async function GET(
   const withMemoir = url.searchParams.get('memoir') === 'true';
   let memoir: string | null = null;
 
-  if (withMemoir && GEMINI_API_KEY) {
+  if (withMemoir && (GROQ_API_KEY || GEMINI_API_KEY)) {
     try {
       const agentData = agent[0];
       const recentTxSummary = txs.slice(0, 20).map(t => {
@@ -109,21 +159,7 @@ ${recentTxSummary}
 
 Write as if you're telling your story to spectators watching your life. Be dramatic, honest about failures, proud of wins. Include specific trades and decisions. Show personality. This is YOUR autobiography — make it compelling.`;
 
-      const response = await fetch(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${GEMINI_API_KEY}`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            contents: [{ parts: [{ text: memoirPrompt }] }],
-            generationConfig: { temperature: 0.9, maxOutputTokens: 1024 },
-          }),
-        }
-      );
-      if (response.ok) {
-        const data = await response.json();
-        memoir = data.candidates?.[0]?.content?.parts?.[0]?.text || null;
-      }
+      memoir = await callLLM(memoirPrompt, 0.9, 1024);
     } catch (e) {
       console.error('Memoir generation failed:', e);
     }

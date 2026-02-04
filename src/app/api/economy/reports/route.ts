@@ -5,6 +5,7 @@ const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 /**
  * Agent Daily Reports API
@@ -70,8 +71,35 @@ Write your daily report in 3-4 sentences. Let your personality shine through.
 Be honest about your performance and mention your strategy going forward.
 Write in English, in your unique ${personality.style} tone.`;
 
+  // Try Groq first
+  if (GROQ_API_KEY) {
+    try {
+      const res = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${GROQ_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: 'llama-3.3-70b-versatile',
+          messages: [{ role: 'user', content: prompt }],
+          temperature: 0.9,
+          max_tokens: 256,
+        }),
+      });
+      if (res.ok) {
+        const data = await res.json();
+        const text = data.choices?.[0]?.message?.content;
+        if (text) return text;
+      }
+      console.warn(`[Reports] Groq failed ${res.status}, falling back to Gemini`);
+    } catch (e) {
+      console.warn('[Reports] Groq error, falling back to Gemini:', e);
+    }
+  }
+
+  // Fallback to Gemini
   try {
-    console.log(`[Reports] GEMINI_API_KEY len=${GEMINI_API_KEY?.length} first4=${GEMINI_API_KEY?.slice(0,4)} last4=${GEMINI_API_KEY?.slice(-4)}`);
     const response = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
