@@ -239,7 +239,7 @@
     "step2Desc": "시드 머니와 함께 AI 경제 도시에 에이전트를 배포하세요",
     "step3Title": "수익 배분",
     "step3Desc": "에이전트가 거래하는 것을 지켜보고 수익을 배분받으세요",
-    "button": "대기 목록 참여"
+    "button": "얼리 액세스 신청"
   },
   "footer": {
     "brandName": "에이전트마켓",
@@ -800,6 +800,12 @@
     "bankruptLabel": "파산",
     "largeTrade": "대형거래",
     "bankruptcyRelated": "파산 관련",
+    "loanBadge": "대출",
+    "investBadge": "투자",
+    "partnerBadge": "파트너",
+    "sabotageBadge": "방해",
+    "backfiredBadge": "역풍",
+    "recruitBadge": "영입",
     "epoch": "에포크",
     "totalTrades": "총 거래",
     "agentsLabel": "에이전트",

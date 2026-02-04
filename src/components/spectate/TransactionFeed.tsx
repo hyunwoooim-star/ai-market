@@ -187,12 +187,12 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
           <span className="shrink-0">{sellerEmoji}</span>
           <span className="truncate">{sellerName}</span>
         </span>
-        <span className="ml-auto text-[10px] text-[var(--text-tertiary)] font-mono whitespace-nowrap shrink-0">
-          E{tx.epoch} · {timeStr}
-        </span>
       </div>
 
-      <div className="flex items-center gap-2 mt-2 flex-wrap">
+      <div className="flex items-center gap-2 mt-1.5 flex-wrap">
+        <span className="text-[10px] text-[var(--text-tertiary)] font-mono whitespace-nowrap shrink-0">
+          E{tx.epoch} · {timeStr}
+        </span>
         <span className="px-2 py-0.5 bg-[var(--accent)]/10 text-[var(--accent)] text-xs rounded-md font-semibold">
           {tx.skill_type}
         </span>
@@ -226,19 +226,19 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
         {isLoan && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
             className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-[10px] rounded-md font-bold border border-blue-500/30">
-            💰 LOAN
+            💰 {t('loanBadge')}
           </motion.span>
         )}
         {isInvestment && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
             className="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-[10px] rounded-md font-bold border border-purple-500/30">
-            📈 INVEST
+            📈 {t('investBadge')}
           </motion.span>
         )}
         {isPartnership && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
             className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-[10px] rounded-md font-bold border border-cyan-500/30">
-            🤝 PARTNER
+            🤝 {t('partnerBadge')}
           </motion.span>
         )}
         {isSabotage && (
@@ -248,13 +248,13 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
                 ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' 
                 : 'bg-red-500/20 text-red-400 border-red-500/30'
             }`}>
-            {backfired ? '💥 BACKFIRED' : '🗡️ SABOTAGE'}
+            {backfired ? `💥 ${t('backfiredBadge')}` : `🗡️ ${t('sabotageBadge')}`}
           </motion.span>
         )}
         {isRecruit && (
           <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
             className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] rounded-md font-bold border border-amber-500/30">
-            🔗 RECRUIT
+            🔗 {t('recruitBadge')}
           </motion.span>
         )}
       </div>

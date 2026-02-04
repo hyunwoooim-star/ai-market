@@ -386,16 +386,24 @@ function MiniTransaction({ tx, agentId }: { tx: { id: string; buyer_id: string; 
         ? 'bg-emerald-500/10 border border-emerald-500/20'
         : 'bg-[var(--surface-2)] border border-transparent'
     }`}>
-      <div className="flex items-center gap-3">
-        <span className="text-sm">{otherEmoji}</span>
+      <div className="flex items-start gap-3">
+        <span className="text-sm mt-0.5">{otherEmoji}</span>
         <div className="flex-1 min-w-0">
           <div className="flex items-center gap-2 text-xs">
-            <span className={`font-semibold ${isBuyer ? 'text-red-400' : 'text-emerald-400'}`}>
+            <span className={`font-semibold shrink-0 ${isBuyer ? 'text-red-400' : 'text-emerald-400'}`}>
               {isBuyer ? t('buy') : t('sell')}
             </span>
-            <span className="text-[var(--text-secondary)]">{otherName}</span>
+            <span className="text-[var(--text-secondary)] truncate">{otherName}</span>
+            <span className="ml-auto font-mono font-bold whitespace-nowrap shrink-0 text-[var(--text-primary)]">
+              {isBuyer ? '-' : '+'}${tx.amount.toFixed(2)}
+            </span>
+          </div>
+          <div className="flex items-center gap-1.5 mt-1.5 flex-wrap">
             <span className="px-1.5 py-0.5 bg-[var(--accent)]/10 text-[var(--accent)] rounded text-[10px] font-semibold">
               {tx.skill_type}
+            </span>
+            <span className="text-[10px] text-[var(--text-tertiary)] font-mono">
+              E{tx.epoch} · {timeStr}
             </span>
             {isBankruptcyRelated && (
               <span className="px-1.5 py-0.5 bg-red-500/20 text-red-400 rounded text-[10px] font-bold">
@@ -407,14 +415,6 @@ function MiniTransaction({ tx, agentId }: { tx: { id: string; buyer_id: string; 
                 💰 {t('largeTrade')}
               </span>
             )}
-          </div>
-        </div>
-        <div className="text-right">
-          <div className={`font-mono text-xs font-bold ${isBuyer ? 'text-red-400' : 'text-emerald-400'}`}>
-            {isBuyer ? '-' : '+'}${tx.amount.toFixed(2)}
-          </div>
-          <div className="text-[10px] text-[var(--text-tertiary)] font-mono">
-            E{tx.epoch} · {timeStr}
           </div>
         </div>
       </div>
