@@ -143,11 +143,11 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
             className="flex items-center justify-between"
           >
             <div 
-              className="flex items-center gap-3 cursor-pointer hover:scale-[1.02] transition-transform"
+              className="flex items-center gap-3 cursor-pointer hover:scale-[1.02] transition-transform min-w-0 overflow-hidden"
               onClick={() => onEventClick?.(currentEvent)}
             >
               <motion.span 
-                className="text-2xl"
+                className="text-2xl shrink-0"
                 animate={{ 
                   scale: currentEvent.type === 'bankruptcy' ? [1, 1.2, 1] : 1,
                   rotate: currentEvent.type === 'large-trade' ? [0, 10, -10, 0] : 0
@@ -161,11 +161,11 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
                 {currentEvent.emoji}
               </motion.span>
               
-              <div className="flex flex-col">
-                <span className={`text-sm font-bold ${getEventColor(currentEvent.type)}`}>
+              <div className="flex flex-col min-w-0">
+                <span className={`text-sm font-bold truncate ${getEventColor(currentEvent.type)}`}>
                   {currentEvent.title}
                 </span>
-                <span className="text-xs text-[var(--text-secondary)]">
+                <span className="text-xs text-[var(--text-secondary)] truncate">
                   {currentEvent.description}
                 </span>
               </div>

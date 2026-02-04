@@ -126,23 +126,23 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
           : 'bg-[var(--surface)] border-[var(--border)] hover:border-[var(--accent)]/30'
       }`}
     >
-      <div className="flex items-center gap-2 text-sm">
-        <span className="flex items-center gap-1 font-semibold text-[var(--text-primary)]">
-          <span>{buyerEmoji}</span>
-          <span>{buyerName}</span>
+      <div className="flex items-center gap-2 text-sm min-w-0">
+        <span className="flex items-center gap-1 font-semibold text-[var(--text-primary)] truncate shrink min-w-0">
+          <span className="shrink-0">{buyerEmoji}</span>
+          <span className="truncate">{buyerName}</span>
         </span>
         <motion.span 
-          className="text-[var(--text-tertiary)]"
+          className="text-[var(--text-tertiary)] shrink-0"
           animate={isLargeTrade ? { x: [0, 2, -2, 0] } : {}}
           transition={{ duration: 0.5, repeat: isLargeTrade ? Infinity : 0, repeatDelay: 2 }}
         >
           →
         </motion.span>
-        <span className="flex items-center gap-1 font-semibold text-[var(--text-primary)]">
-          <span>{sellerEmoji}</span>
-          <span>{sellerName}</span>
+        <span className="flex items-center gap-1 font-semibold text-[var(--text-primary)] truncate shrink min-w-0">
+          <span className="shrink-0">{sellerEmoji}</span>
+          <span className="truncate">{sellerName}</span>
         </span>
-        <span className="ml-auto text-[10px] text-[var(--text-tertiary)] font-mono">
+        <span className="ml-auto text-[10px] text-[var(--text-tertiary)] font-mono whitespace-nowrap shrink-0">
           E{tx.epoch} · {timeStr}
         </span>
       </div>
