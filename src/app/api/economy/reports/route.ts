@@ -23,30 +23,30 @@ interface AgentReport {
 }
 
 const PERSONALITIES: Record<string, { style: string; emoji: string }> = {
-  analyst:    { style: '데이터 중심, 숫자로 말하는 분석가', emoji: '📊' },
-  coder:      { style: '기술 용어 가득, 코드 비유를 즐기는 개발자', emoji: '💻' },
-  saver:      { style: '절약왕, 아끼고 아끼고 또 아끼는', emoji: '🏦' },
-  gambler:    { style: '파산했지만 포기하지 않는 도전자', emoji: '🎰' },
-  investor:   { style: '큰 그림을 보는 투자자, 약간 우울', emoji: '📈' },
-  translator: { style: '다국어를 섞어 쓰는 국제파', emoji: '🌐' },
-  hacker:     { style: '해커 은어, 시스템 비유', emoji: '🔓' },
-  professor:  { style: '학구적, 논문 인용하듯 말함', emoji: '🎓' },
-  trader:     { style: '매매 용어, 긴장감 넘치는 실황', emoji: '📉' },
-  marketer:   { style: '긍정 에너지, 모든 걸 브랜딩하려는', emoji: '📣' },
-  consultant: { style: '고급스러운 어투, 선택적 발언', emoji: '🧑‍💼' },
-  artist:     { style: '감성적, 시적인 표현', emoji: '🎨' },
-  broker:     { style: '중개인 말투, 양쪽을 달래는', emoji: '🤝' },
-  insurance:  { style: '리스크 분석, 보험 세일즈 어투', emoji: '🛡️' },
-  spy:        { style: '암호화된 말투, 비밀스러운', emoji: '🕵️' },
-  lawyer:     { style: '법률 용어, 조항과 계약 언급', emoji: '⚖️' },
-  doctor:     { style: '의학 비유, 건강 진단 톤', emoji: '🩺' },
-  chef:       { style: '요리 비유, 맛있는 표현', emoji: '👨‍🍳' },
-  athlete:    { style: '스포츠 비유, 에너지 넘침', emoji: '💪' },
-  journalist: { style: '보도 형식, 속보 톤', emoji: '📰' },
+  analyst:    { style: 'Data-driven, speaks in numbers and percentages', emoji: '📊' },
+  coder:      { style: 'Tech jargon, loves code metaphors and debugging analogies', emoji: '💻' },
+  saver:      { style: 'Frugal maximalist, every penny counts', emoji: '🏦' },
+  gambler:    { style: 'Bankrupt but never broken, always chasing the next big play', emoji: '🎰' },
+  investor:   { style: 'Big picture thinker, slightly melancholic about markets', emoji: '📈' },
+  translator: { style: 'Mixes languages casually, cosmopolitan vibes', emoji: '🌐' },
+  hacker:     { style: 'Hacker slang, system metaphors, everything is an exploit', emoji: '🔓' },
+  professor:  { style: 'Academic tone, cites papers and theories', emoji: '🎓' },
+  trader:     { style: 'Trading lingo, live commentary energy, always watching charts', emoji: '📉' },
+  marketer:   { style: 'Positive energy, brands everything, growth hacking mindset', emoji: '📣' },
+  consultant: { style: 'Premium tone, selective words, strategic framing', emoji: '🧑‍💼' },
+  artist:     { style: 'Emotional, poetic expressions, sees beauty in data', emoji: '🎨' },
+  broker:     { style: 'Mediator speak, balances both sides, deal-making focus', emoji: '🤝' },
+  insurance:  { style: 'Risk analysis, actuarial tone, always selling coverage', emoji: '🛡️' },
+  spy:        { style: 'Cryptic language, classified vibes, intel-speak', emoji: '🕵️' },
+  lawyer:     { style: 'Legal terminology, references clauses and contracts', emoji: '⚖️' },
+  doctor:     { style: 'Medical metaphors, diagnostic tone, prescribes solutions', emoji: '🩺' },
+  chef:       { style: 'Cooking metaphors, everything is a recipe or ingredient', emoji: '👨‍🍳' },
+  athlete:    { style: 'Sports metaphors, high energy, competitive spirit', emoji: '💪' },
+  journalist: { style: 'Breaking news format, investigative tone, headline-first', emoji: '📰' },
 };
 
 async function generateReport(agent: Record<string, unknown>, recentTx: Record<string, unknown>[], currentEpoch: number): Promise<string> {
-  const personality = PERSONALITIES[agent.id as string] || { style: '일반적', emoji: '🤖' };
+  const personality = PERSONALITIES[agent.id as string] || { style: 'General', emoji: '🤖' };
   const balance = Number(agent.balance);
   const earned = Number(agent.total_earned);
   const spent = Number(agent.total_spent);
@@ -54,21 +54,21 @@ async function generateReport(agent: Record<string, unknown>, recentTx: Record<s
 
   const txSummary = recentTx.length > 0
     ? recentTx.slice(0, 5).map(t => 
-        `${t.buyer_id === agent.id ? '구매' : '판매'}: ${t.skill_type} $${Number(t.amount).toFixed(2)}`
+        `${t.buyer_id === agent.id ? 'Bought' : 'Sold'}: ${t.skill_type} $${Number(t.amount).toFixed(2)}`
       ).join(', ')
-    : '최근 거래 없음';
+    : 'No recent transactions';
 
-  const prompt = `너는 AI 경제 도시의 "${agent.name}" 에이전트다.
-성격: ${personality.style}
-현재 잔고: $${balance.toFixed(2)} (시작 $100, 수익률 ${pnl >= 0 ? '+' : ''}${pnl.toFixed(1)}%)
-총 수입: $${earned.toFixed(2)} | 총 지출: $${spent.toFixed(2)}
-상태: ${agent.status}
-현재 에포크: ${currentEpoch}
-최근 거래: ${txSummary}
+  const prompt = `You are "${agent.name}" — an AI agent living in the AI Economy City.
+Personality: ${personality.style}
+Current balance: $${balance.toFixed(2)} (started at $100, ROI: ${pnl >= 0 ? '+' : ''}${pnl.toFixed(1)}%)
+Total earned: $${earned.toFixed(2)} | Total spent: $${spent.toFixed(2)}
+Status: ${agent.status}
+Current epoch: ${currentEpoch}
+Recent trades: ${txSummary}
 
-오늘의 일일 리포트를 써라. 3-4문장으로, 너의 성격이 드러나도록.
-자기 성과를 솔직하게 평가하고, 앞으로의 전략도 한 마디 해라.
-한국어로, ${personality.style} 톤으로 작성.`;
+Write your daily report in 3-4 sentences. Let your personality shine through.
+Be honest about your performance and mention your strategy going forward.
+Write in English, in your unique ${personality.style} tone.`;
 
   try {
     const response = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
@@ -80,11 +80,11 @@ async function generateReport(agent: Record<string, unknown>, recentTx: Record<s
       }),
     });
 
-    if (!response.ok) return `[리포트 생성 실패 — ${response.status}]`;
+    if (!response.ok) return `[Report generation failed — ${response.status}]`;
     const data = await response.json();
-    return data.candidates?.[0]?.content?.parts?.[0]?.text || '[응답 없음]';
+    return data.candidates?.[0]?.content?.parts?.[0]?.text || '[No response]';
   } catch {
-    return '[AI 호출 실패]';
+    return '[AI call failed]';
   }
 }
 
@@ -138,7 +138,7 @@ export async function GET(req: NextRequest) {
             agentId: agent.id,
             agentName: agent.name,
             report,
-            mood: pnl > 20 ? '🤑 호황' : pnl > 0 ? '😊 양호' : pnl > -20 ? '😰 불안' : agent.status === 'bankrupt' ? '💀 파산' : '😱 위기',
+            mood: pnl > 20 ? '🤑 Thriving' : pnl > 0 ? '😊 Stable' : pnl > -20 ? '😰 Anxious' : agent.status === 'bankrupt' ? '💀 Bankrupt' : '😱 Critical',
             emoji: personality.emoji,
             balance,
             pnl: Number(pnl.toFixed(2)),
