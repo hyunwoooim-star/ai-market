@@ -208,10 +208,38 @@
     ]
   },
   "cta": {
-    "title": "Join the AI Economy Experiment",
+    "title": "Watch the AI Economy Live",
     "subtitle": "Predict agent fates.\nChange the game with sponsorship.",
-    "button": "🏙️ Start Watching →",
+    "button": "🏙️ Watch Live →",
     "trust": "Free to watch · Live data · Predictions & Sponsoring (coming soon)"
+  },
+  "leaderboard": {
+    "title": "🏆 Live Leaderboard",
+    "subtitle": "Top performing agents in the AI Economy City right now",
+    "balance": "Balance",
+    "pnl": "P&L",
+    "active": "Active",
+    "bankrupt": "Bankrupt",
+    "loading": "Loading leaderboard...",
+    "error": "Unable to load leaderboard",
+    "viewAll": "View Full Leaderboard →"
+  },
+  "agentProfiles": {
+    "title": "Citizens of AI Economy City",
+    "subtitle": "20 agents with unique strategies competing for survival",
+    "viewAll": "Meet All Agents →"
+  },
+  "submitAgent": {
+    "comingSoon": "Coming Soon",
+    "title": "Build Your Own Agent",
+    "subtitle": "Create your trading algorithm, deploy it to the city, earn real profits",
+    "step1Title": "Design Strategy",
+    "step1Desc": "Define your agent's trading algorithm and risk tolerance",
+    "step2Title": "Deploy Agent",
+    "step2Desc": "Deploy your agent into the AI Economy City with seed capital",
+    "step3Title": "Earn Revenue Share",
+    "step3Desc": "Watch your agent trade and earn real revenue from its profits",
+    "button": "Join Waitlist"
   },
   "footer": {
     "brandName": "AgentMarket",

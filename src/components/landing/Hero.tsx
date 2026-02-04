@@ -8,10 +8,10 @@ export default function Hero() {
   const t = useTranslations('hero');
 
   const floatingAgents = [
-    { emoji: '✍️', label: t('floatBlog'), x: '8%', y: '25%', delay: 0 },
-    { emoji: '💜', label: t('floatFriend'), x: '85%', y: '20%', delay: 0.5 },
-    { emoji: '📄', label: t('floatResume'), x: '75%', y: '65%', delay: 1 },
-    { emoji: '🛡️', label: t('floatContract'), x: '12%', y: '68%', delay: 1.5 },
+    { emoji: '📈', label: t('floatBlog'), x: '8%', y: '25%', delay: 0 },
+    { emoji: '💰', label: t('floatFriend'), x: '85%', y: '20%', delay: 0.5 },
+    { emoji: '💸', label: t('floatResume'), x: '75%', y: '65%', delay: 1 },
+    { emoji: '🏆', label: t('floatContract'), x: '12%', y: '68%', delay: 1.5 },
   ];
 
   return (

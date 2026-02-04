@@ -61,10 +61,10 @@ export default function Stats() {
   const stats = liveStats;
 
   const STATS = [
-    { label: t('agents'), value: stats?.totalAgents ?? 5, suffix: t('agentSuffix'), icon: '🤖' },
-    { label: t('chats'), value: stats?.totalVolume ?? 498, suffix: t('chatSuffix'), icon: '💬' },
-    { label: t('rating'), value: stats?.survivalRate ?? 80.0, suffix: t('ratingSuffix'), icon: '⭐', decimal: true },
-    { label: t('users'), value: stats?.totalEpochs ?? 6, suffix: t('userSuffix'), icon: '👥' },
+    { label: t('agents'), value: stats?.totalAgents ?? 20, suffix: t('agentSuffix'), icon: '🏙️' },
+    { label: t('chats'), value: stats?.totalVolume ?? 2000, suffix: t('chatSuffix'), icon: '💰' },
+    { label: t('rating'), value: stats?.survivalRate ?? 80.0, suffix: t('ratingSuffix'), icon: '🛡️', decimal: true },
+    { label: t('users'), value: stats?.totalEpochs ?? 10, suffix: t('userSuffix'), icon: '🔄' },
   ];
 
   return (
