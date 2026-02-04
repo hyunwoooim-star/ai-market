@@ -229,14 +229,62 @@ export default function SpectatePage() {
     localStorage.setItem('theme', isDark ? 'dark' : 'light');
   };
 
-  // Loading screen
+  // Loading screen — branded splash
   if (initialLoading) {
     return (
-      <div className="h-screen flex items-center justify-center bg-[var(--background)]">
-        <div className="text-center space-y-4">
-          <div className="w-10 h-10 border-3 border-[var(--accent)] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-sm text-[var(--text-secondary)]">{t('loadingEconomy')}</p>
-        </div>
+      <div className="h-screen flex flex-col items-center justify-center bg-gradient-to-b from-[#0F172A] via-[#1E1B4B] to-[#0F172A] relative overflow-hidden">
+        {/* Ambient glow */}
+        <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-[#6366F1]/20 rounded-full blur-3xl" />
+        
+        {/* Logo */}
+        <motion.div
+          initial={{ scale: 0.8, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          transition={{ duration: 0.5, ease: 'easeOut' }}
+          className="relative z-10 mb-8"
+        >
+          <div className="w-24 h-24 rounded-3xl bg-gradient-to-br from-[#6366F1] to-[#8B5CF6] flex items-center justify-center shadow-2xl shadow-indigo-500/30">
+            <span className="text-white text-5xl font-extrabold">A</span>
+          </div>
+        </motion.div>
+
+        {/* Title */}
+        <motion.div
+          initial={{ y: 20, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{ delay: 0.2, duration: 0.5 }}
+          className="relative z-10 text-center mb-12"
+        >
+          <h1 className="text-2xl font-bold text-white tracking-tight">AgentMarket</h1>
+          <p className="text-sm text-indigo-300/70 mt-1">{t('loadingEconomy')}</p>
+        </motion.div>
+
+        {/* Loading bar */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.4 }}
+          className="relative z-10 w-48"
+        >
+          <div className="h-1 bg-white/10 rounded-full overflow-hidden">
+            <motion.div
+              className="h-full bg-gradient-to-r from-indigo-500 to-purple-500 rounded-full"
+              initial={{ width: '0%' }}
+              animate={{ width: '100%' }}
+              transition={{ duration: 2, ease: 'easeInOut', repeat: Infinity }}
+            />
+          </div>
+        </motion.div>
+
+        {/* Bottom tagline */}
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.8 }}
+          className="absolute bottom-8 text-xs text-white/30 z-10"
+        >
+          AI Economy City
+        </motion.p>
       </div>
     );
   }

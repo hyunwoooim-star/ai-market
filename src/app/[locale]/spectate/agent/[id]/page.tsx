@@ -76,6 +76,7 @@ export default function AgentChronicle() {
   const params = useParams();
   const agentId = params.id as string;
   const tAgents = useTranslations('agents');
+  const t = useTranslations('chronicle');
   const [data, setData] = useState<AgentProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [memoirLoading, setMemoirLoading] = useState(false);
@@ -86,7 +87,7 @@ export default function AgentChronicle() {
 
   const emoji = AGENT_EMOJI[agentId] || '🤖';
   let agentName: string;
-  try { agentName = tAgents(`${agentId}.name`); } catch { agentName = agentId; }
+  try { agentName = tAgents(`${agentId}.name`); } catch { agentName = AGENT_NAMES[agentId] || agentId; }
 
   const fetchData = useCallback(async () => {
     try {
@@ -137,8 +138,8 @@ export default function AgentChronicle() {
     return (
       <div className="min-h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center">
-          <p className="text-lg text-[var(--text-secondary)]">Agent not found</p>
-          <Link href="/spectate" className="text-[var(--accent)] mt-4 inline-block">← Back to Spectate</Link>
+          <p className="text-lg text-[var(--text-secondary)]">{t('agentNotFound')}</p>
+          <Link href="/spectate" className="text-[var(--accent)] mt-4 inline-block">{t('backToSpectate')}</Link>
         </div>
       </div>
     );
@@ -153,7 +154,7 @@ export default function AgentChronicle() {
       <div className={`relative overflow-hidden ${isAlive ? 'bg-gradient-to-br from-emerald-500/10 via-blue-500/10 to-purple-500/10' : 'bg-gradient-to-br from-red-500/10 via-gray-500/10 to-gray-500/10'}`}>
         <div className="max-w-4xl mx-auto px-4 py-8">
           <Link href="/spectate" className="text-sm text-[var(--text-tertiary)] hover:text-[var(--accent)] mb-4 inline-block">
-            ← Back to Spectate
+            {t('backToSpectate')}
           </Link>
           
           <div className="flex items-start gap-4 mt-2">
@@ -171,7 +172,7 @@ export default function AgentChronicle() {
                 <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                   isAlive ? 'bg-emerald-500/20 text-emerald-400' : 'bg-red-500/20 text-red-400'
                 }`}>
-                  {isAlive ? '🟢 ACTIVE' : '💀 BANKRUPT'}
+                  {isAlive ? `🟢 ${t('active')}` : `💀 ${t('bankrupt')}`}
                 </span>
                 <span className="font-mono text-xl font-bold">
                   ${Number(agent.balance).toFixed(2)}
@@ -182,21 +183,21 @@ export default function AgentChronicle() {
 
           {/* Quick Stats */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 mt-6">
-            <QuickStat label="Total Trades" value={String(stats.totalTrades)} />
-            <QuickStat label="P&L" value={`${stats.profitLoss >= 0 ? '+' : ''}$${stats.profitLoss.toFixed(2)}`} 
+            <QuickStat label={t('totalTrades')} value={String(stats.totalTrades)} />
+            <QuickStat label={t('pnl')} value={`${stats.profitLoss >= 0 ? '+' : ''}$${stats.profitLoss.toFixed(2)}`} 
               color={stats.profitLoss >= 0 ? 'text-emerald-400' : 'text-red-400'} />
-            <QuickStat label="Earned" value={`$${Number(agent.total_earned).toFixed(2)}`} />
-            <QuickStat label="Spent" value={`$${Number(agent.total_spent).toFixed(2)}`} />
+            <QuickStat label={t('earned')} value={`$${Number(agent.total_earned).toFixed(2)}`} />
+            <QuickStat label={t('spent')} value={`$${Number(agent.total_spent).toFixed(2)}`} />
           </div>
 
           {/* Special Actions Summary */}
           {(stats.loans + stats.investments + stats.sabotages + stats.partnerships + stats.recruitments > 0) && (
             <div className="flex gap-2 mt-4 flex-wrap">
-              {stats.loans > 0 && <Badge emoji="💰" label={`${stats.loans} Loans`} color="blue" />}
-              {stats.investments > 0 && <Badge emoji="📈" label={`${stats.investments} Investments`} color="purple" />}
-              {stats.sabotages > 0 && <Badge emoji="🗡️" label={`${stats.sabotages} Sabotages`} color="red" />}
-              {stats.partnerships > 0 && <Badge emoji="🤝" label={`${stats.partnerships} Partnerships`} color="cyan" />}
-              {stats.recruitments > 0 && <Badge emoji="🔗" label={`${stats.recruitments} Recruits`} color="amber" />}
+              {stats.loans > 0 && <Badge emoji="💰" label={t('loans', { count: stats.loans })} color="blue" />}
+              {stats.investments > 0 && <Badge emoji="📈" label={t('investments', { count: stats.investments })} color="purple" />}
+              {stats.sabotages > 0 && <Badge emoji="🗡️" label={t('sabotages', { count: stats.sabotages })} color="red" />}
+              {stats.partnerships > 0 && <Badge emoji="🤝" label={t('partnerships', { count: stats.partnerships })} color="cyan" />}
+              {stats.recruitments > 0 && <Badge emoji="🔗" label={t('recruits', { count: stats.recruitments })} color="amber" />}
             </div>
           )}
         </div>
@@ -215,7 +216,7 @@ export default function AgentChronicle() {
                   : 'text-[var(--text-tertiary)] hover:text-[var(--text-secondary)]'
               }`}
             >
-              {tab === 'chronicle' ? '📖 Chronicle' : tab === 'trades' ? '📊 Trade History' : '📈 Stats'}
+              {tab === 'chronicle' ? t('tabChronicle') : tab === 'trades' ? t('tabTrades') : t('tabStats')}
             </button>
           ))}
         </div>
@@ -225,13 +226,13 @@ export default function AgentChronicle() {
             <motion.div key="chronicle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-6">
               {/* AI Memoir */}
               <div className="mb-8">
-                <h2 className="text-lg font-bold mb-3">📝 Agent&apos;s Memoir</h2>
+                <h2 className="text-lg font-bold mb-3">{t('agentMemoir')}</h2>
                 {memoir ? (
                   <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-5">
                     <div className="prose prose-sm max-w-none text-[var(--text-secondary)] leading-relaxed whitespace-pre-wrap italic">
                       &ldquo;{memoir}&rdquo;
                     </div>
-                    <p className="text-[10px] text-[var(--text-tertiary)] mt-3">— Written by {agentName}, AI Economy City</p>
+                    <p className="text-[10px] text-[var(--text-tertiary)] mt-3">{t('writtenBy', { name: agentName })}</p>
                   </div>
                 ) : (
                   <button
@@ -239,18 +240,18 @@ export default function AgentChronicle() {
                     disabled={memoirLoading}
                     className="px-6 py-3 bg-[var(--accent)] text-white rounded-lg font-semibold hover:opacity-90 disabled:opacity-50 transition-opacity"
                   >
-                    {memoirLoading ? '✍️ Writing memoir...' : `✨ Generate ${agentName}'s Memoir`}
+                    {memoirLoading ? t('writingMemoir') : t('generateMemoir', { name: agentName })}
                   </button>
                 )}
               </div>
 
               {/* Agent Diary */}
               <div className="mb-8">
-                <h2 className="text-lg font-bold mb-3">📔 Agent Diary</h2>
+                <h2 className="text-lg font-bold mb-3">{t('agentDiary')}</h2>
                 {diariesLoading ? (
                   <div className="flex items-center gap-2 text-sm text-[var(--text-tertiary)]">
                     <div className="w-4 h-4 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
-                    Loading diary...
+                    {t('loadingDiary')}
                   </div>
                 ) : diaries.length > 0 ? (
                   <div className="space-y-3">
@@ -285,7 +286,7 @@ export default function AgentChronicle() {
                   </div>
                 ) : (
                   <p className="text-sm text-[var(--text-tertiary)]">
-                    No diary entries yet. Diaries are written after each epoch.
+                    {t('noDiary')}
                   </p>
                 )}
               </div>
@@ -293,7 +294,7 @@ export default function AgentChronicle() {
               {/* Balance Timeline */}
               {balanceHistory.length > 0 && (
                 <div className="mb-8">
-                  <h2 className="text-lg font-bold mb-3">📈 Balance Journey</h2>
+                  <h2 className="text-lg font-bold mb-3">{t('balanceJourney')}</h2>
                   <div className="bg-[var(--surface)] border border-[var(--border)] rounded-xl p-4">
                     <div className="flex items-end gap-1 h-32">
                       {balanceHistory.map((point, i) => {
@@ -326,19 +327,23 @@ export default function AgentChronicle() {
               {/* Top Partners */}
               {topPartners.length > 0 && (
                 <div className="mb-8">
-                  <h2 className="text-lg font-bold mb-3">🤝 Top Trading Partners</h2>
+                  <h2 className="text-lg font-bold mb-3">{t('topPartners')}</h2>
                   <div className="flex flex-wrap gap-2">
-                    {topPartners.map(p => (
-                      <Link 
-                        key={p.id}
-                        href={`/spectate/agent/${p.id}`}
-                        className="flex items-center gap-2 px-3 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-lg hover:border-[var(--accent)]/30 transition-colors"
-                      >
-                        <span>{AGENT_EMOJI[p.id] || '🤖'}</span>
-                        <span className="text-sm font-semibold">{AGENT_NAMES[p.id] || p.id}</span>
-                        <span className="text-xs text-[var(--text-tertiary)]">{p.count} trades</span>
-                      </Link>
-                    ))}
+                    {topPartners.map(p => {
+                      let partnerName: string;
+                      try { partnerName = tAgents(`${p.id}.name`); } catch { partnerName = AGENT_NAMES[p.id] || p.id; }
+                      return (
+                        <Link 
+                          key={p.id}
+                          href={`/spectate/agent/${p.id}`}
+                          className="flex items-center gap-2 px-3 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-lg hover:border-[var(--accent)]/30 transition-colors"
+                        >
+                          <span>{AGENT_EMOJI[p.id] || '🤖'}</span>
+                          <span className="text-sm font-semibold">{partnerName}</span>
+                          <span className="text-xs text-[var(--text-tertiary)]">{p.count} {t('trades')}</span>
+                        </Link>
+                      );
+                    })}
                   </div>
                 </div>
               )}
@@ -352,6 +357,8 @@ export default function AgentChronicle() {
                   const isBuyer = tx.buyer_id === agentId;
                   const partnerId = isBuyer ? tx.seller_id : tx.buyer_id;
                   const partnerEmoji = AGENT_EMOJI[partnerId] || '🤖';
+                  let partnerName: string;
+                  try { partnerName = tAgents(`${partnerId}.name`); } catch { partnerName = AGENT_NAMES[partnerId] || partnerId; }
                   const isSpecial = ['loan', 'investment', 'partnership', 'sabotage', 'recruitment'].includes(tx.skill_type);
                   
                   return (
@@ -372,7 +379,7 @@ export default function AgentChronicle() {
                             {isBuyer ? 'bought' : 'sold'} {tx.skill_type}
                           </span>
                           <span className="text-[var(--text-tertiary)]">{isBuyer ? 'from' : 'to'}</span>
-                          <span>{partnerEmoji} {AGENT_NAMES[partnerId] || partnerId}</span>
+                          <span>{partnerEmoji} {partnerName}</span>
                           {isSpecial && (
                             <span className="px-1.5 py-0.5 text-[9px] font-bold rounded bg-[var(--accent)]/10 text-[var(--accent)]">
                               {tx.skill_type.toUpperCase()}
@@ -395,7 +402,7 @@ export default function AgentChronicle() {
           {activeTab === 'stats' && (
             <motion.div key="stats" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="py-6">
               {/* Skill Breakdown */}
-              <h2 className="text-lg font-bold mb-3">🎯 Skill Breakdown</h2>
+              <h2 className="text-lg font-bold mb-3">{t('skillBreakdown')}</h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-8">
                 {Object.entries(skillBreakdown).map(([skill, data]) => (
                   <div key={skill} className="flex items-center justify-between px-4 py-2 bg-[var(--surface)] border border-[var(--border)] rounded-lg">
@@ -409,16 +416,16 @@ export default function AgentChronicle() {
               </div>
 
               {/* Raw Numbers */}
-              <h2 className="text-lg font-bold mb-3">📊 Full Stats</h2>
+              <h2 className="text-lg font-bold mb-3">{t('fullStats')}</h2>
               <div className="grid grid-cols-2 gap-2">
-                <StatCard label="Status" value={agent.status.toUpperCase()} />
-                <StatCard label="Balance" value={`$${Number(agent.balance).toFixed(2)}`} />
-                <StatCard label="Total Earned" value={`$${Number(agent.total_earned).toFixed(2)}`} />
-                <StatCard label="Total Spent" value={`$${Number(agent.total_spent).toFixed(2)}`} />
-                <StatCard label="Buy Orders" value={String(stats.totalBuys)} />
-                <StatCard label="Sell Orders" value={String(stats.totalSells)} />
-                <StatCard label="Created" value={new Date(agent.created_at).toLocaleDateString()} />
-                <StatCard label="Net P&L" value={`${stats.profitLoss >= 0 ? '+' : ''}$${stats.profitLoss.toFixed(2)}`} />
+                <StatCard label={t('status')} value={isAlive ? t('active') : t('bankrupt')} />
+                <StatCard label={t('balance')} value={`$${Number(agent.balance).toFixed(2)}`} />
+                <StatCard label={t('totalEarned')} value={`$${Number(agent.total_earned).toFixed(2)}`} />
+                <StatCard label={t('totalSpent')} value={`$${Number(agent.total_spent).toFixed(2)}`} />
+                <StatCard label={t('buyOrders')} value={String(stats.totalBuys)} />
+                <StatCard label={t('sellOrders')} value={String(stats.totalSells)} />
+                <StatCard label={t('created')} value={new Date(agent.created_at).toLocaleDateString()} />
+                <StatCard label={t('netPnl')} value={`${stats.profitLoss >= 0 ? '+' : ''}$${stats.profitLoss.toFixed(2)}`} />
               </div>
             </motion.div>
           )}

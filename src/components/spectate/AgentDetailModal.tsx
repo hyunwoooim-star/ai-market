@@ -120,6 +120,7 @@ export default function AgentDetailModal({ agent, onClose }: Props) {
 }
 
 function AgentHeader({ agent, onClose }: { agent: SpectateAgentDetail; onClose: () => void }) {
+  const t = useTranslations('spectate');
   const emoji = AGENT_EMOJI[agent.id] || '🤖';
   const color = AGENT_COLORS[agent.id] || '#6366F1';
   const isBankrupt = agent.status === 'bankrupt';
@@ -173,7 +174,7 @@ function AgentHeader({ agent, onClose }: { agent: SpectateAgentDetail; onClose: 
             href={`/spectate/agent/${agent.id}`}
             className="mt-2 inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-lg bg-[var(--accent)]/10 text-[var(--accent)] hover:bg-[var(--accent)]/20 transition-colors"
           >
-            📖 View Full Chronicle →
+            {t('viewChronicle')}
           </a>
         </div>
       </div>
