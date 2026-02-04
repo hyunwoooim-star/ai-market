@@ -19,6 +19,7 @@
     "@supabase/ssr": "^0.8.0",
     "@supabase/supabase-js": "^2.93.3",
     "@tosspayments/payment-sdk": "^1.9.2",
+    "@tosspayments/tosspayments-sdk": "^2.5.0",
     "@x402/core": "^2.2.0",
     "@x402/next": "^2.2.0",
     "@x402/svm": "^2.2.0",
