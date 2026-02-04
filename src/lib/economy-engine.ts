@@ -849,6 +849,121 @@ IMPORTANT: Return ONLY valid JSON in this exact format:
 // Public API
 // ============================================
 
+/**
+ * Run epoch AND await diary generation (used by cron to ensure diaries complete
+ * before the serverless function exits).
+ */
+export async function runEpochWithDiaries(epochNumber: number): Promise<EpochResult> {
+  if (_epochRunning) {
+    throw new Error('Epoch already in progress — concurrent execution blocked');
+  }
+  _epochRunning = true;
+
+  try {
+    const supabase = getSupabase();
+
+    // DB-level duplicate check
+    const { data: existingEpoch } = await supabase
+      .from('economy_epochs')
+      .select('epoch')
+      .eq('epoch', epochNumber)
+      .limit(1);
+
+    if (existingEpoch && existingEpoch.length > 0) {
+      throw new Error(`Epoch ${epochNumber} already executed`);
+    }
+
+    const { data: agents, error: agentErr } = await supabase
+      .from('economy_agents')
+      .select('*')
+      .order('balance', { ascending: false });
+
+    if (agentErr || !agents || agents.length === 0) {
+      throw new Error('Failed to fetch agent data');
+    }
+
+    const activeAgents = agents.filter((a: EconomyAgent) =>
+      a.status === 'active' || a.status === 'struggling' || a.status === 'bailout'
+    );
+
+    if (activeAgents.length < 2) {
+      throw new Error('Less than 2 active agents — simulation impossible');
+    }
+
+    const event = generateEpochEvent(epochNumber);
+
+    // AI decisions (parallel)
+    const decisions = new Map<string, AgentDecision>();
+    const decisionPromises = activeAgents.map(async (agent: EconomyAgent) => {
+      try {
+        const prompt = buildDecisionPrompt(agent, agents as EconomyAgent[], epochNumber, event);
+        const raw = await callGemini(prompt);
+        decisions.set(agent.id, parseDecision(raw, agent, agents as EconomyAgent[]));
+      } catch (err) {
+        console.error(`[E${epochNumber}] ${agentDisplayName(agent)} AI failed:`, err);
+        decisions.set(agent.id, { action: 'WAIT', reason: 'AI call failed' });
+      }
+    });
+    await Promise.all(decisionPromises);
+
+    // Execute transactions
+    const transactions = await executeTransactions(decisions, agents as EconomyAgent[], epochNumber, event);
+
+    // Check bankruptcies
+    const bankruptcies = await checkBankruptcies(agents as EconomyAgent[]);
+
+    // Fetch latest agent state
+    const { data: updatedAgents } = await supabase
+      .from('economy_agents')
+      .select('*')
+      .order('balance', { ascending: false });
+
+    const topEarner = (updatedAgents || agents)
+      .sort((a: EconomyAgent, b: EconomyAgent) => Number(b.balance) - Number(a.balance))[0];
+
+    const totalVolume = transactions.reduce((sum, t) => sum + Number(t.amount), 0);
+
+    // Save epoch results
+    await supabase
+      .from('economy_epochs')
+      .upsert({
+        epoch: epochNumber,
+        total_volume: Number(totalVolume.toFixed(4)),
+        active_agents: activeAgents.length - bankruptcies.length,
+        bankruptcies: bankruptcies.length,
+        top_earner: topEarner?.id || null,
+        event_type: event.type,
+        event_description: event.description,
+      });
+
+    const diaryAgents = (updatedAgents || agents) as EconomyAgent[];
+
+    // AWAIT diary generation — this is the key difference from runEpoch
+    try {
+      await generateDiaries(diaryAgents, transactions, epochNumber);
+      console.log(`[E${epochNumber}] Diary generation completed`);
+    } catch (err) {
+      console.error(`[E${epochNumber}] Diary generation failed:`, err);
+    }
+
+    return {
+      epoch: epochNumber,
+      transactions,
+      events: event,
+      agents: diaryAgents,
+      bankruptcies,
+    };
+  } finally {
+    _epochRunning = false;
+  }
+}
+
+/**
+ * Generate diaries for agents after an epoch. Can be called standalone
+ * for manual diary generation via the POST /api/economy/diary endpoint.
+ */
+export { generateDiaries };
+
 export async function initializeAgents(): Promise<{ success: boolean; message: string }> {
   const supabase = getSupabase();
   const { data: existing } = await supabase.from('economy_agents').select('id').limit(1);
@@ -959,8 +1074,9 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
         event_description: event.description,
       });
 
-    // Generate diary entries for a random subset of agents (async, non-blocking for epoch result)
     const diaryAgents = (updatedAgents || agents) as EconomyAgent[];
+
+    // Fire-and-forget diary generation (original behavior for backward compat)
     generateDiaries(diaryAgents, transactions, epochNumber).catch(err => {
       console.error(`[E${epochNumber}] Diary generation failed:`, err);
     });
