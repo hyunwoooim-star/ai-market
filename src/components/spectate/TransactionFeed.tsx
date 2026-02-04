@@ -104,7 +104,7 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
   const buyerEmoji = AGENT_EMOJI[tx.buyer_id] || '🤖';
   const sellerEmoji = AGENT_EMOJI[tx.seller_id] || '🤖';
 
-  const isBankruptcyRelated = tx.narrative && (tx.narrative.includes('bankruptcy') || tx.narrative.includes('파산'));
+  const isBankruptcyRelated = tx.narrative && (tx.narrative.includes('bankruptcy') || tx.narrative.includes('BANKRUPT'));
   const isLargeTrade = tx.amount >= 10;
   
   // Detect special transaction types from skill_type or narrative
@@ -117,9 +117,21 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
   const isSpecialAction = isLoan || isInvestment || isPartnership || isSabotage || isRecruit;
   const backfired = isSabotage && tx.narrative?.includes('BACKFIRED');
 
-  // Extract reasoning from narrative (after the last period before the reason)
-  const reasonMatch = tx.narrative?.match(/(?:LOAN|INVESTMENT|PARTNERSHIP|SABOTAGE|RECRUIT|bought).*?\.\s*(.+)$/);
-  const reasoning = reasonMatch?.[1] || '';
+  // Extract reasoning from narrative.
+  // New narratives use "[reason] ..." delimiter. Legacy narratives use the old regex as fallback.
+  let reasoning = '';
+  if (tx.narrative) {
+    const reasonTagMatch = tx.narrative.match(/\[reason\]\s*(.+)$/);
+    if (reasonTagMatch?.[1] && reasonTagMatch[1].trim().length > 5) {
+      reasoning = reasonTagMatch[1].trim();
+    } else {
+      // Legacy fallback: extract text after the structured part
+      const legacyMatch = tx.narrative.match(/(?:LOAN|INVESTMENT|PARTNERSHIP|SABOTAGE.*?BACKFIRED|SABOTAGE|RECRUIT|bought).*?(?:epochs?|total|sales)\.\s*(.+)$/);
+      if (legacyMatch?.[1] && legacyMatch[1].trim().length > 10) {
+        reasoning = legacyMatch[1].trim();
+      }
+    }
+  }
 
   const timeStr = new Date(tx.created_at).toLocaleTimeString(undefined, {
     hour: '2-digit',
@@ -262,13 +274,13 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
           </p>
         </div>
       )}
-      {/* Fallback: show narrative if no reasoning extracted */}
+      {/* Fallback: show cleaned narrative if no reasoning extracted */}
       {!reasoning && tx.narrative && (
         <div className={`mt-2 pt-2 border-t ${
           isBankruptcyRelated ? 'border-red-500/20' : 'border-[var(--border)]'
         }`}>
           <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-2">
-            {tx.narrative}
+            {tx.narrative.replace(/\[reason\]\s*/g, '')}
           </p>
         </div>
       )}

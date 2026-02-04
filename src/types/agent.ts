@@ -20,12 +20,12 @@ export interface Agent {
 }
 
 export type AgentCategory =
-  | 'chat'        // 대화/소통
-  | 'business'    // 비즈니스
-  | 'creative'    // 크리에이티브
-  | 'productivity' // 생산성
-  | 'education'   // 교육
-  | 'lifestyle';  // 라이프스타일
+  | 'chat'
+  | 'business'
+  | 'creative'
+  | 'productivity'
+  | 'education'
+  | 'lifestyle';
 
 export interface AgentPricing {
   type: 'free' | 'freemium' | 'paid';
@@ -58,11 +58,12 @@ export interface Conversation {
   updatedAt: number;
 }
 
+// English category labels — used as fallback; i18n translations are in messages/*.json
 export const CATEGORY_LABELS: Record<AgentCategory, string> = {
-  chat: '💬 대화',
-  business: '💼 비즈니스',
-  creative: '🎨 크리에이티브',
-  productivity: '⚡ 생산성',
-  education: '📚 교육',
-  lifestyle: '🌟 라이프스타일',
+  chat: '💬 Chat',
+  business: '💼 Business',
+  creative: '🎨 Creative',
+  productivity: '⚡ Productivity',
+  education: '📚 Education',
+  lifestyle: '🌟 Lifestyle',
 };

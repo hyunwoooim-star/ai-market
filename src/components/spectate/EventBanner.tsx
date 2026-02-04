@@ -39,7 +39,7 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
 
     // 1. Bankruptcy events
     transactions.forEach(tx => {
-      if (tx.narrative && (tx.narrative.includes('bankruptcy') || tx.narrative.includes('파산'))) {
+      if (tx.narrative && (tx.narrative.includes('bankruptcy') || tx.narrative.includes('BANKRUPT'))) {
         const agentName = getAgentName(tx.buyer_id);
         newEvents.push({
           id: `bankruptcy-${tx.id}`,
