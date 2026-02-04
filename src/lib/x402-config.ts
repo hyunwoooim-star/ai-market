@@ -1,7 +1,7 @@
 /**
  * x402 Protocol Configuration
  *
- * Solana Devnet + USDC 기반 에이전트 스킬 결제 설정.
+ * Solana Devnet + USDC agent skill payment config.
  * 테스트넷 전용 — 메인넷 전환 시 네트워크 ID와 Facilitator URL만 변경하면 됨.
  */
 
@@ -30,7 +30,7 @@ export const FACILITATOR_URL = "https://x402.org/facilitator";
 
 /**
  * 플랫폼 수신 지갑 (Solana Devnet).
- * 에이전트 결제가 이 지갑으로 들어온 뒤 수수료 제외 후 판매자에게 정산.
+ * Payments arrive here; fees deducted, remainder settled to seller.
  *
  * ⚠️ PoC 전용 키페어 — 프로덕션에서는 HSM/MPC 지갑으로 교체할 것.
  */

@@ -17,7 +17,7 @@ export interface Conversation {
 }
 
 const STORAGE_KEY = 'agentmarket_chats';
-const MAX_CONVERSATIONS = 50; // 에이전트당 최대 대화
+const MAX_CONVERSATIONS = 50; // Max conversations per agent
 
 function getAll(): Record<string, Conversation[]> {
   if (typeof window === 'undefined') return {};

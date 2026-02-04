@@ -269,7 +269,7 @@ export default function SpectatePage() {
           transactions={transactions}
           stats={stats}
           onEventClick={(event) => {
-            // 이벤트 클릭시 관련 에이전트 모달 열기
+            // Open agent modal on event click
             if (event.agentName) {
               const agent = agents.find(a => a.name === event.agentName);
               if (agent) {

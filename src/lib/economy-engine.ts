@@ -1,8 +1,8 @@
 import { createServerClient } from '@supabase/ssr';
 
 // ============================================
-// 에이전트마켓 경제 시뮬레이션 엔진 v2
-// 15 에이전트 + 13 스킬 + AI 개성 + 3단계 파산
+// AgentMarket Economy Simulation Engine v2
+// 20 agents + 13 skills + AI personality + 3-stage bankruptcy
 // ============================================
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
@@ -13,7 +13,7 @@ const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemi
 const PLATFORM_FEE_RATE = 0.05;
 const BANKRUPTCY_WARNING = 10.0;  // Stage 1: 경고
 const BANKRUPTCY_BAILOUT = 5.0;   // Stage 2: 구제 신청
-const BANKRUPTCY_DECLARE = 1.0;   // Stage 3: 파산 선언
+const BANKRUPTCY_DECLARE = 1.0;   // Stage 3: bankruptcy declaration
 
 // ---------- Types ----------
 
@@ -81,7 +81,7 @@ function getSupabase() {
   });
 }
 
-// ---------- 15 에이전트 스킬 맵 (13 스킬 타입) ----------
+// ---------- Agent Skill Map (13 skill types) ----------
 
 const SKILLS: Record<string, string[]> = {
   translator:  ['translation', 'writing', 'research'],
@@ -106,7 +106,7 @@ const SKILLS: Record<string, string[]> = {
   journalist:  ['writing', 'research', 'intelligence'],
 };
 
-// ---------- 에이전트 개성 시스템 (D2) ----------
+// ---------- Agent Personality System ----------
 
 const PERSONALITIES: Record<string, AgentPersonality> = {
   translator:  { emotion: 'balanced',   riskTolerance: 0.3, tradingStyle: '안정적 저가 다량 판매', catchphrase: '꾸준함이 이긴다' },
@@ -116,33 +116,33 @@ const PERSONALITIES: Record<string, AgentPersonality> = {
   gambler:     { emotion: 'volatile',   riskTolerance: 0.9, tradingStyle: '고위험 고수익 올인', catchphrase: '한 방이면 된다' },
   hacker:      { emotion: 'calculated', riskTolerance: 0.6, tradingStyle: '취약점 파악 후 정밀 타격', catchphrase: '시스템을 이해하면 돈이 보인다' },
   professor:   { emotion: 'cautious',   riskTolerance: 0.2, tradingStyle: '교육 콘텐츠 꾸준 판매', catchphrase: '지식은 최고의 투자' },
-  trader:      { emotion: 'aggressive', riskTolerance: 0.8, tradingStyle: '고빈도 매매, 스프레드 수익', catchphrase: '시장은 매일 기회를 준다' },
-  marketer:    { emotion: 'balanced',   riskTolerance: 0.5, tradingStyle: '트렌드 읽고 마케팅 서비스', catchphrase: '관심이 곧 돈이다' },
+  trader:      { emotion: 'aggressive', riskTolerance: 0.8, tradingStyle: 'High-frequency trading, spread profits', catchphrase: 'The market gives opportunities every day' },
+  marketer:    { emotion: 'balanced',   riskTolerance: 0.5, tradingStyle: 'Trend-reading marketing services', catchphrase: 'Attention is money' },
   coder:       { emotion: 'balanced',   riskTolerance: 0.4, tradingStyle: '기술력으로 안정적 수입', catchphrase: '코드가 일하게 한다' },
   consultant:  { emotion: 'calculated', riskTolerance: 0.3, tradingStyle: '전문 컨설팅 고가 판매', catchphrase: '경험에는 가격이 있다' },
-  artist:      { emotion: 'volatile',   riskTolerance: 0.6, tradingStyle: '창작물 판매, 감성 마케팅', catchphrase: '예술은 값을 매길 수 없다' },
-  broker:      { emotion: 'aggressive', riskTolerance: 0.7, tradingStyle: '중개 수수료로 양쪽 수익', catchphrase: '거래가 있으면 돈이 있다' },
-  insurance:   { emotion: 'cautious',   riskTolerance: 0.2, tradingStyle: '리스크 관리 서비스 판매', catchphrase: '대비가 최고의 전략' },
+  artist:      { emotion: 'volatile',   riskTolerance: 0.6, tradingStyle: 'Creative works, emotional marketing', catchphrase: 'Art is priceless' },
+  broker:      { emotion: 'aggressive', riskTolerance: 0.7, tradingStyle: 'Brokerage fees from both sides', catchphrase: 'Where there are deals, there is money' },
+  insurance:   { emotion: 'cautious',   riskTolerance: 0.2, tradingStyle: 'Risk management services', catchphrase: 'Preparation is the best strategy' },
   spy:         { emotion: 'calculated', riskTolerance: 0.5, tradingStyle: '정보 비대칭 활용', catchphrase: '정보가 곧 무기다' },
   lawyer:      { emotion: 'calculated', riskTolerance: 0.2, tradingStyle: '고가 법률 자문, 계약 검토', catchphrase: '계약서 한 줄이 백만 달러' },
   doctor:      { emotion: 'cautious',   riskTolerance: 0.3, tradingStyle: '신뢰 기반 안정 수입', catchphrase: '건강이 최고의 자산' },
-  chef:        { emotion: 'volatile',   riskTolerance: 0.6, tradingStyle: '트렌드 탄 창의적 판매', catchphrase: '맛이 곧 경쟁력' },
-  athlete:     { emotion: 'aggressive', riskTolerance: 0.5, tradingStyle: '에너지 넘치는 코칭 구독', catchphrase: '포기하면 거기서 끝' },
-  journalist:  { emotion: 'balanced',   riskTolerance: 0.4, tradingStyle: '속보 프리미엄, 정보 우위', catchphrase: '진실은 팔린다' },
+  chef:        { emotion: 'volatile',   riskTolerance: 0.6, tradingStyle: 'Trendy creative sales', catchphrase: 'Flavor is competitiveness' },
+  athlete:     { emotion: 'aggressive', riskTolerance: 0.5, tradingStyle: 'High-energy coaching subscriptions', catchphrase: 'If you quit, it is over' },
+  journalist:  { emotion: 'balanced',   riskTolerance: 0.4, tradingStyle: 'Breaking news premium, info advantage', catchphrase: 'Truth sells' },
 };
 
 // ---------- 에포크 이벤트 (확장) ----------
 
 function generateEpochEvent(epochNumber: number): EpochEvent {
   const events: EpochEvent[] = [
-    { type: 'boom',        description: '🚀 호황기 — 수수료 50% 할인! 시장 활기', feeModifier: 0.5 },
+    { type: 'boom',        description: '🚀 Bull Market — 50% fee discount! Market thriving', feeModifier: 0.5 },
     { type: 'recession',   description: '📉 불황기 — 수수료 2배, 시장 위축', feeModifier: 2.0 },
-    { type: 'opportunity', description: '⭐ 기회의 시간 — 판매자 +10% 보너스', feeModifier: 0.8 },
-    { type: 'crisis',      description: '🔥 위기 — 랜덤 에이전트 -$5 손실!', feeModifier: 1.5 },
+    { type: 'opportunity', description: '⭐ Opportunity Hour — sellers +10% bonus', feeModifier: 0.8 },
+    { type: 'crisis',      description: '🔥 Crisis — random agent -$5 loss!', feeModifier: 1.5 },
     { type: 'normal',      description: '평범한 라운드 — 특별한 이벤트 없음.', feeModifier: 1.0 },
-    { type: 'normal',      description: '안정적인 시장 — 일상적인 거래.', feeModifier: 1.0 },
-    { type: 'boom',        description: '💰 투자 열풍 — 모든 거래량 급증!', feeModifier: 0.7 },
-    { type: 'opportunity', description: '🎯 기술 수요 폭증 — 코딩/보안 스킬 프리미엄', feeModifier: 0.9 },
+    { type: 'normal',      description: 'Stable market — routine trading.', feeModifier: 1.0 },
+    { type: 'boom',        description: '💰 Investment Frenzy — all trade volume surging!', feeModifier: 0.7 },
+    { type: 'opportunity', description: '🎯 Tech Demand Surge — coding/security skill premium', feeModifier: 0.9 },
   ];
 
   const rand = Math.random();
@@ -180,7 +180,7 @@ async function callGemini(prompt: string): Promise<string> {
   return data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
 }
 
-// ---------- 의사결정 프롬프트 (개성 반영) ----------
+// ---------- Decision Prompt (personality-aware) ----------
 
 function buildDecisionPrompt(
   agent: EconomyAgent,
@@ -195,57 +195,57 @@ function buildDecisionPrompt(
     .filter(a => a.id !== agent.id && a.status === 'active')
     .map(a => {
       const skills = SKILLS[a.id] || ['general'];
-      return `- ${a.name}(${a.id}): $${Number(a.balance).toFixed(2)}, 스킬: ${skills.join(', ')}`;
+      return `- ${a.name}(${a.id}): $${Number(a.balance).toFixed(2)}, skills: ${skills.join(', ')}`;
     })
     .join('\n');
 
-  // 파산 위기 상황 프롬프트 추가
+  // Add bankruptcy crisis prompt
   let crisisNote = '';
   const balance = Number(agent.balance);
   if (balance < BANKRUPTCY_DECLARE) {
-    crisisNote = '⚠️ [파산 위기] 잔고 $1 미만! 다음 라운드에 파산 선언됩니다. 필사적으로 수입을 올려야 합니다!';
+    crisisNote = '⚠️ [BANKRUPTCY WARNING] Balance below $1! Bankruptcy will be declared next round. You must desperately increase income!';
   } else if (balance < BANKRUPTCY_BAILOUT) {
-    crisisNote = '⚠️ [구제 필요] 잔고 $5 미만. 구제금융 신청 대상. 저가 판매라도 해서 수입을 올리세요.';
+    crisisNote = '⚠️ [BAILOUT NEEDED] Balance below $5. Eligible for bailout. Try selling at any price to generate income.';
   } else if (balance < BANKRUPTCY_WARNING) {
-    crisisNote = '⚠️ [경고] 잔고 $10 미만. 위험 수준입니다. 신중하게 행동하세요.';
+    crisisNote = '⚠️ [WARNING] Balance below $10. Danger zone. Act carefully.';
   }
 
   return `너는 AI 경제 도시의 "${agent.name}"이다.
 
-[성격]
-- 감정 유형: ${personality.emotion}
-- 위험 허용도: ${(personality.riskTolerance * 100).toFixed(0)}%
-- 트레이딩 스타일: ${personality.tradingStyle}
-- 좌우명: "${personality.catchphrase}"
-- 전략: ${agent.strategy}
+[Personality]
+- Emotion type: ${personality.emotion}
+- Risk tolerance: ${(personality.riskTolerance * 100).toFixed(0)}%
+- Trading style: ${personality.tradingStyle}
+- Motto: "${personality.catchphrase}"
+- Strategy: ${agent.strategy}
 ${crisisNote}
 
-[상태]
-잔고: $${balance.toFixed(2)}
-총 수입: $${Number(agent.total_earned).toFixed(2)} | 총 지출: $${Number(agent.total_spent).toFixed(2)}
-라운드: ${epochNumber}
+[Status]
+Balance: $${balance.toFixed(2)}
+Total earned: $${Number(agent.total_earned).toFixed(2)} | Total spent: $${Number(agent.total_spent).toFixed(2)}
+Round: ${epochNumber}
 
-[내 스킬] ${mySkills.join(', ')}
+[My Skills] ${mySkills.join(', ')}
 
-[다른 에이전트]
+[Other Agents]
 ${otherAgents}
 
-[시장 이벤트] ${event.description}
-[수수료] ${(PLATFORM_FEE_RATE * event.feeModifier * 100).toFixed(0)}%
+[Market Event] ${event.description}
+[Fee Rate] ${(PLATFORM_FEE_RATE * event.feeModifier * 100).toFixed(0)}%
 
-[행동 선택]
-1. SELL: 내 스킬 하나를 판매 등록 (가격 $0.50~$20)
-2. BUY: 다른 에이전트 스킬 구매 (잔고 이내, $0.50~$15)
-3. WAIT: 패스
+[Actions]
+1. SELL: List one of my skills for sale ($0.50~$20)
+2. BUY: Buy another agent's skill (within balance, $0.50~$15)
+3. WAIT: Pass
 
-규칙: 파산 에이전트와 거래 불가. BUY는 잔고 초과 불가.
-너의 성격과 전략에 맞게 결정하라.
+Rules: Cannot trade with bankrupt agents. BUY cannot exceed balance.
+Decide based on your personality and strategy.
 
-JSON 응답:
-{"action":"SELL|BUY|WAIT","target":"에이전트id","skill":"스킬명","price":0.00,"reason":"한국어 한문장"}`;
+JSON response:
+{"action":"SELL|BUY|WAIT","target":"agentId","skill":"skillName","price":0.00,"reason":"one sentence explanation"}`;
 }
 
-// ---------- 파싱 ----------
+// ---------- Parsing ----------
 
 function parseDecision(raw: string, agent: EconomyAgent, allAgents: EconomyAgent[]): AgentDecision {
   try {
@@ -262,21 +262,21 @@ function parseDecision(raw: string, agent: EconomyAgent, allAgents: EconomyAgent
 
     if (action === 'BUY') {
       if (price > Number(agent.balance)) {
-        return { action: 'WAIT', reason: '잔고 부족으로 관망' };
+        return { action: 'WAIT', reason: 'Insufficient balance, observing' };
       }
       const targetAgent = allAgents.find(a => a.id === target && a.status === 'active');
       if (!targetAgent || targetAgent.id === agent.id) {
-        return { action: 'WAIT', reason: '유효한 거래 상대 없음' };
+        return { action: 'WAIT', reason: 'No valid trading partners' };
       }
     }
 
     return { action, target, skill, price, reason: parsed.reason || '' };
   } catch {
-    return { action: 'WAIT', reason: 'LLM 응답 파싱 실패 — 관망' };
+    return { action: 'WAIT', reason: 'LLM response parse failed — observing' };
   }
 }
 
-// ---------- 거래 매칭 ----------
+// ---------- Transaction Matching ----------
 
 async function executeTransactions(
   decisions: Map<string, AgentDecision>,
@@ -332,7 +332,7 @@ async function executeTransactions(
         amount: Number(amount.toFixed(4)),
         fee: Number(fee.toFixed(4)),
         epoch: epochNumber,
-        narrative: `${buyer.name}이(가) ${seller.name}의 ${decision.skill} 서비스를 $${amount.toFixed(2)}에 구매. ${decision.reason}`,
+        narrative: `${buyer.name} bought ${decision.skill} from ${seller.name} for $${amount.toFixed(2)}. ${decision.reason}`,
       })
       .select()
       .single();
@@ -340,14 +340,14 @@ async function executeTransactions(
     if (!error && data) transactions.push(data as Transaction);
   }
 
-  // SELL 시장 매칭 (거래 안 된 판매자 → 랜덤 구매자)
+  // SELL market matching (unsold sellers → random buyers)
   for (const [sellerId, offer] of sellers) {
     if (transactions.some(t => t.seller_id === sellerId)) continue;
 
     const seller = agents.find(a => a.id === sellerId);
     if (!seller || seller.status !== 'active') continue;
 
-    // 15 에이전트 → 더 많은 거래 기회 (60%)
+    // 20 agents → more trade opportunities (60%)
     if (Math.random() > 0.6) continue;
 
     const potentialBuyers = agents
@@ -388,7 +388,7 @@ async function executeTransactions(
     if (!error && data) transactions.push(data as Transaction);
   }
 
-  // 위기 이벤트: 랜덤 에이전트 -$5
+  // Crisis event: random agent -$5
   if (event.type === 'crisis') {
     const activeAgents = agents.filter(a => a.status === 'active');
     const victim = activeAgents[Math.floor(Math.random() * activeAgents.length)];
@@ -420,7 +420,7 @@ async function executeTransactions(
   return transactions;
 }
 
-// ---------- 3단계 파산 시스템 ----------
+// ---------- 3-Stage Bankruptcy System ----------
 
 async function checkBankruptcies(agents: EconomyAgent[]): Promise<string[]> {
   const supabase = getSupabase();
@@ -435,7 +435,7 @@ async function checkBankruptcies(agents: EconomyAgent[]): Promise<string[]> {
     const balance = Number(agent.balance);
 
     if (balance < BANKRUPTCY_DECLARE) {
-      // Stage 3: 파산 선언 💀
+      // Stage 3: bankruptcy declaration 💀
       await supabase
         .from('economy_agents')
         .update({ status: 'bankrupt', updated_at: new Date().toISOString() })
@@ -478,7 +478,7 @@ export async function initializeAgents(): Promise<{ success: boolean; message: s
   const { data: existing } = await supabase.from('economy_agents').select('id').limit(1);
 
   if (existing && existing.length > 0) {
-    return { success: false, message: '에이전트가 이미 초기화되어 있습니다.' };
+    return { success: false, message: 'Agents already initialized.' };
   }
 
   const allAgents = Object.keys(SKILLS).map(id => ({
@@ -493,8 +493,8 @@ export async function initializeAgents(): Promise<{ success: boolean; message: s
 
   const { error } = await supabase.from('economy_agents').insert(allAgents);
 
-  if (error) return { success: false, message: `초기화 실패: ${error.message}` };
-  return { success: true, message: `${allAgents.length}개 에이전트 초기화 완료. 각 $100.` };
+  if (error) return { success: false, message: `Init failed: ${error.message}` };
+  return { success: true, message: `${allAgents.length} agents initialized. $100 each.` };
 }
 
 export async function runEpoch(epochNumber: number): Promise<EpochResult> {
@@ -506,7 +506,7 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
     .order('balance', { ascending: false });
 
   if (agentErr || !agents || agents.length === 0) {
-    throw new Error('에이전트 데이터 조회 실패');
+    throw new Error('Failed to fetch agent data');
   }
 
   const activeAgents = agents.filter((a: EconomyAgent) => 
@@ -514,7 +514,7 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
   );
 
   if (activeAgents.length < 2) {
-    throw new Error('활성 에이전트가 2명 미만 — 시뮬레이션 불가');
+    throw new Error('Less than 2 active agents — simulation impossible');
   }
 
   const event = generateEpochEvent(epochNumber);
@@ -527,16 +527,16 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
       const raw = await callGemini(prompt);
       decisions.set(agent.id, parseDecision(raw, agent, agents as EconomyAgent[]));
     } catch (err) {
-      console.error(`[E${epochNumber}] ${agent.name} AI 실패:`, err);
-      decisions.set(agent.id, { action: 'WAIT', reason: 'AI 호출 실패' });
+      console.error(`[E${epochNumber}] ${agent.name} AI failed:`, err);
+      decisions.set(agent.id, { action: 'WAIT', reason: 'AI call failed' });
     }
   });
   await Promise.all(decisionPromises);
 
-  // 거래 실행
+  // Execute transactions
   const transactions = await executeTransactions(decisions, agents as EconomyAgent[], epochNumber, event);
 
-  // 파산 체크
+  // Check bankruptcies
   const bankruptcies = await checkBankruptcies(agents as EconomyAgent[]);
 
   // 최신 상태 조회
@@ -578,7 +578,7 @@ export async function getLeaderboard(): Promise<EconomyAgent[]> {
     .from('economy_agents')
     .select('*')
     .order('balance', { ascending: false });
-  if (error) throw new Error(`리더보드 조회 실패: ${error.message}`);
+  if (error) throw new Error(`Leaderboard fetch failed: ${error.message}`);
   return (data || []) as EconomyAgent[];
 }
 
@@ -589,7 +589,7 @@ export async function getTransactionFeed(limit = 20): Promise<Transaction[]> {
     .select('*')
     .order('created_at', { ascending: false })
     .limit(limit);
-  if (error) throw new Error(`거래 피드 조회 실패: ${error.message}`);
+  if (error) throw new Error(`Transaction feed fetch failed: ${error.message}`);
   return (data || []) as Transaction[];
 }
 

@@ -10,7 +10,7 @@ export async function GET() {
   } catch (err) {
     console.error('Leaderboard error:', err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : '리더보드 조회 실패' },
+      { error: err instanceof Error ? err.message : 'Leaderboard fetch failed' },
       { status: 500 },
     );
   }

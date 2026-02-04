@@ -22,7 +22,7 @@ function isAuthorized(req: NextRequest, bodySecret?: string): boolean {
 export async function GET(req: NextRequest) {
   try {
     if (!isAuthorized(req)) {
-      return NextResponse.json({ error: '인증 실패' }, { status: 401 });
+      return NextResponse.json({ error: 'Authentication failed' }, { status: 401 });
     }
 
     const epochNumber = await getNextEpochNumber();
@@ -38,7 +38,7 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.error('Cron epoch error:', err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : '에포크 실행 실패' },
+      { error: err instanceof Error ? err.message : 'Epoch execution failed' },
       { status: 500 },
     );
   }
@@ -50,18 +50,18 @@ export async function POST(req: NextRequest) {
     const body = await req.json().catch(() => ({}));
     const { secret, init } = body as { secret?: string; init?: boolean };
 
-    // 인증 (header or body)
+    // Auth check
     if (!isAuthorized(req, secret)) {
-      return NextResponse.json({ error: '인증 실패' }, { status: 401 });
+      return NextResponse.json({ error: 'Authentication failed' }, { status: 401 });
     }
 
-    // 초기화 요청
+    // Initialize
     if (init) {
       const result = await initializeAgents();
       return NextResponse.json(result);
     }
 
-    // 에포크 실행
+    // Run epoch
     const epochNumber = await getNextEpochNumber();
     const result = await runEpoch(epochNumber);
 
@@ -82,7 +82,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error('Epoch error:', err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : '에포크 실행 실패' },
+      { error: err instanceof Error ? err.message : 'Epoch execution failed' },
       { status: 500 },
     );
   }

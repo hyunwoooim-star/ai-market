@@ -44,7 +44,7 @@ export function checkRateLimit(
   return { allowed: true, remaining: maxRequests - entry.count, resetAt: entry.resetAt };
 }
 
-// 일일 사용량 추적 (요금 모니터링용)
+// Daily usage tracking (cost monitoring)
 interface DailyUsage {
   date: string;
   totalMessages: number;

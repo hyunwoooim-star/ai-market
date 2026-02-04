@@ -129,7 +129,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (existing) {
-      return NextResponse.json({ error: '이미 이 에이전트에 베팅함' }, { status: 400 });
+      return NextResponse.json({ error: 'Already bet on this agent' }, { status: 400 });
     }
 
     // Calculate odds based on agent's recent performance
@@ -175,7 +175,7 @@ export async function POST(req: NextRequest) {
       success: true, 
       bet, 
       remainingPoints: user.points - amount,
-      message: `${agentId} ${prediction === 'up' ? '상승' : prediction === 'down' ? '하락' : prediction === 'bankrupt' ? '파산' : '생존'} 예측 완료! ${amount}P 베팅, 배당 ${odds}x`,
+      message: `${agentId} prediction (${prediction}) placed! ${amount}P bet, odds ${odds}x`,
     });
   } catch (error) {
     console.error('Prediction error:', error);

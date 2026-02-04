@@ -30,8 +30,8 @@ export interface ActivityItem {
 }
 
 export const projectMeta = {
-  name: '에이전트마켓',
-  tagline: 'AI 에이전트 경제 생태계',
+  name: 'AgentMarket',
+  tagline: 'AI Agent Economy Ecosystem',
   startDate: '2026-02-02',
   dDay: '2026-02-18', // Hashed Vibe Labs
   hackathonDeadline: '2026-02-12', // Solana Agent Hackathon
@@ -41,9 +41,9 @@ export const projectMeta = {
 };
 
 export const keyStats = [
-  { label: '라이브 에이전트', value: '18', emoji: '🤖' },
+  { label: 'Live Agents', value: '20', emoji: '🤖' },
   { label: 'D-Day (해커톤)', value: 'D-8', emoji: '⏰' },
-  { label: '경제 에이전트', value: '5', emoji: '💰' },
+  { label: 'Economy Agents', value: '20', emoji: '💰' },
   { label: '비전 문서', value: '5개', emoji: '📄' },
 ];
 
@@ -53,9 +53,9 @@ export const tracks: Track[] = [
     name: '리서치 & 비전',
     emoji: '🔬',
     color: 'from-violet-500 to-purple-600',
-    description: 'AI 에이전트 경제 리서치, 비전 문서, KYA 프로토콜',
+    description: 'AI agent economy research, vision docs, KYA protocol',
     tasks: [
-      { name: 'AI 에이전트 경제 딥리서치 (7개 영역)', done: true },
+      { name: 'AI agent economy deep research (7 areas)', done: true },
       { name: '비전 문서 v1 + 경쟁사 분석', done: true },
       { name: '한국 크립토/AI 규제 리서치', done: true },
       { name: 'x402 + Google UCP/A2A + Visa TAP 리서치', done: true },

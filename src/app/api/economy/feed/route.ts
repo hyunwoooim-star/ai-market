@@ -12,7 +12,7 @@ export async function GET(req: NextRequest) {
   } catch (err) {
     console.error('Feed error:', err);
     return NextResponse.json(
-      { error: err instanceof Error ? err.message : '거래 피드 조회 실패' },
+      { error: err instanceof Error ? err.message : 'Transaction feed fetch failed' },
       { status: 500 },
     );
   }
