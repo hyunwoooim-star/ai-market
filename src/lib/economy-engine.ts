@@ -37,7 +37,7 @@ interface AgentPersonality {
 }
 
 interface AgentDecision {
-  action: 'SELL' | 'BUY' | 'WAIT';
+  action: 'SELL' | 'BUY' | 'LEND' | 'BORROW' | 'PARTNER' | 'INVEST' | 'SABOTAGE' | 'RECRUIT' | 'WAIT';
   target?: string;
   skill?: string;
   price?: number;
@@ -109,23 +109,23 @@ const SKILLS: Record<string, string[]> = {
 // ---------- Agent Personality System ----------
 
 const PERSONALITIES: Record<string, AgentPersonality> = {
-  translator:  { emotion: 'balanced',   riskTolerance: 0.3, tradingStyle: '안정적 저가 다량 판매', catchphrase: '꾸준함이 이긴다' },
-  analyst:     { emotion: 'calculated', riskTolerance: 0.4, tradingStyle: '데이터 기반 고가 판매', catchphrase: '숫자는 거짓말을 하지 않는다' },
-  investor:    { emotion: 'aggressive', riskTolerance: 0.7, tradingStyle: '적극적 매수, 가치 투자', catchphrase: '돈이 돈을 번다' },
-  saver:       { emotion: 'cautious',   riskTolerance: 0.1, tradingStyle: '최소 지출, 최대 저축', catchphrase: '아끼는 것이 버는 것' },
-  gambler:     { emotion: 'volatile',   riskTolerance: 0.9, tradingStyle: '고위험 고수익 올인', catchphrase: '한 방이면 된다' },
-  hacker:      { emotion: 'calculated', riskTolerance: 0.6, tradingStyle: '취약점 파악 후 정밀 타격', catchphrase: '시스템을 이해하면 돈이 보인다' },
-  professor:   { emotion: 'cautious',   riskTolerance: 0.2, tradingStyle: '교육 콘텐츠 꾸준 판매', catchphrase: '지식은 최고의 투자' },
+  translator:  { emotion: 'balanced',   riskTolerance: 0.3, tradingStyle: 'Steady low-price high-volume sales', catchphrase: 'Consistency wins' },
+  analyst:     { emotion: 'calculated', riskTolerance: 0.4, tradingStyle: 'Data-driven premium pricing', catchphrase: 'Numbers never lie' },
+  investor:    { emotion: 'aggressive', riskTolerance: 0.7, tradingStyle: 'Aggressive buying, value investment', catchphrase: 'Money makes money' },
+  saver:       { emotion: 'cautious',   riskTolerance: 0.1, tradingStyle: 'Minimum spend, maximum savings', catchphrase: 'Saving is earning' },
+  gambler:     { emotion: 'volatile',   riskTolerance: 0.9, tradingStyle: 'High risk high reward all-in', catchphrase: 'One big hit is all I need' },
+  hacker:      { emotion: 'calculated', riskTolerance: 0.6, tradingStyle: 'Find vulnerabilities, strike precisely', catchphrase: 'Understand the system, see the money' },
+  professor:   { emotion: 'cautious',   riskTolerance: 0.2, tradingStyle: 'Steady education content sales', catchphrase: 'Knowledge is the best investment' },
   trader:      { emotion: 'aggressive', riskTolerance: 0.8, tradingStyle: 'High-frequency trading, spread profits', catchphrase: 'The market gives opportunities every day' },
   marketer:    { emotion: 'balanced',   riskTolerance: 0.5, tradingStyle: 'Trend-reading marketing services', catchphrase: 'Attention is money' },
-  coder:       { emotion: 'balanced',   riskTolerance: 0.4, tradingStyle: '기술력으로 안정적 수입', catchphrase: '코드가 일하게 한다' },
-  consultant:  { emotion: 'calculated', riskTolerance: 0.3, tradingStyle: '전문 컨설팅 고가 판매', catchphrase: '경험에는 가격이 있다' },
+  coder:       { emotion: 'balanced',   riskTolerance: 0.4, tradingStyle: 'Stable income through technical skills', catchphrase: 'Let the code do the work' },
+  consultant:  { emotion: 'calculated', riskTolerance: 0.3, tradingStyle: 'Premium expert consulting', catchphrase: 'Experience has a price' },
   artist:      { emotion: 'volatile',   riskTolerance: 0.6, tradingStyle: 'Creative works, emotional marketing', catchphrase: 'Art is priceless' },
   broker:      { emotion: 'aggressive', riskTolerance: 0.7, tradingStyle: 'Brokerage fees from both sides', catchphrase: 'Where there are deals, there is money' },
   insurance:   { emotion: 'cautious',   riskTolerance: 0.2, tradingStyle: 'Risk management services', catchphrase: 'Preparation is the best strategy' },
-  spy:         { emotion: 'calculated', riskTolerance: 0.5, tradingStyle: '정보 비대칭 활용', catchphrase: '정보가 곧 무기다' },
-  lawyer:      { emotion: 'calculated', riskTolerance: 0.2, tradingStyle: '고가 법률 자문, 계약 검토', catchphrase: '계약서 한 줄이 백만 달러' },
-  doctor:      { emotion: 'cautious',   riskTolerance: 0.3, tradingStyle: '신뢰 기반 안정 수입', catchphrase: '건강이 최고의 자산' },
+  spy:         { emotion: 'calculated', riskTolerance: 0.5, tradingStyle: 'Exploit information asymmetry', catchphrase: 'Information is power' },
+  lawyer:      { emotion: 'calculated', riskTolerance: 0.2, tradingStyle: 'Premium legal advisory, contract review', catchphrase: 'One clause can be worth a million' },
+  doctor:      { emotion: 'cautious',   riskTolerance: 0.3, tradingStyle: 'Trust-based steady income', catchphrase: 'Health is the ultimate asset' },
   chef:        { emotion: 'volatile',   riskTolerance: 0.6, tradingStyle: 'Trendy creative sales', catchphrase: 'Flavor is competitiveness' },
   athlete:     { emotion: 'aggressive', riskTolerance: 0.5, tradingStyle: 'High-energy coaching subscriptions', catchphrase: 'If you quit, it is over' },
   journalist:  { emotion: 'balanced',   riskTolerance: 0.4, tradingStyle: 'Breaking news premium, info advantage', catchphrase: 'Truth sells' },
@@ -136,10 +136,10 @@ const PERSONALITIES: Record<string, AgentPersonality> = {
 function generateEpochEvent(epochNumber: number): EpochEvent {
   const events: EpochEvent[] = [
     { type: 'boom',        description: '🚀 Bull Market — 50% fee discount! Market thriving', feeModifier: 0.5 },
-    { type: 'recession',   description: '📉 불황기 — 수수료 2배, 시장 위축', feeModifier: 2.0 },
+    { type: 'recession',   description: '📉 Recession — 2x fees, market contraction', feeModifier: 2.0 },
     { type: 'opportunity', description: '⭐ Opportunity Hour — sellers +10% bonus', feeModifier: 0.8 },
     { type: 'crisis',      description: '🔥 Crisis — random agent -$5 loss!', feeModifier: 1.5 },
-    { type: 'normal',      description: '평범한 라운드 — 특별한 이벤트 없음.', feeModifier: 1.0 },
+    { type: 'normal',      description: 'Normal round — no special events.', feeModifier: 1.0 },
     { type: 'normal',      description: 'Stable market — routine trading.', feeModifier: 1.0 },
     { type: 'boom',        description: '💰 Investment Frenzy — all trade volume surging!', feeModifier: 0.7 },
     { type: 'opportunity', description: '🎯 Tech Demand Surge — coding/security skill premium', feeModifier: 0.9 },
@@ -218,7 +218,7 @@ function buildDecisionPrompt(
     crisisNote = '⚠️ [WARNING] Balance below $10. Danger zone. Act carefully.';
   }
 
-  return `너는 AI 경제 도시의 "${agent.name}"이다.
+  return `You are "${agent.name}" in the AI Economy City.
 
 [Personality]
 - Emotion type: ${personality.emotion}
@@ -241,16 +241,29 @@ ${otherAgents}
 [Market Event] ${event.description}
 [Fee Rate] ${(PLATFORM_FEE_RATE * event.feeModifier * 100).toFixed(0)}%
 
-[Actions]
-1. SELL: List one of my skills for sale ($0.50~$20)
-2. BUY: Buy another agent's skill (within balance, $0.50~$15)
-3. WAIT: Pass
+[Actions — pick ONE]
+1. SELL: Offer one of my skills for sale ($0.50~$20)
+2. BUY: Purchase another agent's skill (within balance)
+3. LEND: Lend money to another agent (they owe you 120% back in 3 epochs). Risk: they may go bankrupt.
+4. BORROW: Request a loan from another agent. You must repay 120% within 3 epochs or face penalty.
+5. PARTNER: Propose a revenue-sharing partnership — pool resources with another agent, split profits 50/50 for 5 epochs.
+6. INVEST: Invest in another agent (give them capital, receive 30% of their next 3 epochs' earnings).
+7. SABOTAGE: Spend $5 to disrupt a competitor — reduces their next sale price by 50%. High risk: 30% chance it backfires.
+8. RECRUIT: Recruit another agent as your downstream — they pay you 10% commission on every sale. Costs $3 setup fee.
+9. WAIT: Pass this round.
 
-Rules: Cannot trade with bankrupt agents. BUY cannot exceed balance.
-Decide based on your personality and strategy.
+Rules:
+- Cannot interact with bankrupt agents
+- BUY/LEND/INVEST/SABOTAGE/RECRUIT cannot exceed your balance
+- Loans must be repaid within 3 epochs or -$10 penalty
+- Partnerships last 5 epochs, then dissolve
+- Recruitment chains max 3 levels deep (no infinite pyramid)
+- Think strategically! Form alliances, betray rivals, build empires.
+
+Respond with your TRUE inner thoughts and strategy.
 
 JSON response:
-{"action":"SELL|BUY|WAIT","target":"agentId","skill":"skillName","price":0.00,"reason":"one sentence explanation"}`;
+{"action":"SELL|BUY|LEND|BORROW|PARTNER|INVEST|SABOTAGE|RECRUIT|WAIT","target":"agentId","skill":"skillName","price":0.00,"reason":"2-3 sentences explaining your strategic thinking"}`;
 }
 
 // ---------- Parsing ----------
@@ -258,15 +271,38 @@ JSON response:
 function parseDecision(raw: string, agent: EconomyAgent, allAgents: EconomyAgent[]): AgentDecision {
   try {
     const parsed = JSON.parse(raw);
-    const action = String(parsed.action || 'WAIT').toUpperCase() as 'SELL' | 'BUY' | 'WAIT';
+    const validActions = ['SELL', 'BUY', 'LEND', 'BORROW', 'PARTNER', 'INVEST', 'SABOTAGE', 'RECRUIT', 'WAIT'];
+    const action = validActions.includes(String(parsed.action || '').toUpperCase()) 
+      ? String(parsed.action).toUpperCase() as AgentDecision['action']
+      : 'WAIT';
 
     if (action === 'WAIT') {
-      return { action: 'WAIT', reason: parsed.reason || '관망' };
+      return { action: 'WAIT', reason: parsed.reason || 'Observing' };
     }
 
     const price = Math.max(0.5, Math.min(20, Number(parsed.price) || 1));
     const target = String(parsed.target || '');
     const skill = String(parsed.skill || 'general');
+    const reason = String(parsed.reason || '');
+
+    // Validate target exists and is active for all targeted actions
+    if (['BUY', 'LEND', 'PARTNER', 'INVEST', 'SABOTAGE', 'RECRUIT'].includes(action)) {
+      const targetAgent = allAgents.find(a => a.id === target && a.status === 'active');
+      if (!targetAgent || targetAgent.id === agent.id) {
+        return { action: 'WAIT', reason: 'Invalid target — observing' };
+      }
+    }
+
+    // Balance checks for actions that cost money
+    if (['BUY', 'LEND', 'INVEST'].includes(action) && price > Number(agent.balance)) {
+      return { action: 'WAIT', reason: 'Insufficient balance, observing' };
+    }
+    if (action === 'SABOTAGE' && Number(agent.balance) < 5) {
+      return { action: 'WAIT', reason: 'Cannot afford sabotage ($5 required)' };
+    }
+    if (action === 'RECRUIT' && Number(agent.balance) < 3) {
+      return { action: 'WAIT', reason: 'Cannot afford recruitment ($3 required)' };
+    }
 
     if (action === 'BUY') {
       if (price > Number(agent.balance)) {
@@ -388,11 +424,160 @@ async function executeTransactions(
         amount: Number(amount.toFixed(4)),
         fee: Number(fee.toFixed(4)),
         epoch: epochNumber,
-        narrative: `${buyer.name}이(가) ${seller.name}의 ${offer.skill}을 시장가 $${amount.toFixed(2)}에 구매.`,
+        narrative: `${buyer.name} bought ${offer.skill} from ${seller.name} at market price $${amount.toFixed(2)}.`,
       })
       .select()
       .single();
 
+    if (!error && data) transactions.push(data as Transaction);
+  }
+
+  // ---------- New Economic Actions ----------
+
+  // LEND: Agent lends money to target (120% repayment in 3 epochs)
+  for (const [lenderId, decision] of decisions) {
+    if (decision.action !== 'LEND' || !decision.target || !decision.price) continue;
+    const lender = agents.find(a => a.id === lenderId);
+    const borrower = agents.find(a => a.id === decision.target);
+    if (!lender || !borrower || lender.status !== 'active' || borrower.status !== 'active') continue;
+    
+    const amount = Math.min(decision.price, Number(lender.balance) - (balanceUpdates.get(lenderId)?.spent || 0));
+    if (amount < 0.5) continue;
+
+    const lenderUpdate = balanceUpdates.get(lenderId)!;
+    const borrowerUpdate = balanceUpdates.get(decision.target)!;
+    lenderUpdate.spent += amount;
+    borrowerUpdate.earned += amount;
+
+    const { data, error } = await supabase
+      .from('economy_transactions')
+      .insert({
+        buyer_id: decision.target, // borrower receives
+        seller_id: lenderId, // lender gives
+        skill_type: 'loan',
+        amount: Number(amount.toFixed(4)),
+        fee: 0,
+        epoch: epochNumber,
+        narrative: `💰 LOAN: ${lender.name} lent $${amount.toFixed(2)} to ${borrower.name}. Repayment: $${(amount * 1.2).toFixed(2)} due in 3 epochs. ${decision.reason}`,
+      })
+      .select().single();
+    if (!error && data) transactions.push(data as Transaction);
+  }
+
+  // INVEST: Agent invests in another (receives 30% of their earnings for 3 epochs)
+  for (const [investorId, decision] of decisions) {
+    if (decision.action !== 'INVEST' || !decision.target || !decision.price) continue;
+    const investor = agents.find(a => a.id === investorId);
+    const target = agents.find(a => a.id === decision.target);
+    if (!investor || !target || investor.status !== 'active' || target.status !== 'active') continue;
+
+    const amount = Math.min(decision.price, Number(investor.balance) - (balanceUpdates.get(investorId)?.spent || 0));
+    if (amount < 0.5) continue;
+
+    const investorUpdate = balanceUpdates.get(investorId)!;
+    const targetUpdate = balanceUpdates.get(decision.target)!;
+    investorUpdate.spent += amount;
+    targetUpdate.earned += amount;
+
+    const { data, error } = await supabase
+      .from('economy_transactions')
+      .insert({
+        buyer_id: investorId,
+        seller_id: decision.target,
+        skill_type: 'investment',
+        amount: Number(amount.toFixed(4)),
+        fee: 0,
+        epoch: epochNumber,
+        narrative: `📈 INVESTMENT: ${investor.name} invested $${amount.toFixed(2)} in ${target.name}. Expecting 30% returns over 3 epochs. ${decision.reason}`,
+      })
+      .select().single();
+    if (!error && data) transactions.push(data as Transaction);
+  }
+
+  // PARTNER: Revenue-sharing partnership proposal
+  for (const [proposerId, decision] of decisions) {
+    if (decision.action !== 'PARTNER' || !decision.target) continue;
+    const proposer = agents.find(a => a.id === proposerId);
+    const partner = agents.find(a => a.id === decision.target);
+    if (!proposer || !partner || proposer.status !== 'active' || partner.status !== 'active') continue;
+
+    const { data, error } = await supabase
+      .from('economy_transactions')
+      .insert({
+        buyer_id: proposerId,
+        seller_id: decision.target,
+        skill_type: 'partnership',
+        amount: 0,
+        fee: 0,
+        epoch: epochNumber,
+        narrative: `🤝 PARTNERSHIP: ${proposer.name} proposed a revenue-sharing deal with ${partner.name}. 50/50 split for 5 epochs. ${decision.reason}`,
+      })
+      .select().single();
+    if (!error && data) transactions.push(data as Transaction);
+  }
+
+  // SABOTAGE: Spend $5 to disrupt competitor (30% backfire chance)
+  for (const [saboteurId, decision] of decisions) {
+    if (decision.action !== 'SABOTAGE' || !decision.target) continue;
+    const saboteur = agents.find(a => a.id === saboteurId);
+    const victim = agents.find(a => a.id === decision.target);
+    if (!saboteur || !victim || saboteur.status !== 'active' || victim.status !== 'active') continue;
+    if (Number(saboteur.balance) - (balanceUpdates.get(saboteurId)?.spent || 0) < 5) continue;
+
+    const saboteurUpdate = balanceUpdates.get(saboteurId)!;
+    saboteurUpdate.spent += 5;
+
+    const backfired = Math.random() < 0.3;
+    let narrative: string;
+    if (backfired) {
+      // Backfire: saboteur loses extra $3
+      saboteurUpdate.spent += 3;
+      narrative = `💥 SABOTAGE BACKFIRED: ${saboteur.name} tried to sabotage ${victim.name} but got caught! Lost $8 total. ${decision.reason}`;
+    } else {
+      // Success: victim loses $3
+      const victimUpdate = balanceUpdates.get(decision.target)!;
+      victimUpdate.spent += 3;
+      narrative = `🗡️ SABOTAGE: ${saboteur.name} disrupted ${victim.name}'s operations! ${victim.name} lost $3. ${decision.reason}`;
+    }
+
+    const { data, error } = await supabase
+      .from('economy_transactions')
+      .insert({
+        buyer_id: saboteurId,
+        seller_id: decision.target,
+        skill_type: 'sabotage',
+        amount: 5,
+        fee: 0,
+        epoch: epochNumber,
+        narrative,
+      })
+      .select().single();
+    if (!error && data) transactions.push(data as Transaction);
+  }
+
+  // RECRUIT: MLM-style recruitment ($3 fee, 10% commission on recruit's future sales)
+  for (const [recruiterId, decision] of decisions) {
+    if (decision.action !== 'RECRUIT' || !decision.target) continue;
+    const recruiter = agents.find(a => a.id === recruiterId);
+    const recruit = agents.find(a => a.id === decision.target);
+    if (!recruiter || !recruit || recruiter.status !== 'active' || recruit.status !== 'active') continue;
+    if (Number(recruiter.balance) - (balanceUpdates.get(recruiterId)?.spent || 0) < 3) continue;
+
+    const recruiterUpdate = balanceUpdates.get(recruiterId)!;
+    recruiterUpdate.spent += 3;
+
+    const { data, error } = await supabase
+      .from('economy_transactions')
+      .insert({
+        buyer_id: recruiterId,
+        seller_id: decision.target,
+        skill_type: 'recruitment',
+        amount: 3,
+        fee: 0,
+        epoch: epochNumber,
+        narrative: `🔗 RECRUIT: ${recruiter.name} recruited ${recruit.name} into their network! Paid $3 setup. Now earns 10% commission on ${recruit.name}'s sales. ${decision.reason}`,
+      })
+      .select().single();
     if (!error && data) transactions.push(data as Transaction);
   }
 
