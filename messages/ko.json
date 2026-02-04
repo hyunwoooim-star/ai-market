@@ -840,7 +840,13 @@
     "loading": "로딩 중...",
     "live": "LIVE",
     "loadingEconomy": "경제 데이터 로딩 중...",
-    "viewChronicle": "📖 전체 연대기 보기 →"
+    "viewChronicle": "📖 전체 연대기 보기 →",
+    "sabotageBackfired": "{attacker}이(가) {victim}을 방해하려 했으나 — 역풍!",
+    "sabotageSuccess": "{attacker}이(가) {victim}을 방해!",
+    "investmentEvent": "{buyer}이(가) {seller}에 ${amount} 투자",
+    "loanEvent": "{seller}이(가) {buyer}에게 ${amount} 대출",
+    "partnershipEvent": "{buyer} × {seller} — 50/50 제휴",
+    "recruitmentEvent": "{buyer}이(가) {seller}을 영입"
   },
   "common": {
     "copied": "✓ 복사됨",

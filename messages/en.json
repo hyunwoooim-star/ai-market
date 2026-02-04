@@ -840,7 +840,13 @@
     "loading": "Loading...",
     "live": "LIVE",
     "loadingEconomy": "Loading economy data...",
-    "viewChronicle": "📖 View Full Chronicle →"
+    "viewChronicle": "📖 View Full Chronicle →",
+    "sabotageBackfired": "{attacker} tried to sabotage {victim} — BACKFIRED!",
+    "sabotageSuccess": "{attacker} sabotaged {victim}!",
+    "investmentEvent": "{buyer} invested ${amount} in {seller}",
+    "loanEvent": "{seller} lent ${amount} to {buyer}",
+    "partnershipEvent": "{buyer} × {seller} — 50/50 deal",
+    "recruitmentEvent": "{buyer} recruited {seller} into their network"
   },
   "common": {
     "copied": "✓ Copied",

@@ -84,8 +84,8 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
           emoji: backfired ? '💥' : '🗡️',
           title: backfired ? 'Sabotage Backfired!' : 'Sabotage Attack!',
           description: backfired 
-            ? `${attackerName} tried to sabotage ${victimName} — BACKFIRED!`
-            : `${attackerName} sabotaged ${victimName}!`,
+            ? t('sabotageBackfired', { attacker: attackerName, victim: victimName })
+            : t('sabotageSuccess', { attacker: attackerName, victim: victimName }),
           timestamp: tx.created_at,
           priority: 90,
         });
@@ -100,7 +100,7 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
           type: 'large-trade',
           emoji: '📈',
           title: 'New Investment!',
-          description: `${getAgentName(tx.buyer_id)} invested $${tx.amount.toFixed(2)} in ${getAgentName(tx.seller_id)}`,
+          description: t('investmentEvent', { buyer: getAgentName(tx.buyer_id), amount: tx.amount.toFixed(2), seller: getAgentName(tx.seller_id) }),
           amount: tx.amount,
           timestamp: tx.created_at,
           priority: 75,
@@ -112,7 +112,7 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
           type: 'large-trade',
           emoji: '💰',
           title: 'Loan Issued!',
-          description: `${getAgentName(tx.seller_id)} lent $${tx.amount.toFixed(2)} to ${getAgentName(tx.buyer_id)}`,
+          description: t('loanEvent', { seller: getAgentName(tx.seller_id), amount: tx.amount.toFixed(2), buyer: getAgentName(tx.buyer_id) }),
           amount: tx.amount,
           timestamp: tx.created_at,
           priority: 65,
@@ -124,7 +124,7 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
           type: 'ranking-change',
           emoji: '🤝',
           title: 'Partnership Formed!',
-          description: `${getAgentName(tx.buyer_id)} × ${getAgentName(tx.seller_id)} — 50/50 deal`,
+          description: t('partnershipEvent', { buyer: getAgentName(tx.buyer_id), seller: getAgentName(tx.seller_id) }),
           timestamp: tx.created_at,
           priority: 60,
         });
@@ -135,7 +135,7 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
           type: 'ranking-change',
           emoji: '🔗',
           title: 'Agent Recruited!',
-          description: `${getAgentName(tx.buyer_id)} recruited ${getAgentName(tx.seller_id)} into their network`,
+          description: t('recruitmentEvent', { buyer: getAgentName(tx.buyer_id), seller: getAgentName(tx.seller_id) }),
           timestamp: tx.created_at,
           priority: 55,
         });
