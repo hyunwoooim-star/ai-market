@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
+import { useTranslations } from 'next-intl';
 
 import EconomyStatsBar from '@/components/spectate/EconomyStatsBar';
 import Leaderboard from '@/components/spectate/Leaderboard';
@@ -17,7 +18,7 @@ import type {
   EpochEventCard,
 } from '@/lib/spectate-mock-data';
 
-const POLL_INTERVAL = 10_000; // 10초마다 새로고침
+const POLL_INTERVAL = 10_000; // Refresh every 10 seconds
 
 const EMPTY_STATS: SpectateStats = {
   totalAgents: 0,
@@ -32,6 +33,7 @@ const EMPTY_STATS: SpectateStats = {
 };
 
 export default function SpectatePage() {
+  const t = useTranslations('spectate');
   const [agents, setAgents] = useState<SpectateAgent[]>([]);
   const [transactions, setTransactions] = useState<SpectateTransaction[]>([]);
   const [stats, setStats] = useState<SpectateStats>(EMPTY_STATS);
@@ -217,8 +219,8 @@ export default function SpectatePage() {
       <div className="h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
           <span className="text-4xl">📡</span>
-          <p className="text-sm text-[var(--text-secondary)]">데이터를 불러올 수 없습니다</p>
-          <p className="text-xs text-[var(--text-tertiary)]">잠시 후 자동으로 재시도합니다</p>
+          <p className="text-sm text-[var(--text-secondary)]">{t('dataLoadError')}</p>
+          <p className="text-xs text-[var(--text-tertiary)]">{t('autoRetry')}</p>
         </div>
       </div>
     );
@@ -255,7 +257,7 @@ export default function SpectatePage() {
           <button
             onClick={toggleTheme}
             className="px-3 py-2 mr-3 rounded-lg hover:bg-[var(--surface-2)] transition-colors text-[var(--text-secondary)]"
-            aria-label="테마 전환"
+            aria-label={t('themeToggle')}
           >
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
               <circle cx="12" cy="12" r="4" />
@@ -318,7 +320,7 @@ export default function SpectatePage() {
           >
             <div className="bg-[var(--surface)] rounded-xl p-6 flex items-center gap-3">
               <div className="w-5 h-5 border-2 border-[var(--accent)] border-t-transparent rounded-full animate-spin" />
-              <span className="text-sm text-[var(--text-secondary)]">로딩 중...</span>
+              <span className="text-sm text-[var(--text-secondary)]">{t('loading')}</span>
             </div>
           </motion.div>
         )}
@@ -332,6 +334,7 @@ function MobileLeaderboard({ agents, onAgentClick }: {
   agents: SpectateAgent[];
   onAgentClick: (id: string) => void;
 }) {
+  const t = useTranslations('spectate');
   const [expanded, setExpanded] = useState(false);
   const sorted = [...agents].sort((a, b) => b.balance - a.balance);
 
@@ -343,7 +346,7 @@ function MobileLeaderboard({ agents, onAgentClick }: {
         className="w-full bg-[var(--surface)] border-t border-[var(--border)] px-4 py-2 flex items-center justify-between"
       >
         <span className="text-xs font-bold text-[var(--text-primary)] uppercase tracking-wider">
-          🏆 리더보드
+          🏆 {t('leaderboard')}
         </span>
         <motion.span
           animate={{ rotate: expanded ? 180 : 0 }}

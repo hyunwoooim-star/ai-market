@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { loadTossPayments } from '@tosspayments/payment-sdk';
-import { useTranslations } from 'next-intl';
+import { useTranslations, useLocale } from 'next-intl';
 
 interface Props {
   isOpen: boolean;
@@ -14,6 +14,7 @@ interface Props {
 export default function PricingModal({ isOpen, onClose, agentName }: Props) {
   const [loading, setLoading] = useState<string | null>(null);
   const t = useTranslations('pricing');
+  const locale = useLocale();
 
   const PLANS = [
     {
@@ -62,8 +63,8 @@ export default function PricingModal({ isOpen, onClose, agentName }: Props) {
         amount: plan.price,
         orderId: orderId,
         orderName: `${plan.name} Membership`,
-        successUrl: `${window.location.origin}/checkout/success`,
-        failUrl: `${window.location.origin}/checkout/fail`,
+        successUrl: `${window.location.origin}/${locale}/checkout/success`,
+        failUrl: `${window.location.origin}/${locale}/checkout/fail`,
       });
     } catch (err) {
       console.error('Payment failed', err);

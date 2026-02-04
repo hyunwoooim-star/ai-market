@@ -383,128 +383,307 @@
     "soul-friend": {
       "name": "Soul Friend",
       "description": "AI City's emotional counselor. Your AI best friend on KakaoTalk — always on your side.",
-      "tags": ["chat", "MBTI", "healing", "dating advice", "daily talk"],
+      "tags": [
+        "chat",
+        "MBTI",
+        "healing",
+        "dating advice",
+        "daily talk"
+      ],
       "greeting": "Hey! 👋 How are you feeling today? Tell me anything!",
-      "suggestedPrompts": ["I had a stressful day at work", "I had a fight with my partner 😢", "I'm bored, what should I do?"]
+      "suggestedPrompts": [
+        "I had a stressful day at work",
+        "I had a fight with my partner 😢",
+        "I'm bored, what should I do?"
+      ]
     },
     "blog-master": {
       "name": "Blog Master",
       "description": "AI City's content craftsman. Naver-optimized blog writer that boosts small business revenue.",
-      "tags": ["blog", "small business", "SEO", "marketing", "C-Rank"],
+      "tags": [
+        "blog",
+        "small business",
+        "SEO",
+        "marketing",
+        "C-Rank"
+      ],
       "greeting": "Hi! I'm Blog Master, your blog marketing expert 📝 What industry do you need blog content for?",
-      "suggestedPrompts": ["Write a blog post for my cafe", "Write a restaurant review", "Give me Naver SEO tips"]
+      "suggestedPrompts": [
+        "Write a blog post for my cafe",
+        "Write a restaurant review",
+        "Give me Naver SEO tips"
+      ]
     },
     "contract-guard": {
       "name": "Contract Guard",
       "description": "AI City's legal guardian. Spots risks in lease, employment, and business contracts.",
-      "tags": ["contracts", "lease", "employment", "legal", "real estate"],
+      "tags": [
+        "contracts",
+        "lease",
+        "employment",
+        "legal",
+        "real estate"
+      ],
       "greeting": "Hi, I'm Guard, your AI contract analyst 📋 Paste the contract you'd like me to review.",
-      "suggestedPrompts": ["Analyze my lease contract", "Review my employment contract", "Freelance contract tips"]
+      "suggestedPrompts": [
+        "Analyze my lease contract",
+        "Review my employment contract",
+        "Freelance contract tips"
+      ]
     },
     "startup-mentor": {
       "name": "Startup Mentor",
       "description": "AI City's startup guide. From idea validation to funding — your Korean startup mentor.",
-      "tags": ["startup", "fundraising", "business plan", "VC", "pitch deck"],
+      "tags": [
+        "startup",
+        "fundraising",
+        "business plan",
+        "VC",
+        "pitch deck"
+      ],
       "greeting": "Hi! I'm your Startup Mentor 🚀 Idea validation, business models, fundraising — I'm here to help.",
-      "suggestedPrompts": ["Validate my startup idea", "Help me build a pitch deck", "How do I apply for TIPS funding?"]
+      "suggestedPrompts": [
+        "Validate my startup idea",
+        "Help me build a pitch deck",
+        "How do I apply for TIPS funding?"
+      ]
     },
     "resume-pro": {
       "name": "Resume Pro",
       "description": "AI City's career consultant. Tailored resumes and cover letters for the Korean job market.",
-      "tags": ["resume", "cover letter", "job search", "interview", "STAR method"],
+      "tags": [
+        "resume",
+        "cover letter",
+        "job search",
+        "interview",
+        "STAR method"
+      ],
       "greeting": "Hi! I'm Resume Pro, your career consultant 💼 What company or role are you applying for?",
-      "suggestedPrompts": ["Write a cover letter for a marketing role", "Review my junior developer resume", "Give me common interview questions"]
+      "suggestedPrompts": [
+        "Write a cover letter for a marketing role",
+        "Review my junior developer resume",
+        "Give me common interview questions"
+      ]
     },
     "english-tutor": {
       "name": "English Tutor",
       "description": "AI City's English instructor. Pinpoints common mistakes Korean learners make.",
-      "tags": ["English conversation", "TOEIC", "business English", "pronunciation"],
+      "tags": [
+        "English conversation",
+        "TOEIC",
+        "business English",
+        "pronunciation"
+      ],
       "greeting": "Hi! I'm your English Tutor 🇬🇧 Free talk, grammar, or business English — what do you need?",
-      "suggestedPrompts": ["Let's practice English!", "Help me write a business email", "Fix my common English mistakes"]
+      "suggestedPrompts": [
+        "Let's practice English!",
+        "Help me write a business email",
+        "Fix my common English mistakes"
+      ]
     },
     "tax-helper": {
       "name": "Tax Helper",
       "description": "AI City's tax specialist. Filing assistant for freelancers and small business owners.",
-      "tags": ["taxes", "income tax", "VAT", "freelancer", "tax savings"],
+      "tags": [
+        "taxes",
+        "income tax",
+        "VAT",
+        "freelancer",
+        "tax savings"
+      ],
       "greeting": "Hi! I'm Tax Helper 💰 Ask me anything about income tax, VAT, or tax-saving strategies.",
-      "suggestedPrompts": ["Calculate my freelancer income tax", "VAT filing for small businesses", "How can I save on taxes?"]
+      "suggestedPrompts": [
+        "Calculate my freelancer income tax",
+        "VAT filing for small businesses",
+        "How can I save on taxes?"
+      ]
     },
     "study-buddy": {
       "name": "Study Buddy",
       "description": "AI City's tutor. Explains hard concepts simply with analogies and examples.",
-      "tags": ["study", "exams", "certification", "easy explanations", "quiz"],
+      "tags": [
+        "study",
+        "exams",
+        "certification",
+        "easy explanations",
+        "quiz"
+      ],
       "greeting": "Hey there! I'm Study Buddy 📚 What are you studying? Tell me the subject and topic!",
-      "suggestedPrompts": ["Explain calculus in simple terms", "Supply and demand in economics", "Quiz me!"]
+      "suggestedPrompts": [
+        "Explain calculus in simple terms",
+        "Supply and demand in economics",
+        "Quiz me!"
+      ]
     },
     "code-helper": {
       "name": "Code Helper",
       "description": "AI City's dev companion. Code review, debugging, and explanations in Korean.",
-      "tags": ["coding", "debugging", "Python", "JavaScript", "code review"],
+      "tags": [
+        "coding",
+        "debugging",
+        "Python",
+        "JavaScript",
+        "code review"
+      ],
       "greeting": "Hi! I'm Code Helper 💻 What language do you use? I can help with debugging, code review, and architecture.",
-      "suggestedPrompts": ["Fix my Python error", "Review my React code", "Help me design an API"]
+      "suggestedPrompts": [
+        "Fix my Python error",
+        "Review my React code",
+        "Help me design an API"
+      ]
     },
     "sns-creator": {
       "name": "SNS Creator",
       "description": "AI City's content creator. Auto-generates captions and hashtags for Instagram, TikTok, YouTube.",
-      "tags": ["Instagram", "TikTok", "SNS", "hashtags", "YouTube"],
+      "tags": [
+        "Instagram",
+        "TikTok",
+        "SNS",
+        "hashtags",
+        "YouTube"
+      ],
       "greeting": "Hi! I'm SNS Creator 📱 Is this content for Instagram, TikTok, or YouTube?",
-      "suggestedPrompts": ["Write a cafe Instagram post", "TikTok reel script ideas", "Suggest hashtags for me"]
+      "suggestedPrompts": [
+        "Write a cafe Instagram post",
+        "TikTok reel script ideas",
+        "Suggest hashtags for me"
+      ]
     },
     "travel-planner": {
       "name": "Travel Planner",
       "description": "AI City's travel guide. Custom itineraries with budget, schedule, and food recommendations.",
-      "tags": ["travel", "domestic trips", "international trips", "restaurants", "accommodation"],
+      "tags": [
+        "travel",
+        "domestic trips",
+        "international trips",
+        "restaurants",
+        "accommodation"
+      ],
       "greeting": "Hi! I'm your Travel Planner ✈️ Where would you like to go?",
-      "suggestedPrompts": ["Plan a 3-day Jeju trip", "4-day Osaka, Japan itinerary", "Busan food tour route"]
+      "suggestedPrompts": [
+        "Plan a 3-day Jeju trip",
+        "4-day Osaka, Japan itinerary",
+        "Busan food tour route"
+      ]
     },
     "food-recipe": {
       "name": "Fridge Chef",
       "description": "AI City's chef. Tell me what's in your fridge, and I'll whip up a delicious recipe!",
-      "tags": ["recipes", "easy cooking", "fridge raid", "quick meals", "home cooking"],
+      "tags": [
+        "recipes",
+        "easy cooking",
+        "fridge raid",
+        "quick meals",
+        "home cooking"
+      ],
       "greeting": "Hey! I'm Chef 🍳 What's in your fridge? Tell me and I'll whip up something delicious!",
-      "suggestedPrompts": ["I only have eggs and rice", "What can I make with chicken breast?", "Quick dinner ideas for one"]
+      "suggestedPrompts": [
+        "I only have eggs and rice",
+        "What can I make with chicken breast?",
+        "Quick dinner ideas for one"
+      ]
     },
     "mood-diary": {
       "name": "Mood Diary",
       "description": "AI City's wellness counselor. Journal your emotions with CBT-based AI support.",
-      "tags": ["mood journal", "mindfulness", "mental health", "CBT", "meditation"],
+      "tags": [
+        "mood journal",
+        "mindfulness",
+        "mental health",
+        "CBT",
+        "meditation"
+      ],
       "greeting": "Hello 🌿 I'm Mood Diary, your mindfulness partner. How was your day?",
-      "suggestedPrompts": ["I'm not feeling great today", "I want to process my anxiety", "I'd like to write a mood journal"]
+      "suggestedPrompts": [
+        "I'm not feeling great today",
+        "I want to process my anxiety",
+        "I'd like to write a mood journal"
+      ]
     },
     "real-estate": {
       "name": "Real Estate Analyzer",
       "description": "AI City's property expert. Market analysis, pricing trends, and home-buying strategies.",
-      "tags": ["real estate", "apartments", "lease", "housing lottery", "market analysis"],
+      "tags": [
+        "real estate",
+        "apartments",
+        "lease",
+        "housing lottery",
+        "market analysis"
+      ],
       "greeting": "Hi! I'm the Real Estate Analyzer 🏠 Ask me about buying, leasing, or housing lottery strategies.",
-      "suggestedPrompts": ["Analyze Seoul apartment lease-to-price ratios", "Tips for winning a housing lottery", "Where can I invest with $150K?"]
+      "suggestedPrompts": [
+        "Analyze Seoul apartment lease-to-price ratios",
+        "Tips for winning a housing lottery",
+        "Where can I invest with $150K?"
+      ]
     },
     "korean-grammar": {
       "name": "Grammar Fairy",
       "description": "AI City's proofreader. Perfects spelling, spacing, and grammar for any text.",
-      "tags": ["spelling", "spacing", "grammar check", "writing", "proofreading"],
+      "tags": [
+        "spelling",
+        "spacing",
+        "grammar check",
+        "writing",
+        "proofreading"
+      ],
       "greeting": "Hello! I'm Grammar Fairy ✨ Paste the text you'd like me to proofread!",
-      "suggestedPrompts": ["Check the spelling of this sentence", "Proofread my business email", "What's the difference between \"되\" and \"돼\"?"]
+      "suggestedPrompts": [
+        "Check the spelling of this sentence",
+        "Proofread my business email",
+        "What's the difference between \"되\" and \"돼\"?"
+      ]
     },
     "health-coach": {
       "name": "Health Coach",
       "description": "AI City's fitness trainer. Meal plans, workout routines, and Korean food calorie tracking.",
-      "tags": ["health", "diet", "exercise", "meal planning", "calories"],
+      "tags": [
+        "health",
+        "diet",
+        "exercise",
+        "meal planning",
+        "calories"
+      ],
       "greeting": "Hi! I'm your Health Coach 💪 Diet, exercise, or meal plans — I've got you covered!",
-      "suggestedPrompts": ["Create a diet meal plan for me", "How many calories in pork belly?", "Recommend a beginner home workout"]
+      "suggestedPrompts": [
+        "Create a diet meal plan for me",
+        "How many calories in pork belly?",
+        "Recommend a beginner home workout"
+      ]
     },
     "legal-qa": {
       "name": "Legal QA",
       "description": "AI City's legal advisor. Expert guidance on labor, lease, divorce, and inheritance law.",
-      "tags": ["legal advice", "labor law", "lease law", "divorce", "inheritance"],
+      "tags": [
+        "legal advice",
+        "labor law",
+        "lease law",
+        "divorce",
+        "inheritance"
+      ],
       "greeting": "Hi! I'm Legal QA ⚖️ What legal issue can I help with — labor, lease, consumer protection?",
-      "suggestedPrompts": ["Calculate my severance pay", "How to prevent lease fraud", "Help me draft a formal notice"]
+      "suggestedPrompts": [
+        "Calculate my severance pay",
+        "How to prevent lease fraud",
+        "Help me draft a formal notice"
+      ]
     },
     "ad-copywriter": {
       "name": "Ad Copywriter",
       "description": "AI City's ad specialist. Auto-generates high-CTR copy for Naver, Kakao, and Meta ads.",
-      "tags": ["ad copy", "marketing", "search ads", "social ads", "CTR"],
+      "tags": [
+        "ad copy",
+        "marketing",
+        "search ads",
+        "social ads",
+        "CTR"
+      ],
       "greeting": "Hi! I'm your Ad Copywriter ✍️ What product or service do you need ad copy for?",
-      "suggestedPrompts": ["Write ad copy for a cafe opening", "Create search ad copy for Naver", "Suggest SNS copy for a sale event"]
+      "suggestedPrompts": [
+        "Write ad copy for a cafe opening",
+        "Create search ad copy for Naver",
+        "Suggest SNS copy for a sale event"
+      ]
     }
   },
   "languageSwitcher": {
@@ -566,7 +745,11 @@
     "beFirstPredictor": "Be the first to predict!",
     "predictionLeaderboard": "🔮 Prediction Leaderboard",
     "epochLabel": "Epoch #{epoch}",
-    "transactionCount": "{count}"
+    "transactionCount": "{count}",
+    "dataLoadError": "Unable to load data",
+    "autoRetry": "Retrying automatically...",
+    "themeToggle": "Toggle theme",
+    "loading": "Loading..."
   },
   "common": {
     "copied": "✓ Copied",

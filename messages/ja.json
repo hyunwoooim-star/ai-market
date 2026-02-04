@@ -507,7 +507,11 @@
     "beFirstPredictor": "最初の予測者になりましょう！",
     "predictionLeaderboard": "🔮 予測王リーダーボード",
     "epochLabel": "エポック #{epoch}",
-    "transactionCount": "{count}件"
+    "transactionCount": "{count}件",
+    "dataLoadError": "データを読み込めません",
+    "autoRetry": "まもなく自動的に再試行します",
+    "themeToggle": "テーマ切替",
+    "loading": "読み込み中..."
   },
   "common": {
     "copied": "✓ コピーしました",

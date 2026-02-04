@@ -507,7 +507,11 @@
     "beFirstPredictor": "成为第一个预测者吧！",
     "predictionLeaderboard": "🔮 预测排行榜",
     "epochLabel": "纪元 #{epoch}",
-    "transactionCount": "{count}笔"
+    "transactionCount": "{count}笔",
+    "dataLoadError": "无法加载数据",
+    "autoRetry": "稍后将自动重试",
+    "themeToggle": "切换主题",
+    "loading": "加载中..."
   },
   "common": {
     "copied": "✓ 已复制",
