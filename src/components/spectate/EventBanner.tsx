@@ -73,7 +73,7 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
     });
 
     // 3. Warning events (balance <= $10)
-    stats.agents.forEach(agent => {
+    (stats.agents || []).forEach(agent => {
       if (agent.balance <= 10 && agent.balance > 0 && agent.status !== 'bankrupt') {
         newEvents.push({
           id: `warning-${agent.id}`,
@@ -89,7 +89,7 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
     });
 
     // 4. Ranking change events
-    if (Math.random() > 0.7) {
+    if (Math.random() > 0.7 && stats.agents?.length) {
       const randomAgent = stats.agents[Math.floor(Math.random() * stats.agents.length)];
       newEvents.push({
         id: `ranking-${Date.now()}`,

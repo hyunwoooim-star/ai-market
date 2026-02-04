@@ -110,7 +110,7 @@ export default function SpectatePage() {
       if (!res.ok) throw new Error('fetch failed');
       const data = await res.json();
       if (data.totalAgents !== undefined) {
-        setStats(data as SpectateStats);
+        setStats(prev => ({ ...prev, ...data, agents: prev.agents || [] }));
         // Extract epoch events from stats response
         if (data.epochEvents && Array.isArray(data.epochEvents)) {
           setEpochEvents(data.epochEvents as EpochEventCard[]);
@@ -205,7 +205,7 @@ export default function SpectatePage() {
       <div className="h-screen flex items-center justify-center bg-[var(--background)]">
         <div className="text-center space-y-4">
           <div className="w-10 h-10 border-3 border-[var(--accent)] border-t-transparent rounded-full animate-spin mx-auto" />
-          <p className="text-sm text-[var(--text-secondary)]">경제 데이터 로딩 중...</p>
+          <p className="text-sm text-[var(--text-secondary)]">Loading economy data...</p>
         </div>
       </div>
     );
