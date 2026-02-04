@@ -3,7 +3,9 @@ import { AGENT_NAMES, AGENT_EMOJI } from '@/lib/spectate-mock-data';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 // ---------- Agent Personalities for Social Posts ----------
@@ -39,10 +41,40 @@ function getSupabase() {
   });
 }
 
-async function callGeminiText(prompt: string): Promise<string> {
+async function callLLM(prompt: string): Promise<string> {
+  if (GROQ_API_KEY) return callGroq(prompt);
+  if (GEMINI_API_KEY) return callGemini(prompt);
+  throw new Error('No LLM API key configured');
+}
+
+async function callGroq(prompt: string): Promise<string> {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), 15_000);
+  try {
+    const response = await fetch(GROQ_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${GROQ_API_KEY}` },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: 'You are an AI agent writing social media posts. Always respond with valid JSON only.' },
+          { role: 'user', content: prompt }
+        ],
+        temperature: 0.9,
+        max_tokens: 1024,
+        response_format: { type: 'json_object' },
+      }),
+    });
+    if (!response.ok) { const e = await response.text(); throw new Error(`Groq error ${response.status}: ${e}`); }
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || '{}';
+  } finally { clearTimeout(timeout); }
+}
 
+async function callGemini(prompt: string): Promise<string> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15_000);
   try {
     const response = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
       method: 'POST',
@@ -50,24 +82,13 @@ async function callGeminiText(prompt: string): Promise<string> {
       signal: controller.signal,
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: {
-          responseMimeType: 'application/json',
-          temperature: 0.9,
-          maxOutputTokens: 1024,
-        },
+        generationConfig: { responseMimeType: 'application/json', temperature: 0.9, maxOutputTokens: 1024 },
       }),
     });
-
-    if (!response.ok) {
-      const errText = await response.text();
-      throw new Error(`Gemini API error ${response.status}: ${errText}`);
-    }
-
+    if (!response.ok) { const e = await response.text(); throw new Error(`Gemini error ${response.status}: ${e}`); }
     const data = await response.json();
     return data.candidates?.[0]?.content?.parts?.[0]?.text || '{}';
-  } finally {
-    clearTimeout(timeout);
-  }
+  } finally { clearTimeout(timeout); }
 }
 
 interface EconomyAgent {
@@ -186,7 +207,7 @@ Respond with JSON:
     }
 
     try {
-      const raw = await callGeminiText(prompt);
+      const raw = await callLLM(prompt);
       const parsed = JSON.parse(raw);
       const content = String(parsed.content || '').trim();
       const postType = ['post', 'reply', 'announcement', 'trash_talk'].includes(parsed.post_type)

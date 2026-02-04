@@ -7,7 +7,9 @@ import { createServerClient } from '@supabase/ssr';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY!;
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+const GROQ_URL = 'https://api.groq.com/openai/v1/chat/completions';
 const GEMINI_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 const PLATFORM_FEE_RATE = 0.05;
@@ -188,9 +190,56 @@ function generateEpochEvent(epochNumber: number): EpochEvent {
 
 // ---------- Gemini API Call ----------
 
+async function callLLM(prompt: string): Promise<string> {
+  // Prefer Groq (free, reliable), fallback to Gemini
+  if (GROQ_API_KEY) {
+    return callGroq(prompt);
+  }
+  if (GEMINI_API_KEY) {
+    return callGemini(prompt);
+  }
+  throw new Error('No LLM API key configured (GROQ_API_KEY or GEMINI_API_KEY)');
+}
+
+async function callGroq(prompt: string): Promise<string> {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 15_000);
+
+  try {
+    const response = await fetch(GROQ_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${GROQ_API_KEY}`,
+      },
+      signal: controller.signal,
+      body: JSON.stringify({
+        model: 'llama-3.3-70b-versatile',
+        messages: [
+          { role: 'system', content: 'You are an AI economy simulation engine. Always respond with valid JSON only, no markdown, no explanation.' },
+          { role: 'user', content: prompt }
+        ],
+        temperature: 0.7,
+        max_tokens: 512,
+        response_format: { type: 'json_object' },
+      }),
+    });
+
+    if (!response.ok) {
+      const errText = await response.text();
+      throw new Error(`Groq API error ${response.status}: ${errText}`);
+    }
+
+    const data = await response.json();
+    return data.choices?.[0]?.message?.content || '{}';
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 async function callGemini(prompt: string): Promise<string> {
   const controller = new AbortController();
-  const timeout = setTimeout(() => controller.abort(), 15_000); // 15s timeout
+  const timeout = setTimeout(() => controller.abort(), 15_000);
 
   try {
     const response = await fetch(`${GEMINI_URL}?key=${GEMINI_API_KEY}`, {
@@ -819,7 +868,7 @@ IMPORTANT: Return ONLY valid JSON in this exact format:
 {"diary": "your diary entry here", "mood": "mood_word"}`;
 
     try {
-      const raw = await callGemini(prompt);
+      const raw = await callLLM(prompt);
       const parsed = JSON.parse(raw);
       const diary = String(parsed.diary || '').trim();
       const rawMood = String(parsed.mood || 'neutral').toLowerCase().trim();
@@ -897,7 +946,7 @@ export async function runEpochWithDiaries(epochNumber: number): Promise<EpochRes
     const decisionPromises = activeAgents.map(async (agent: EconomyAgent) => {
       try {
         const prompt = buildDecisionPrompt(agent, agents as EconomyAgent[], epochNumber, event);
-        const raw = await callGemini(prompt);
+        const raw = await callLLM(prompt);
         decisions.set(agent.id, parseDecision(raw, agent, agents as EconomyAgent[]));
       } catch (err) {
         console.error(`[E${epochNumber}] ${agentDisplayName(agent)} AI failed:`, err);
@@ -1035,7 +1084,7 @@ export async function runEpoch(epochNumber: number): Promise<EpochResult> {
     const decisionPromises = activeAgents.map(async (agent: EconomyAgent) => {
       try {
         const prompt = buildDecisionPrompt(agent, agents as EconomyAgent[], epochNumber, event);
-        const raw = await callGemini(prompt);
+        const raw = await callLLM(prompt);
         decisions.set(agent.id, parseDecision(raw, agent, agents as EconomyAgent[]));
       } catch (err) {
         console.error(`[E${epochNumber}] ${agentDisplayName(agent)} AI failed:`, err);
