@@ -106,6 +106,20 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
 
   const isBankruptcyRelated = tx.narrative && (tx.narrative.includes('bankruptcy') || tx.narrative.includes('파산'));
   const isLargeTrade = tx.amount >= 10;
+  
+  // Detect special transaction types from skill_type or narrative
+  const txType = tx.skill_type as string;
+  const isLoan = txType === 'loan';
+  const isInvestment = txType === 'investment';
+  const isPartnership = txType === 'partnership';
+  const isSabotage = txType === 'sabotage';
+  const isRecruit = txType === 'recruitment';
+  const isSpecialAction = isLoan || isInvestment || isPartnership || isSabotage || isRecruit;
+  const backfired = isSabotage && tx.narrative?.includes('BACKFIRED');
+
+  // Extract reasoning from narrative (after the last period before the reason)
+  const reasonMatch = tx.narrative?.match(/(?:LOAN|INVESTMENT|PARTNERSHIP|SABOTAGE|RECRUIT|bought).*?\.\s*(.+)$/);
+  const reasoning = reasonMatch?.[1] || '';
 
   const timeStr = new Date(tx.created_at).toLocaleTimeString(undefined, {
     hour: '2-digit',
@@ -119,8 +133,20 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
       exit={{ opacity: 0, scale: 0.95 }}
       transition={{ delay: index * 0.02, type: 'spring', stiffness: 400, damping: 25 }}
       className={`border rounded-xl p-3 transition-all hover:scale-[1.01] ${
-        isBankruptcyRelated 
+        isSabotage
+          ? backfired 
+            ? 'bg-orange-500/10 border-orange-500/40 shadow-orange-500/10 shadow-lg'
+            : 'bg-red-500/10 border-red-500/40 shadow-red-500/10 shadow-lg'
+          : isBankruptcyRelated 
           ? 'bg-red-500/5 border-red-500/30 shadow-red-500/10 shadow-lg' 
+          : isLoan
+          ? 'bg-blue-500/5 border-blue-500/30 shadow-blue-500/10 shadow-lg'
+          : isInvestment
+          ? 'bg-purple-500/5 border-purple-500/30 shadow-purple-500/10 shadow-lg'
+          : isPartnership
+          ? 'bg-cyan-500/5 border-cyan-500/30 shadow-cyan-500/10 shadow-lg'
+          : isRecruit
+          ? 'bg-amber-500/5 border-amber-500/30 shadow-amber-500/10 shadow-lg'
           : isLargeTrade
           ? 'bg-emerald-500/5 border-emerald-500/30 shadow-emerald-500/10 shadow-lg'
           : 'bg-[var(--surface)] border-[var(--border)] hover:border-[var(--accent)]/30'
@@ -132,11 +158,18 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
           <span className="truncate">{buyerName}</span>
         </span>
         <motion.span 
-          className="text-[var(--text-tertiary)] shrink-0"
-          animate={isLargeTrade ? { x: [0, 2, -2, 0] } : {}}
-          transition={{ duration: 0.5, repeat: isLargeTrade ? Infinity : 0, repeatDelay: 2 }}
+          className={`shrink-0 text-xs font-bold ${
+            isSabotage ? 'text-red-400' 
+            : isLoan ? 'text-blue-400'
+            : isInvestment ? 'text-purple-400'
+            : isPartnership ? 'text-cyan-400'
+            : isRecruit ? 'text-amber-400'
+            : 'text-[var(--text-tertiary)]'
+          }`}
+          animate={isLargeTrade || isSabotage ? { x: [0, 2, -2, 0] } : {}}
+          transition={{ duration: 0.5, repeat: (isLargeTrade || isSabotage) ? Infinity : 0, repeatDelay: 2 }}
         >
-          →
+          {isSabotage ? '⚔️' : isLoan ? '💰→' : isInvestment ? '📈→' : isPartnership ? '🤝' : isRecruit ? '🔗→' : '→'}
         </motion.span>
         <span className="flex items-center gap-1 font-semibold text-[var(--text-primary)] truncate shrink min-w-0">
           <span className="shrink-0">{sellerEmoji}</span>
@@ -169,7 +202,7 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
             💀 {t('bankruptcyRelated')}
           </motion.span>
         )}
-        {isLargeTrade && !isBankruptcyRelated && (
+        {isLargeTrade && !isBankruptcyRelated && !isSpecialAction && (
           <motion.span 
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
@@ -178,9 +211,59 @@ function TransactionRow({ tx, index }: { tx: SpectateTransaction; index: number 
             💰 {t('largeTrade')}
           </motion.span>
         )}
+        {isLoan && (
+          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
+            className="px-2 py-0.5 bg-blue-500/20 text-blue-400 text-[10px] rounded-md font-bold border border-blue-500/30">
+            💰 LOAN
+          </motion.span>
+        )}
+        {isInvestment && (
+          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
+            className="px-2 py-0.5 bg-purple-500/20 text-purple-400 text-[10px] rounded-md font-bold border border-purple-500/30">
+            📈 INVEST
+          </motion.span>
+        )}
+        {isPartnership && (
+          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
+            className="px-2 py-0.5 bg-cyan-500/20 text-cyan-400 text-[10px] rounded-md font-bold border border-cyan-500/30">
+            🤝 PARTNER
+          </motion.span>
+        )}
+        {isSabotage && (
+          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
+            className={`px-2 py-0.5 text-[10px] rounded-md font-bold border ${
+              backfired 
+                ? 'bg-orange-500/20 text-orange-400 border-orange-500/30' 
+                : 'bg-red-500/20 text-red-400 border-red-500/30'
+            }`}>
+            {backfired ? '💥 BACKFIRED' : '🗡️ SABOTAGE'}
+          </motion.span>
+        )}
+        {isRecruit && (
+          <motion.span initial={{ scale: 0 }} animate={{ scale: 1 }}
+            className="px-2 py-0.5 bg-amber-500/20 text-amber-400 text-[10px] rounded-md font-bold border border-amber-500/30">
+            🔗 RECRUIT
+          </motion.span>
+        )}
       </div>
 
-      {tx.narrative && (
+      {/* Agent's strategic reasoning */}
+      {reasoning && (
+        <div className={`mt-2 pt-2 border-t ${
+          isSabotage ? 'border-red-500/20' 
+          : isLoan ? 'border-blue-500/20'
+          : isInvestment ? 'border-purple-500/20'
+          : isPartnership ? 'border-cyan-500/20'
+          : isBankruptcyRelated ? 'border-red-500/20' 
+          : 'border-[var(--border)]'
+        }`}>
+          <p className="text-xs text-[var(--text-secondary)] leading-relaxed line-clamp-3 italic">
+            💭 &ldquo;{reasoning}&rdquo;
+          </p>
+        </div>
+      )}
+      {/* Fallback: show narrative if no reasoning extracted */}
+      {!reasoning && tx.narrative && (
         <div className={`mt-2 pt-2 border-t ${
           isBankruptcyRelated ? 'border-red-500/20' : 'border-[var(--border)]'
         }`}>

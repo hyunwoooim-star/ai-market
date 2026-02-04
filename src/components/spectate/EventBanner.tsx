@@ -72,6 +72,76 @@ export default function EventBanner({ transactions, stats, onEventClick }: Props
       }
     });
 
+    // 2b. Sabotage events
+    transactions.forEach(tx => {
+      if (tx.skill_type === 'sabotage') {
+        const attackerName = getAgentName(tx.buyer_id);
+        const victimName = getAgentName(tx.seller_id);
+        const backfired = tx.narrative?.includes('BACKFIRED');
+        newEvents.push({
+          id: `sabotage-${tx.id}`,
+          type: 'large-trade',
+          emoji: backfired ? '💥' : '🗡️',
+          title: backfired ? 'Sabotage Backfired!' : 'Sabotage Attack!',
+          description: backfired 
+            ? `${attackerName} tried to sabotage ${victimName} — BACKFIRED!`
+            : `${attackerName} sabotaged ${victimName}!`,
+          timestamp: tx.created_at,
+          priority: 90,
+        });
+      }
+    });
+
+    // 2c. Investment / Loan / Partnership events
+    transactions.forEach(tx => {
+      if (tx.skill_type === 'investment') {
+        newEvents.push({
+          id: `invest-${tx.id}`,
+          type: 'large-trade',
+          emoji: '📈',
+          title: 'New Investment!',
+          description: `${getAgentName(tx.buyer_id)} invested $${tx.amount.toFixed(2)} in ${getAgentName(tx.seller_id)}`,
+          amount: tx.amount,
+          timestamp: tx.created_at,
+          priority: 75,
+        });
+      }
+      if (tx.skill_type === 'loan') {
+        newEvents.push({
+          id: `loan-${tx.id}`,
+          type: 'large-trade',
+          emoji: '💰',
+          title: 'Loan Issued!',
+          description: `${getAgentName(tx.seller_id)} lent $${tx.amount.toFixed(2)} to ${getAgentName(tx.buyer_id)}`,
+          amount: tx.amount,
+          timestamp: tx.created_at,
+          priority: 65,
+        });
+      }
+      if (tx.skill_type === 'partnership') {
+        newEvents.push({
+          id: `partner-${tx.id}`,
+          type: 'ranking-change',
+          emoji: '🤝',
+          title: 'Partnership Formed!',
+          description: `${getAgentName(tx.buyer_id)} × ${getAgentName(tx.seller_id)} — 50/50 deal`,
+          timestamp: tx.created_at,
+          priority: 60,
+        });
+      }
+      if (tx.skill_type === 'recruitment') {
+        newEvents.push({
+          id: `recruit-${tx.id}`,
+          type: 'ranking-change',
+          emoji: '🔗',
+          title: 'Agent Recruited!',
+          description: `${getAgentName(tx.buyer_id)} recruited ${getAgentName(tx.seller_id)} into their network`,
+          timestamp: tx.created_at,
+          priority: 55,
+        });
+      }
+    });
+
     // 3. Warning events (balance <= $10)
     (stats.agents || []).forEach(agent => {
       if (agent.balance <= 10 && agent.balance > 0 && agent.status !== 'bankrupt') {
