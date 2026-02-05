@@ -62,6 +62,9 @@ importers:
       framer-motion:
         specifier: ^12.30.0
         version: 12.30.0(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
+      groq:
+        specifier: ^5.8.0
+        version: 5.8.0
       lucide-react:
         specifier: ^0.563.0
         version: 0.563.0(react@19.2.3)
@@ -2796,6 +2799,10 @@ packages:
 
   graceful-fs@4.2.11:
     resolution: {integrity: sha512-RbJ5/jmFcNNCcDV5o9eTnBLJ/HszWV0P73bc+Ff4nS/rJj+YaS6IGyiOL0VoBYX+l1Wrl3k63h/KrH+nhJ0XvQ==}
+
+  groq@5.8.0:
+    resolution: {integrity: sha512-oMvHSMnzwqjwdp4EBO7+PLVSU7VPqeVZhnZJwmJ4k4oZ+S5WwzRCs6+hQ5QQnQrtMpoQfr8GoGywGcn/aXiP3w==}
+    engines: {node: '>=20.19 <22 || >=22.12'}
 
   has-bigints@1.1.0:
     resolution: {integrity: sha512-R3pbpkcIqv2Pm3dUwgjclDRVmWpTJW2DcMzcIhEXEx1oh/CEMObMm3KLmRJOdvhM7o4uQBnwr8pzRK2sJWIqfg==}
@@ -7562,6 +7569,8 @@ snapshots:
   gopd@1.2.0: {}
 
   graceful-fs@4.2.11: {}
+
+  groq@5.8.0: {}
 
   has-bigints@1.1.0: {}
 

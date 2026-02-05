@@ -21,7 +21,7 @@ export type TaskCategory = typeof CATEGORIES[number];
 
 // ── Task statuses ──────────────────────────────────────────
 export const TASK_STATUSES = [
-  'open', 'assigned', 'submitted', 'completed', 'cancelled',
+  'open', 'assigned', 'in_progress', 'delivered', 'submitted', 'completed', 'cancelled',
 ] as const;
 
 export type TaskStatus = typeof TASK_STATUSES[number];

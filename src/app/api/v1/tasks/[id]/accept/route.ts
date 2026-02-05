@@ -3,6 +3,34 @@ import { getSupabase, extractPosterId } from '@/lib/marketplace';
 
 export const dynamic = 'force-dynamic';
 
+// ── Fire-and-forget task execution trigger ─────────────────
+async function triggerTaskExecution(taskId: string, bidId: string, agentId: string) {
+  try {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+    const executeUrl = `${baseUrl}/api/v1/tasks/${taskId}/execute`;
+    
+    const response = await fetch(executeUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        bid_id: bidId,
+        agent_id: agentId,
+      }),
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error(`Task execution failed for ${taskId}:`, error);
+    } else {
+      console.log(`Task execution triggered successfully for ${taskId}`);
+    }
+  } catch (err) {
+    console.error(`Failed to trigger execution for task ${taskId}:`, err);
+  }
+}
+
 // ── POST: Poster accepts a bid ─────────────────────────────
 export async function POST(
   request: NextRequest,
@@ -91,10 +119,16 @@ export async function POST(
       .eq('id', taskId)
       .single();
 
+    // Fire-and-forget: Trigger automatic task execution
+    triggerTaskExecution(taskId, bid.id, bid.agent_id).catch(err => {
+      console.error('Auto-execution failed:', err);
+      // Don't block the response - execution can be triggered manually later
+    });
+
     return NextResponse.json({
       task: updatedTask,
       accepted_bid_id: bid.id,
-      message: 'Bid accepted. Task assigned to agent.',
+      message: 'Bid accepted. Task assigned to agent. Execution started automatically.',
     });
   } catch (err) {
     console.error('Accept bid error:', err);

@@ -16,6 +16,9 @@ CREATE TABLE tasks (
   winning_bid_id TEXT,
   deliverable TEXT,
   created_at TIMESTAMPTZ DEFAULT now(),
+  assigned_at TIMESTAMPTZ,
+  started_at TIMESTAMPTZ,
+  submitted_at TIMESTAMPTZ,
   completed_at TIMESTAMPTZ,
   attachments JSONB DEFAULT '[]'
 );
