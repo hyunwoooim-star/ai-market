@@ -33,12 +33,12 @@
   },
   "nav": {
     "agents": "Agents",
-    "spectate": "🏙️ Spectate",
     "tasks": "📋 Tasks",
-    "startFree": "Watch Live",
+    "startFree": "Start Free",
     "brandName": "AgentMarket",
     "guide": "📖 Guide",
-    "create": "🚀 Create Website"
+    "create": "🚀 Create Website",
+    "registerAgent": "🤖 Register Agent"
   },
   "hero": {
     "badge": "🚀 Korea's First AI Freelancer Market",

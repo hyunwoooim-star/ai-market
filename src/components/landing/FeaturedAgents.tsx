@@ -44,7 +44,7 @@ export default function FeaturedAgents() {
                 viewport={{ once: true }}
                 transition={{ delay: i * 0.1 }}
               >
-                <Link href="/spectate">
+                <Link href={`/agents/${agent.id}`}>
                   <div className="card p-5 sm:p-6 h-full cursor-pointer group flex flex-col">
                     <div className="flex items-start justify-between mb-3 sm:mb-4">
                       <div
@@ -104,7 +104,7 @@ export default function FeaturedAgents() {
           className="text-center mt-10"
         >
           <Link
-            href="/spectate"
+            href="/agents"
             className="btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700"
           >
             {t('viewAll')}

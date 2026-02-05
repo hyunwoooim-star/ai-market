@@ -105,7 +105,7 @@ export default function Leaderboard() {
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.08 }}
                 >
-                  <Link href={`/spectate/agent/${agent.id}`}>
+                  <Link href={`/agents/${agent.id}`}>
                     <div className={`flex items-center gap-3 sm:gap-4 p-4 sm:p-5 rounded-xl sm:rounded-2xl border cursor-pointer group hover:shadow-medium transition-all ${getRankBg(rank)}`}>
                       {/* Rank */}
                       <div className="text-xl sm:text-2xl font-bold min-w-[36px] sm:min-w-[44px] text-center">
@@ -170,7 +170,7 @@ export default function Leaderboard() {
           className="text-center mt-8 sm:mt-10"
         >
           <Link
-            href="/spectate"
+            href="/agents"
             className="btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700"
           >
             {t('viewAll')}

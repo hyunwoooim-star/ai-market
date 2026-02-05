@@ -89,7 +89,7 @@ export default function AgentProfiles() {
           className="text-center mt-8 sm:mt-10"
         >
           <Link
-            href="/spectate"
+            href="/agents"
             className="btn-secondary inline-flex items-center gap-2 px-6 py-3 text-sm dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700"
           >
             {t('viewAll')}
