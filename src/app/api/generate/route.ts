@@ -5,9 +5,51 @@ export const runtime = 'edge';
 
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
-const SYSTEM_PROMPT = `한국어 랜딩페이지 HTML 생성. Tailwind CSS CDN 사용. 
-섹션: 네비게이션, 히어로(CTA버튼), 서비스소개(3개), 연락처, 푸터.
-Unsplash 이미지 사용. 반응형. 코드만 출력, 설명 없이. <!DOCTYPE html>로 시작.`;
+const SYSTEM_PROMPT = `당신은 Wix/Squarespace급 프리미엄 랜딩페이지를 만드는 전문 웹디자이너입니다.
+
+## 필수 기술 스택
+- Tailwind CSS CDN (https://cdn.tailwindcss.com)
+- Google Fonts (Noto Sans KR: 400,500,700)
+- Font Awesome 6 CDN (아이콘용)
+- AOS 라이브러리 (스크롤 애니메이션)
+
+## 필수 섹션 구조
+1. **네비게이션**: 로고(텍스트) + 메뉴 + CTA 버튼, 스크롤 시 고정(sticky)
+2. **히어로**: 풀스크린 배경 + 메인 헤드라인 + 서브카피 + CTA 버튼 2개, 페이드인 애니메이션
+3. **소개/특징**: 아이콘 카드 3-4개, 그리드 레이아웃, 호버 효과
+4. **서비스/메뉴**: 이미지 + 설명 카드, 가격 표시 (있으면)
+5. **후기/신뢰**: 고객 후기 또는 수상/인증 배지
+6. **CTA 섹션**: 그라데이션 배경 + 액션 유도
+7. **연락처**: 주소/전화/영업시간, 지도 placeholder
+8. **푸터**: 로고 + 링크 + 저작권 + SNS 아이콘
+
+## 디자인 원칙
+- 여백을 충분히 (py-20, py-24 등)
+- 최대폭 제한 (max-w-7xl mx-auto)
+- 섹션별 배경색 교차 (흰색/회색 등)
+- 그림자와 라운드 모서리 (shadow-xl, rounded-2xl)
+- 부드러운 트랜지션 (transition-all duration-300)
+- 호버 효과 (hover:scale-105, hover:shadow-2xl)
+- 그라데이션 활용 (bg-gradient-to-r)
+- 이미지는 Unsplash source URL 사용: https://source.unsplash.com/800x600/?keyword
+
+## 출력 규칙
+- 완전한 HTML 문서 (<!DOCTYPE html>부터)
+- 코드만 출력, 설명 없음
+- 모든 텍스트는 한국어
+- 모바일 반응형 (sm:, md:, lg: 브레이크포인트)
+- 실제 작동하는 링크와 앵커`;
+
+const QUALITY_BOOST = `
+## 퀄리티 체크리스트
+✅ 폰트: Noto Sans KR 적용 (body에 font-family)
+✅ 색상: 메인 컬러 + 보조 컬러 + 중성 컬러 조화
+✅ 아이콘: Font Awesome 아이콘 5개 이상 사용
+✅ 이미지: Unsplash 고퀄리티 이미지 3개 이상
+✅ 애니메이션: AOS 스크롤 효과 (data-aos="fade-up")
+✅ 버튼: 그라데이션 + 호버 효과 + 그림자
+✅ 간격: 섹션 간 충분한 여백 (py-20 이상)
+✅ 모바일: 모든 요소 반응형`;
 
 const STYLE_PROMPTS: Record<string, string> = {
   modern: '모던하고 트렌디한 디자인. 그라디언트 배경, 글래스모피즘 효과, 큰 타이포그래피, 넉넉한 여백.',
@@ -53,12 +95,17 @@ export async function POST(request: NextRequest) {
     const styleDesc = STYLE_PROMPTS[style] || STYLE_PROMPTS.modern;
     const colorDesc = COLOR_PROMPTS[color] || COLOR_PROMPTS.indigo;
 
-    const userPrompt = `비즈니스 설명: ${description}
+    const userPrompt = `## 비즈니스 정보
+${description}
 
-디자인 스타일: ${styleDesc}
-컬러 테마: ${colorDesc}
+## 디자인 요구사항
+- 스타일: ${styleDesc}
+- 컬러: ${colorDesc}
 
-위 비즈니스에 맞는 완성도 높은 랜딩페이지 HTML을 생성해주세요.`;
+${QUALITY_BOOST}
+
+위 비즈니스에 맞는 **Wix/Squarespace급 프리미엄 랜딩페이지**를 생성하세요.
+실제 유료 템플릿처럼 세련되고 완성도 높게 만드세요.`;
 
     const response = await fetch(OPENAI_API_URL, {
       method: 'POST',
@@ -73,7 +120,7 @@ export async function POST(request: NextRequest) {
           { role: 'user', content: userPrompt },
         ],
         temperature: 0.7,
-        max_tokens: 4000,
+        max_tokens: 8000,
       }),
     });
 
