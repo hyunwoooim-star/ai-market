@@ -17,6 +17,25 @@ const STYLES: { key: Style; emoji: string }[] = [
   { key: 'warm', emoji: '🌿' },
 ];
 
+// Quick presets for common Korean businesses
+const PRESETS_KO = [
+  { emoji: '☕', label: '카페', desc: '아늑한 분위기의 동네 카페입니다. 핸드드립 커피와 수제 디저트를 판매하고, 예약도 받습니다.' },
+  { emoji: '💅', label: '네일샵', desc: '트렌디한 네일아트 전문 샵입니다. 젤네일, 페디큐어, 속눈썹 연장 서비스를 제공하며 온라인 예약이 가능합니다.' },
+  { emoji: '🏋️', label: '헬스장/PT', desc: '1:1 퍼스널 트레이닝 전문 피트니스입니다. 체형 교정, 다이어트, 근력 강화 프로그램을 운영합니다.' },
+  { emoji: '🍕', label: '음식점', desc: '정성 가득한 한식 맛집입니다. 점심 특선, 저녁 코스, 단체 예약을 받으며 배달도 가능합니다.' },
+  { emoji: '🏥', label: '병원/의원', desc: '지역 주민의 건강을 책임지는 가정의학과 의원입니다. 건강검진, 예방접종, 만성질환 관리를 합니다.' },
+  { emoji: '📸', label: '사진관', desc: '프로필 사진, 가족사진, 웨딩 촬영 전문 스튜디오입니다. 자연광 스튜디오와 야외 촬영을 제공합니다.' },
+];
+
+const PRESETS_EN = [
+  { emoji: '☕', label: 'Café', desc: 'A cozy neighborhood café serving hand-drip coffee and homemade desserts. Reservations available.' },
+  { emoji: '💅', label: 'Nail Salon', desc: 'A trendy nail art salon offering gel nails, pedicures, and eyelash extensions with online booking.' },
+  { emoji: '🏋️', label: 'Fitness/PT', desc: 'A personal training fitness center specializing in body correction, diet, and strength programs.' },
+  { emoji: '🍕', label: 'Restaurant', desc: 'A charming restaurant serving authentic cuisine. Lunch specials, dinner courses, and group bookings available.' },
+  { emoji: '🏥', label: 'Clinic', desc: 'A family medicine clinic providing health checkups, vaccinations, and chronic disease management.' },
+  { emoji: '📸', label: 'Photo Studio', desc: 'A professional photography studio for portraits, family photos, and wedding shoots.' },
+];
+
 const COLORS: { key: Color; tw: string; ring: string }[] = [
   { key: 'indigo', tw: 'bg-indigo-500', ring: 'ring-indigo-400' },
   { key: 'rose', tw: 'bg-rose-500', ring: 'ring-rose-400' },
@@ -184,6 +203,25 @@ export default function CreatePage() {
 
               {/* Form */}
               <div className="space-y-6">
+                {/* Quick Presets */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                    {isKorean ? '⚡ 빠른 시작' : '⚡ Quick Start'}
+                  </label>
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2">
+                    {(isKorean ? PRESETS_KO : PRESETS_EN).map((p) => (
+                      <button
+                        key={p.label}
+                        onClick={() => setDescription(p.desc)}
+                        className="flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all text-center"
+                      >
+                        <span className="text-xl">{p.emoji}</span>
+                        <span className="text-xs font-medium text-gray-600 dark:text-gray-400">{p.label}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
                 {/* Description */}
                 <div>
                   <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-2">
