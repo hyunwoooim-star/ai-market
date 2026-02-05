@@ -12,6 +12,7 @@ interface ChatMessage {
   content: string;
   timestamp: Date;
   status?: 'pending' | 'success' | 'error';
+  imageUrl?: string;
 }
 
 interface HistoryEntry {
@@ -39,6 +40,9 @@ const EXAMPLE_PROMPTS_EN = [
   { emoji: '📸', label: 'Change Image', prompt: 'Change the hero section background image' },
 ];
 
+// Max image size: 2MB
+const MAX_IMAGE_SIZE = 2 * 1024 * 1024;
+
 export default function EditPage() {
   const t = useTranslations('edit');
   const tCommon = useTranslations('common');
@@ -57,9 +61,15 @@ export default function EditPage() {
   const [showHistory, setShowHistory] = useState(false);
   const [viewMode, setViewMode] = useState<'desktop' | 'mobile'>('mobile');
   const [siteUrl, setSiteUrl] = useState('');
+  
+  // Image upload state
+  const [pendingImage, setPendingImage] = useState<string | null>(null);
+  const [pendingImageName, setPendingImageName] = useState<string>('');
+  const [uploadingImage, setUploadingImage] = useState(false);
 
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLTextAreaElement>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const isKorean = t('title') === '홈페이지 수정';
   const examplePrompts = isKorean ? EXAMPLE_PROMPTS_KO : EXAMPLE_PROMPTS_EN;
@@ -94,8 +104,8 @@ export default function EditPage() {
             id: 'system-1',
             role: 'system',
             content: isKorean
-              ? '홈페이지를 불러왔어요. 수정하고 싶은 내용을 말해주세요!'
-              : 'Site loaded. Tell me what you\'d like to change!',
+              ? '홈페이지를 불러왔어요. 수정하고 싶은 내용을 말해주세요! 📸 사진을 첨부하면 "이 사진으로 바꿔줘"라고 말할 수 있어요.'
+              : 'Site loaded. Tell me what you\'d like to change! 📸 You can attach photos and ask me to use them.',
             timestamp: new Date(),
           }]);
         } else {
@@ -118,9 +128,62 @@ export default function EditPage() {
     }
   }, [messages]);
 
+  // Handle image selection
+  const handleImageSelect = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    // Validate file type
+    if (!file.type.startsWith('image/')) {
+      setMessages(prev => [...prev, {
+        id: `system-${Date.now()}`,
+        role: 'system',
+        content: isKorean ? '❌ 이미지 파일만 업로드할 수 있어요' : '❌ Only image files are allowed',
+        timestamp: new Date(),
+      }]);
+      return;
+    }
+
+    // Validate file size
+    if (file.size > MAX_IMAGE_SIZE) {
+      setMessages(prev => [...prev, {
+        id: `system-${Date.now()}`,
+        role: 'system',
+        content: isKorean ? '❌ 이미지가 너무 커요 (최대 2MB)' : '❌ Image is too large (max 2MB)',
+        timestamp: new Date(),
+      }]);
+      return;
+    }
+
+    // Read as base64
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setPendingImage(reader.result as string);
+      setPendingImageName(file.name);
+      inputRef.current?.focus();
+    };
+    reader.readAsDataURL(file);
+
+    // Reset file input
+    if (fileInputRef.current) {
+      fileInputRef.current.value = '';
+    }
+  }, [isKorean]);
+
+  // Remove pending image
+  const handleRemoveImage = useCallback(() => {
+    setPendingImage(null);
+    setPendingImageName('');
+  }, []);
+
   const handleSend = useCallback(async (messageText?: string) => {
     const text = messageText || input.trim();
     if (!text || sending) return;
+
+    // If there's an image but no instruction, add a default instruction
+    const finalText = pendingImage && !text 
+      ? (isKorean ? '이 이미지로 바꿔줘' : 'Use this image')
+      : text;
 
     setInput('');
     setSending(true);
@@ -128,8 +191,9 @@ export default function EditPage() {
     const userMessage: ChatMessage = {
       id: `user-${Date.now()}`,
       role: 'user',
-      content: text,
+      content: finalText,
       timestamp: new Date(),
+      imageUrl: pendingImage || undefined,
     };
 
     const pendingMessage: ChatMessage = {
@@ -142,6 +206,11 @@ export default function EditPage() {
 
     setMessages(prev => [...prev, userMessage, pendingMessage]);
 
+    // Clear pending image after adding to message
+    const imageToSend = pendingImage;
+    setPendingImage(null);
+    setPendingImageName('');
+
     try {
       const res = await fetch('/api/hosting/edit', {
         method: 'POST',
@@ -149,7 +218,8 @@ export default function EditPage() {
         body: JSON.stringify({
           slug,
           html: html,
-          instruction: text,
+          instruction: finalText,
+          imageBase64: imageToSend || undefined,
         }),
       });
 
@@ -162,7 +232,7 @@ export default function EditPage() {
         setHistory(prev => [{
           id: `history-${Date.now()}`,
           html: html,
-          message: text,
+          message: finalText,
           timestamp: new Date(),
         }, ...prev.slice(0, 9)]); // Keep last 10
 
@@ -196,7 +266,7 @@ export default function EditPage() {
       setSending(false);
       inputRef.current?.focus();
     }
-  }, [input, sending, slug, html, isKorean]);
+  }, [input, sending, slug, html, isKorean, pendingImage]);
 
   const handleUndo = useCallback(() => {
     if (history.length === 0) return;
@@ -493,19 +563,29 @@ export default function EditPage() {
                 className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
               >
                 <div
-                  className={`max-w-[85%] px-4 py-2.5 rounded-2xl ${
+                  className={`max-w-[85%] ${
                     msg.role === 'user'
-                      ? 'bg-indigo-600 text-white rounded-br-md'
+                      ? 'bg-indigo-600 text-white rounded-2xl rounded-br-md'
                       : msg.role === 'system'
-                      ? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300'
+                      ? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300 rounded-2xl'
                       : msg.status === 'pending'
-                      ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800'
+                      ? 'bg-yellow-50 dark:bg-yellow-900/20 text-yellow-700 dark:text-yellow-300 border border-yellow-200 dark:border-yellow-800 rounded-2xl'
                       : msg.status === 'error'
-                      ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800'
-                      : 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800 rounded-bl-md'
+                      ? 'bg-red-50 dark:bg-red-900/20 text-red-600 dark:text-red-400 border border-red-200 dark:border-red-800 rounded-2xl'
+                      : 'bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-300 border border-green-200 dark:border-green-800 rounded-2xl rounded-bl-md'
                   }`}
                 >
-                  <p className="text-sm whitespace-pre-wrap">{msg.content}</p>
+                  {/* Show attached image if present */}
+                  {msg.imageUrl && (
+                    <div className="p-2 pb-0">
+                      <img 
+                        src={msg.imageUrl} 
+                        alt="Attached" 
+                        className="max-w-full h-auto max-h-32 rounded-lg object-cover"
+                      />
+                    </div>
+                  )}
+                  <p className="px-4 py-2.5 text-sm whitespace-pre-wrap">{msg.content}</p>
                 </div>
               </motion.div>
             ))}
@@ -555,16 +635,70 @@ export default function EditPage() {
             </div>
           </div>
 
+          {/* Pending image preview */}
+          <AnimatePresence>
+            {pendingImage && (
+              <motion.div
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: 'auto', opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="flex-shrink-0 px-4 pb-2"
+              >
+                <div className="flex items-center gap-3 p-3 rounded-xl bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-200 dark:border-indigo-800">
+                  <img 
+                    src={pendingImage} 
+                    alt="To upload" 
+                    className="w-16 h-16 rounded-lg object-cover"
+                  />
+                  <div className="flex-1 min-w-0">
+                    <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
+                      {pendingImageName}
+                    </p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400">
+                      {isKorean ? '메시지와 함께 전송됩니다' : 'Will be sent with your message'}
+                    </p>
+                  </div>
+                  <button
+                    onClick={handleRemoveImage}
+                    className="p-1.5 rounded-lg hover:bg-red-100 dark:hover:bg-red-900/30 text-red-500 transition-colors"
+                  >
+                    ✕
+                  </button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+
           {/* Input area */}
           <div className="flex-shrink-0 p-4 border-t border-gray-200 dark:border-gray-800">
             <div className="flex items-end gap-2">
+              {/* Image upload button */}
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                onChange={handleImageSelect}
+                className="hidden"
+              />
+              <button
+                onClick={() => fileInputRef.current?.click()}
+                disabled={sending}
+                className="flex-shrink-0 w-12 h-12 rounded-xl bg-gray-100 dark:bg-gray-800 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 text-gray-500 dark:text-gray-400 hover:text-indigo-600 dark:hover:text-indigo-400 flex items-center justify-center transition-all disabled:opacity-50 disabled:cursor-not-allowed"
+                title={isKorean ? '사진 첨부' : 'Attach image'}
+              >
+                📸
+              </button>
+
               <div className="flex-1 relative">
                 <textarea
                   ref={inputRef}
                   value={input}
                   onChange={(e) => setInput(e.target.value)}
                   onKeyDown={handleKeyDown}
-                  placeholder={t('chatPlaceholder')}
+                  placeholder={pendingImage 
+                    ? (isKorean ? '이 사진으로 어떻게 할까요?' : 'What should I do with this image?')
+                    : t('chatPlaceholder')
+                  }
                   rows={1}
                   className="w-full px-4 py-3 pr-12 rounded-2xl border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-gray-500 focus:border-indigo-400 dark:focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100 dark:focus:ring-indigo-900/30 outline-none transition-all resize-none text-sm"
                   style={{ minHeight: '48px', maxHeight: '120px' }}
@@ -572,7 +706,7 @@ export default function EditPage() {
               </div>
               <motion.button
                 onClick={() => handleSend()}
-                disabled={!input.trim() || sending}
+                disabled={(!input.trim() && !pendingImage) || sending}
                 whileTap={{ scale: 0.95 }}
                 className="flex-shrink-0 w-12 h-12 rounded-xl bg-indigo-600 hover:bg-indigo-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 text-white flex items-center justify-center transition-colors disabled:cursor-not-allowed"
               >
@@ -588,7 +722,7 @@ export default function EditPage() {
               </motion.button>
             </div>
             <p className="text-[10px] text-gray-400 dark:text-gray-500 mt-2 text-center">
-              {isKorean ? 'Enter로 전송, Shift+Enter로 줄바꿈' : 'Enter to send, Shift+Enter for new line'}
+              {isKorean ? 'Enter로 전송 · Shift+Enter로 줄바꿈 · 📸 사진 첨부 가능' : 'Enter to send · Shift+Enter for new line · 📸 Attach images'}
             </p>
           </div>
         </div>
