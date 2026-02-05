@@ -30,6 +30,9 @@ export default function Navbar() {
           <Link href="/tasks" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
             {t('tasks')}
           </Link>
+          <Link href="/guide" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
+            {t('guide')}
+          </Link>
           <Link href="/spectate" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
             {t('spectate')}
           </Link>
@@ -69,6 +72,13 @@ export default function Navbar() {
                 onClick={() => setOpen(false)}
               >
                 {t('tasks')}
+              </Link>
+              <Link
+                href="/guide"
+                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white py-2 font-medium"
+                onClick={() => setOpen(false)}
+              >
+                {t('guide')}
               </Link>
               <Link
                 href="/spectate"
