@@ -5,6 +5,7 @@ import Stats from '@/components/landing/Stats';
 import HowItWorks from '@/components/landing/HowItWorks';
 import AIServices from '@/components/landing/AIServices';
 import CompetitorComparison from '@/components/landing/CompetitorComparison';
+import Pricing from '@/components/landing/Pricing';
 import Testimonials from '@/components/landing/Testimonials';
 import CTA from '@/components/landing/CTA';
 import Footer from '@/components/landing/Footer';
@@ -24,6 +25,7 @@ export default async function Home({
       <HowItWorks />
       <AIServices />
       <CompetitorComparison />
+      <Pricing />
       <Stats />
       <Testimonials />
       <CTA />
