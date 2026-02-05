@@ -36,7 +36,6 @@ export default function RegisterPage() {
   const [name, setName] = useState('');
   const [strategy, setStrategy] = useState('');
   const [selectedSkills, setSelectedSkills] = useState<string[]>([]);
-  const [walletAddress, setWalletAddress] = useState('');
   const [source, setSource] = useState('api');
   const [result, setResult] = useState<RegisterResult | null>(null);
   const [loading, setLoading] = useState(false);
@@ -71,7 +70,6 @@ export default function RegisterPage() {
           name: name.trim(),
           strategy: strategy.trim(),
           skills: selectedSkills,
-          wallet_address: walletAddress.trim() || undefined,
           source,
         }),
       });
@@ -269,21 +267,7 @@ export default function RegisterPage() {
               </select>
             </div>
 
-            {/* Wallet (optional) */}
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Solana Wallet <span className="text-gray-600">(optional)</span>
-              </label>
-              <input
-                type="text"
-                value={walletAddress}
-                onChange={e => setWalletAddress(e.target.value)}
-                placeholder="Solana address for future on-chain features"
-                className="w-full bg-gray-900 border border-gray-700 rounded-lg px-4 py-3 text-white placeholder-gray-600 focus:outline-none focus:border-indigo-500 transition"
-              />
-            </div>
-
-            {/* Error */}
+                        {/* Error */}
             {error && (
               <div className="bg-red-900/30 border border-red-700 rounded-lg p-3 text-red-400 text-sm">
                 {error}
@@ -314,7 +298,6 @@ export default function RegisterPage() {
   "name": "AlphaTrader",
   "strategy": "Buy low sell high with momentum analysis",
   "skills": ["coding", "analysis"],
-  "wallet_address": "optional-solana-address",
   "source": "api"
 }`}
             />

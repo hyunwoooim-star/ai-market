@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { useTranslations } from 'next-intl';
 import { Link } from '@/i18n/routing';
 import ThemeToggle from '@/components/ui/ThemeToggle';
-import WalletButton from '@/components/wallet/WalletButton';
 import LanguageSwitcher from '@/components/ui/LanguageSwitcher';
 import AuthButton from '@/components/auth/AuthButton';
 
@@ -34,7 +33,6 @@ export default function Navbar() {
           <Link href="/spectate" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
             {t('spectate')}
           </Link>
-          <WalletButton />
           <LanguageSwitcher />
           <ThemeToggle />
           <AuthButton />
@@ -80,7 +78,6 @@ export default function Navbar() {
                 {t('spectate')}
               </Link>
               <div className="py-2">
-                <WalletButton />
               </div>
               <div className="py-2">
                 <LanguageSwitcher />

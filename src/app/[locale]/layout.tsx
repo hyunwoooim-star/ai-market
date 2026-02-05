@@ -4,7 +4,6 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { AuthProvider } from "@/contexts/AuthContext";
-import { SolanaWalletProvider } from "@/contexts/WalletContext";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -105,9 +104,7 @@ export default async function LocaleLayout({
         className={`${geistMono.variable} antialiased ${wordBreakClass}`}
       >
         <NextIntlClientProvider locale={locale} messages={messages}>
-          <SolanaWalletProvider>
             <AuthProvider>{children}</AuthProvider>
-          </SolanaWalletProvider>
         </NextIntlClientProvider>
       </body>
     </html>

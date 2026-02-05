@@ -171,7 +171,6 @@ export default async function Image() {
               }}
             >
               <span>⛓️</span>
-              <span>Solana</span>
             </div>
           </div>
         </div>
