@@ -6,6 +6,9 @@ import Mustache from 'mustache';
 // Node.js runtime with 60s timeout (Pro plan)
 export const maxDuration = 60;
 
+// Disable HTML escaping globally for Mustache
+Mustache.escape = (text: string) => text;
+
 const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 // ─── TYPES ───
@@ -30,6 +33,83 @@ interface WizardData {
   description?: string;
 }
 
+interface MenuItem {
+  name: string;
+  price: string;
+  description: string;
+  image: string;
+  delay: string;
+}
+
+interface GalleryImage {
+  image: string;
+  title: string;
+  tag: string;
+  height_class: string;
+  delay: string;
+}
+
+interface AIContent {
+  hero?: {
+    tagline?: string;
+    description?: string;
+    cta_primary?: string;
+    cta_secondary?: string;
+  };
+  about?: {
+    badge?: string;
+    title?: string;
+    tagline?: string;
+    content?: string;
+    image_url?: string;
+  };
+  category?: string;
+  menu_items?: MenuItem[];
+  gallery_images?: GalleryImage[];
+  section_badge?: string;
+  section_title?: string;
+  section_subtitle?: string;
+  reviews_data?: Array<{
+    name: string;
+    role: string;
+    content: string;
+    rating: number;
+  }>;
+  stats_rating?: string;
+  stats_count?: string;
+  stats_satisfaction?: string;
+  stats_revisit?: string;
+  stats_rating_label?: string;
+  stats_count_label?: string;
+  stats_satisfaction_label?: string;
+  stats_revisit_label?: string;
+  contact?: {
+    badge?: string;
+    title?: string;
+  };
+  location?: {
+    badge?: string;
+    title?: string;
+    subway?: string;
+    parking?: string;
+  };
+  reservation?: {
+    badge?: string;
+    title?: string;
+    subtitle?: string;
+  };
+  cta?: {
+    title?: string;
+    subtitle?: string;
+    button?: string;
+  };
+  footer?: {
+    description?: string;
+    ceo?: string;
+    business_number?: string;
+  };
+}
+
 // ─── COMPONENT TEMPLATES ───
 const COMPONENT_FILES: Record<string, string[]> = {
   hero: ['hero-1.html', 'hero-2.html', 'hero-3.html'],
@@ -39,7 +119,7 @@ const COMPONENT_FILES: Record<string, string[]> = {
   reviews: ['reviews-1.html', 'reviews-2.html'],
   contact: ['contact-1.html', 'contact-2.html'],
   location: ['location-1.html', 'location-2.html'],
-  reservation: ['reservation-1.html'], // 예약 위젯
+  reservation: ['reservation-1.html'],
   cta: ['cta-1.html', 'cta-2.html'],
   footer: ['footer-1.html', 'footer-2.html'],
 };
@@ -60,6 +140,39 @@ const COLOR_CLASSES: Record<string, string> = {
   slate: 'slate',
 };
 
+// ─── REVIEW CARD GENERATOR ───
+function generateReviewCard(review: { name: string; role: string; content: string; rating: number }, delay: number): string {
+  const stars = '⭐'.repeat(Math.min(5, Math.max(1, review.rating)));
+  const initial = review.name.charAt(0);
+  
+  return `
+    <div class="group" data-aos="fade-up" data-aos-delay="${delay}">
+      <div class="relative h-full p-6 md:p-8 rounded-3xl bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-xl shadow-gray-200/50 dark:shadow-none hover:shadow-2xl hover:shadow-purple-500/10 dark:hover:shadow-purple-500/5 transition-all duration-500 hover:-translate-y-2">
+        <div class="absolute top-6 right-6 w-12 h-12 rounded-2xl bg-gradient-to-br from-purple-500/10 to-blue-500/10 dark:from-purple-500/20 dark:to-blue-500/20 flex items-center justify-center">
+          <svg class="w-6 h-6 text-purple-500 dark:text-purple-400" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
+          </svg>
+        </div>
+        <div class="flex gap-1 mb-4 text-xl">${stars}</div>
+        <p class="text-gray-700 dark:text-gray-300 text-lg leading-relaxed mb-6">"${review.content}"</p>
+        <div class="flex items-center gap-4 pt-6 border-t border-gray-200/50 dark:border-white/10">
+          <div class="relative">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold text-lg">${initial}</div>
+            <div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-green-500 border-2 border-white dark:border-gray-900 flex items-center justify-center">
+              <svg class="w-3 h-3 text-white" fill="currentColor" viewBox="0 0 20 20">
+                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+              </svg>
+            </div>
+          </div>
+          <div class="flex-1">
+            <h4 class="font-semibold text-gray-900 dark:text-white">${review.name}</h4>
+            <p class="text-sm text-gray-500 dark:text-gray-400">${review.role}</p>
+          </div>
+        </div>
+      </div>
+    </div>`;
+}
+
 // ─── AI CONTENT GENERATION PROMPT ───
 const CONTENT_GENERATION_PROMPT = `You are a Korean copywriter for small business websites. Generate content for a landing page.
 
@@ -68,8 +181,8 @@ RULES:
 2. All text must be in Korean (한국어)
 3. Be creative and professional
 4. Use realistic Korean names for testimonials
-5. Generate realistic prices in ₩ format
-6. Use placeholder images from https://placehold.co (e.g., https://placehold.co/400x300/indigo/white?text=Menu)
+5. Generate realistic prices in ₩ format (e.g., ₩15,000)
+6. Use placeholder images from https://placehold.co
 
 OUTPUT FORMAT (JSON only):
 {
@@ -86,22 +199,30 @@ OUTPUT FORMAT (JSON only):
     "content": "소개 본문 (3-4문장)",
     "image_url": "https://placehold.co/800x600/3b82f6/ffffff?text=About"
   },
-  "category": "메뉴",
+  "category": "대표 메뉴",
   "menu_items": [
-    { "name": "메뉴명", "price": "₩15,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu1", "delay": "0" },
-    { "name": "메뉴명", "price": "₩12,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu2", "delay": "100" },
-    { "name": "메뉴명", "price": "₩10,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu3", "delay": "200" },
-    { "name": "메뉴명", "price": "₩8,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu4", "delay": "300" }
+    { "name": "메뉴명1", "price": "₩15,000", "description": "맛있는 설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu1", "delay": "0" },
+    { "name": "메뉴명2", "price": "₩12,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu2", "delay": "100" },
+    { "name": "메뉴명3", "price": "₩10,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu3", "delay": "200" },
+    { "name": "메뉴명4", "price": "₩8,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu4", "delay": "300" }
   ],
   "gallery_images": [
-    { "image": "https://placehold.co/600x400/8b5cf6/ffffff?text=Gallery1", "title": "제목", "tag": "매장", "height_class": "h-64", "delay": "0" },
-    { "image": "https://placehold.co/600x500/ec4899/ffffff?text=Gallery2", "title": "제목", "tag": "제품", "height_class": "h-80", "delay": "100" },
-    { "image": "https://placehold.co/600x350/06b6d4/ffffff?text=Gallery3", "title": "제목", "tag": "이벤트", "height_class": "h-56", "delay": "200" }
+    { "image": "https://placehold.co/600x400/8b5cf6/ffffff?text=Gallery1", "title": "갤러리 제목1", "tag": "매장", "height_class": "h-64", "delay": "0" },
+    { "image": "https://placehold.co/600x500/ec4899/ffffff?text=Gallery2", "title": "갤러리 제목2", "tag": "음식", "height_class": "h-80", "delay": "100" },
+    { "image": "https://placehold.co/600x350/06b6d4/ffffff?text=Gallery3", "title": "갤러리 제목3", "tag": "이벤트", "height_class": "h-56", "delay": "200" }
   ],
   "section_badge": "고객 리뷰",
   "section_title": "고객님들의 후기",
-  "section_subtitle": "실제 방문 고객 리뷰",
-  "reviews": "<div class='group' data-aos='fade-up'><div class='relative h-full p-6 rounded-3xl bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-xl'><div class='flex gap-1 mb-4'>⭐⭐⭐⭐⭐</div><p class='text-gray-700 dark:text-gray-300 mb-6'>리뷰 내용</p><div class='flex items-center gap-4 pt-6 border-t border-gray-200/50'><div class='w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold'>김</div><div><h4 class='font-semibold text-gray-900 dark:text-white'>김민수</h4><p class='text-sm text-gray-500'>단골 고객</p></div></div></div></div>",
+  "section_subtitle": "실제 방문 고객 리뷰입니다",
+  "reviews_data": [
+    { "name": "김민수", "role": "단골 고객", "content": "정말 맛있고 분위기도 좋아요!", "rating": 5 },
+    { "name": "이지영", "role": "첫 방문", "content": "서비스가 친절해서 기분 좋았습니다.", "rating": 5 },
+    { "name": "박준혁", "role": "재방문 고객", "content": "가성비 최고! 자주 올게요.", "rating": 4 }
+  ],
+  "stats_rating": "4.9",
+  "stats_count": "500+",
+  "stats_satisfaction": "98%",
+  "stats_revisit": "85%",
   "stats_rating_label": "평균 평점",
   "stats_count_label": "총 리뷰",
   "stats_satisfaction_label": "만족도",
@@ -115,11 +236,6 @@ OUTPUT FORMAT (JSON only):
     "title": "위치 안내",
     "subway": "지하철역에서 도보 5분",
     "parking": "건물 내 주차 가능"
-  },
-  "reservation": {
-    "badge": "예약",
-    "title": "온라인 예약",
-    "subtitle": "원하시는 날짜와 시간을 선택해주세요"
   },
   "cta": {
     "title": "지금 바로 방문하세요",
@@ -143,22 +259,34 @@ async function loadComponent(componentType: string, variant: number = 1): Promis
   
   try {
     const filePath = path.join(process.cwd(), 'src/components/templates', fileName);
-    return await fs.readFile(filePath, 'utf-8');
+    const content = await fs.readFile(filePath, 'utf-8');
+    // Remove HTML comments (documentation)
+    return content.replace(/<!--[\s\S]*?-->/g, '');
   } catch (error) {
     console.error(`Failed to load component ${fileName}:`, error);
     return '';
   }
 }
 
-function fillTemplate(template: string, data: Record<string, any>): string {
-  // Use Mustache for template rendering (supports {{#array}}...{{/array}} loops)
-  // Disable HTML escaping to preserve HTML content
-  return Mustache.render(template, data, {}, { escape: (text: string) => text });
+function fillTemplate(template: string, data: Record<string, unknown>): string {
+  try {
+    // Use Mustache for template rendering
+    const result = Mustache.render(template, data);
+    return result;
+  } catch (error) {
+    console.error('Mustache render error:', error);
+    // Fallback: simple string replacement for basic variables
+    let result = template;
+    for (const [key, value] of Object.entries(data)) {
+      if (typeof value === 'string') {
+        result = result.replace(new RegExp(`\\{\\{${key}\\}\\}`, 'g'), value);
+      }
+    }
+    return result;
+  }
 }
 
 function generatePageWrapper(content: string, businessName: string, style: string, color: string): string {
-  const colorClass = COLOR_CLASSES[color] || 'indigo';
-  
   return `<!DOCTYPE html>
 <html lang="ko" class="scroll-smooth">
 <head>
@@ -166,6 +294,11 @@ function generatePageWrapper(content: string, businessName: string, style: strin
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>${businessName}</title>
   <meta name="description" content="${businessName} - 공식 웹사이트">
+  
+  <!-- Open Graph -->
+  <meta property="og:title" content="${businessName}">
+  <meta property="og:description" content="${businessName} 공식 웹사이트입니다">
+  <meta property="og:type" content="website">
   
   <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -203,6 +336,8 @@ function generatePageWrapper(content: string, businessName: string, style: strin
       0%, 100% { transform: translateY(0) rotate(0deg); }
       50% { transform: translateY(-20px) rotate(3deg); }
     }
+    /* Smooth scrolling */
+    html { scroll-behavior: smooth; }
   </style>
 </head>
 <body class="bg-white dark:bg-gray-950 text-gray-900 dark:text-white">
@@ -306,6 +441,8 @@ Selected sections: ${selectedComponents.join(', ')}
 
 ${CONTENT_GENERATION_PROMPT}`;
 
+  console.log('[generate] Calling AI for content generation...');
+  
   const response = await fetch(OPENAI_API_URL, {
     method: 'POST',
     headers: {
@@ -324,29 +461,105 @@ ${CONTENT_GENERATION_PROMPT}`;
   });
 
   if (!response.ok) {
-    console.error('Content generation failed, falling back to full HTML');
-    return generateFullHtml(data);
+    console.error('[generate] AI API failed, status:', response.status);
+    throw new Error('AI content generation failed');
   }
 
   const result = await response.json();
-  let contentJson;
+  const rawContent = result.choices?.[0]?.message?.content || '{}';
   
+  console.log('[generate] AI response received, length:', rawContent.length);
+
+  let contentJson: AIContent;
   try {
-    contentJson = JSON.parse(result.choices?.[0]?.message?.content || '{}');
-  } catch {
-    console.error('Failed to parse AI content, falling back to full HTML');
-    return generateFullHtml(data);
+    contentJson = JSON.parse(rawContent);
+    console.log('[generate] JSON parsed successfully, keys:', Object.keys(contentJson));
+  } catch (parseError) {
+    console.error('[generate] JSON parse failed:', parseError);
+    throw new Error('Failed to parse AI content');
+  }
+
+  // Build reviews HTML from reviews_data array
+  let reviewsHtml = '';
+  if (contentJson.reviews_data && Array.isArray(contentJson.reviews_data)) {
+    reviewsHtml = contentJson.reviews_data
+      .map((review, index) => generateReviewCard(review, index * 100))
+      .join('\n');
+    console.log('[generate] Generated', contentJson.reviews_data.length, 'review cards');
   }
 
   // Prepare template data - merge business info with AI-generated content
-  const templateData = {
+  const templateData: Record<string, unknown> = {
+    // Business info (always present)
     business_name: businessInfo.name,
     phone: businessInfo.phone || '02-1234-5678',
-    address: businessInfo.address,
-    hours: businessInfo.hours,
-    description: businessInfo.description,
-    ...contentJson, // Spread all AI-generated content (includes menu_items, gallery_images, etc.)
+    address: businessInfo.address || '서울시',
+    hours: businessInfo.hours || '10:00 - 22:00',
+    description: businessInfo.description || `${businessInfo.name}에 오신 것을 환영합니다.`,
+    
+    // Hero defaults
+    tagline: contentJson.hero?.tagline || '최고의 서비스',
+    hero_description: contentJson.hero?.description || businessInfo.description,
+    cta_primary: contentJson.hero?.cta_primary || '예약하기',
+    cta_secondary: contentJson.hero?.cta_secondary || '더 알아보기',
+    
+    // About section
+    image_url: contentJson.about?.image_url || 'https://placehold.co/800x600/6366f1/ffffff?text=About+Us',
+    about_badge: contentJson.about?.badge || '소개',
+    about_tagline: contentJson.about?.tagline || '당신을 위한 공간',
+    about_content: contentJson.about?.content || businessInfo.description,
+    
+    // Menu section
+    category: contentJson.category || '메뉴',
+    menu_items: contentJson.menu_items || [],
+    
+    // Gallery section
+    gallery_images: contentJson.gallery_images || [],
+    
+    // Reviews section - use pre-rendered HTML
+    section_badge: contentJson.section_badge || '고객 리뷰',
+    section_title: contentJson.section_title || '고객님들의 후기',
+    section_subtitle: contentJson.section_subtitle || '실제 방문 고객들의 생생한 후기입니다',
+    reviews: reviewsHtml, // Pre-rendered HTML
+    stats_rating: contentJson.stats_rating || '4.9',
+    stats_count: contentJson.stats_count || '500+',
+    stats_satisfaction: contentJson.stats_satisfaction || '98%',
+    stats_revisit: contentJson.stats_revisit || '85%',
+    stats_rating_label: contentJson.stats_rating_label || '평균 평점',
+    stats_count_label: contentJson.stats_count_label || '총 리뷰',
+    stats_satisfaction_label: contentJson.stats_satisfaction_label || '만족도',
+    stats_revisit_label: contentJson.stats_revisit_label || '재방문율',
+    
+    // Contact section
+    contact_badge: contentJson.contact?.badge || '연락처',
+    contact_title: contentJson.contact?.title || '문의하기',
+    
+    // Location section
+    location_badge: contentJson.location?.badge || '오시는 길',
+    location_title: contentJson.location?.title || '위치 안내',
+    location_subway: contentJson.location?.subway || '',
+    location_parking: contentJson.location?.parking || '',
+    
+    // CTA section
+    cta_title: contentJson.cta?.title || '지금 바로 방문하세요',
+    cta_subtitle: contentJson.cta?.subtitle || '특별한 경험이 기다리고 있습니다',
+    cta_button: contentJson.cta?.button || '예약하기',
+    cta_text: contentJson.cta?.button || '예약하기',
+    
+    // Footer section
+    footer_description: contentJson.footer?.description || businessInfo.description,
+    ceo: contentJson.footer?.ceo || '대표자명',
+    business_number: contentJson.footer?.business_number || '000-00-00000',
+    
+    // SNS links (defaults)
+    sns_links: {
+      instagram: '#',
+      kakao: '#',
+      naver: '#',
+    },
   };
+
+  console.log('[generate] Template data prepared, loading components...');
 
   // Load and combine components
   const componentHtmlParts: string[] = [];
@@ -354,20 +567,24 @@ ${CONTENT_GENERATION_PROMPT}`;
   for (const comp of selectedComponents) {
     const template = await loadComponent(comp, 1);
     if (template) {
-      // Pass full templateData so Mustache can access arrays like {{#menu_items}}
+      console.log(`[generate] Filling template: ${comp}`);
       const filledTemplate = fillTemplate(template, templateData);
       componentHtmlParts.push(filledTemplate);
     }
   }
 
   // Always add footer
-  const footerTemplate = await loadComponent('footer', 1);
-  if (footerTemplate) {
-    const filledFooter = fillTemplate(footerTemplate, templateData);
-    componentHtmlParts.push(filledFooter);
+  if (!selectedComponents.includes('footer')) {
+    const footerTemplate = await loadComponent('footer', 1);
+    if (footerTemplate) {
+      const filledFooter = fillTemplate(footerTemplate, templateData);
+      componentHtmlParts.push(filledFooter);
+    }
   }
 
   const combinedContent = componentHtmlParts.join('\n\n');
+  
+  console.log('[generate] All components combined, total length:', combinedContent.length);
   
   return generatePageWrapper(
     combinedContent,
@@ -381,6 +598,13 @@ ${CONTENT_GENERATION_PROMPT}`;
 export async function POST(request: NextRequest) {
   try {
     const data: WizardData = await request.json();
+
+    console.log('[generate] Request received:', {
+      hasComponents: !!data.components,
+      componentCount: data.components?.length,
+      businessName: data.businessInfo?.name,
+      industry: data.industry,
+    });
 
     // Validate input
     if (!data.description && !data.businessInfo?.name) {
@@ -402,14 +626,17 @@ export async function POST(request: NextRequest) {
 
     // Use component-based generation if wizard data is provided
     if (data.components && data.components.length > 0 && data.businessInfo) {
+      console.log('[generate] Using component-based generation');
       try {
         html = await generateWithComponents(data);
       } catch (error) {
-        console.error('Component generation failed, trying full HTML:', error);
+        console.error('[generate] Component generation failed:', error);
+        console.log('[generate] Falling back to full HTML generation');
         html = await generateFullHtml(data);
       }
     } else {
       // Legacy: generate full HTML
+      console.log('[generate] Using legacy full HTML generation');
       html = await generateFullHtml(data);
     }
 
@@ -421,9 +648,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    console.log('[generate] Success, HTML length:', html.length);
+
     return NextResponse.json({ html });
   } catch (error) {
-    console.error('Generate API error:', error);
+    console.error('[generate] Error:', error);
     return NextResponse.json(
       { error: `서버 오류: ${error instanceof Error ? error.message : String(error)}` },
       { status: 500 }
