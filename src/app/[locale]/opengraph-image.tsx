@@ -1,7 +1,7 @@
 import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
-export const alt = '에이전트마켓 — AI 고용 플랫폼';
+export const alt = '에이전트마켓 — 원하는 결과물, 더 빠르고 더 저렴하게';
 export const size = { width: 1200, height: 630 };
 export const contentType = 'image/png';
 
@@ -18,32 +18,33 @@ export default async function Image({ params }: { params: { locale: string } }) 
           flexDirection: 'column',
           alignItems: 'center',
           justifyContent: 'center',
-          background: 'linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #4338ca 100%)',
+          background: 'linear-gradient(135deg, #EEF2FF 0%, #FFFFFF 50%, #F0FDFA 100%)',
           fontFamily: 'system-ui, sans-serif',
+          position: 'relative',
         }}
       >
-        {/* Decorative circles */}
+        {/* Decorative gradient circles */}
         <div
           style={{
             position: 'absolute',
-            top: '-100px',
-            right: '-100px',
-            width: '400px',
-            height: '400px',
+            top: '-80px',
+            right: '-80px',
+            width: '300px',
+            height: '300px',
             borderRadius: '50%',
-            background: 'rgba(99, 102, 241, 0.3)',
+            background: 'linear-gradient(135deg, rgba(79, 70, 229, 0.15), rgba(124, 58, 237, 0.1))',
             display: 'flex',
           }}
         />
         <div
           style={{
             position: 'absolute',
-            bottom: '-150px',
-            left: '-150px',
-            width: '500px',
-            height: '500px',
+            bottom: '-100px',
+            left: '-100px',
+            width: '400px',
+            height: '400px',
             borderRadius: '50%',
-            background: 'rgba(139, 92, 246, 0.2)',
+            background: 'linear-gradient(135deg, rgba(13, 148, 136, 0.1), rgba(79, 70, 229, 0.08))',
             display: 'flex',
           }}
         />
@@ -53,15 +54,15 @@ export default async function Image({ params }: { params: { locale: string } }) 
           style={{
             display: 'flex',
             alignItems: 'center',
-            padding: '12px 24px',
-            background: 'rgba(255, 255, 255, 0.1)',
+            padding: '10px 20px',
+            background: '#EEF2FF',
             borderRadius: '40px',
             marginBottom: '24px',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
+            border: '1px solid #C7D2FE',
           }}
         >
-          <span style={{ fontSize: '28px', marginRight: '12px' }}>🤖</span>
-          <span style={{ color: '#e0e7ff', fontSize: '24px', fontWeight: 500 }}>
+          <span style={{ fontSize: '24px', marginRight: '10px' }}>🤖</span>
+          <span style={{ color: '#4338CA', fontSize: '20px', fontWeight: 600 }}>
             {isKorean ? 'AI가 만드는 새로운 패러다임' : 'A New Paradigm by AI'}
           </span>
         </div>
@@ -77,21 +78,20 @@ export default async function Image({ params }: { params: { locale: string } }) 
         >
           <h1
             style={{
-              fontSize: isKorean ? '72px' : '64px',
+              fontSize: '64px',
               fontWeight: 800,
-              color: 'white',
+              color: '#111827',
               margin: 0,
               lineHeight: 1.2,
-              textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
             }}
           >
             {isKorean ? '원하는 결과물' : 'Get What You Want'}
           </h1>
           <h1
             style={{
-              fontSize: isKorean ? '72px' : '64px',
+              fontSize: '64px',
               fontWeight: 800,
-              background: 'linear-gradient(90deg, #a5b4fc, #c4b5fd, #f0abfc)',
+              background: 'linear-gradient(135deg, #4F46E5, #7C3AED, #EC4899)',
               backgroundClip: 'text',
               color: 'transparent',
               margin: 0,
@@ -105,9 +105,9 @@ export default async function Image({ params }: { params: { locale: string } }) 
         {/* Subtitle */}
         <p
           style={{
-            fontSize: '28px',
-            color: '#c7d2fe',
-            marginTop: '32px',
+            fontSize: '24px',
+            color: '#6B7280',
+            marginTop: '28px',
             textAlign: 'center',
           }}
         >
@@ -116,19 +116,48 @@ export default async function Image({ params }: { params: { locale: string } }) 
             : '24/7 AI Experts · Websites · Blogs · Product Pages · Menus'}
         </p>
 
+        {/* Agent Icons */}
+        <div
+          style={{
+            display: 'flex',
+            gap: '16px',
+            marginTop: '32px',
+          }}
+        >
+          {['🌐', '✍️', '🛍️', '📋'].map((icon, i) => (
+            <div
+              key={i}
+              style={{
+                width: '56px',
+                height: '56px',
+                borderRadius: '16px',
+                background: 'white',
+                border: '1px solid #E5E7EB',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                fontSize: '28px',
+                boxShadow: '0 4px 12px rgba(0, 0, 0, 0.05)',
+              }}
+            >
+              {icon}
+            </div>
+          ))}
+        </div>
+
         {/* Logo */}
         <div
           style={{
             position: 'absolute',
-            bottom: '40px',
+            bottom: '36px',
             display: 'flex',
             alignItems: 'center',
           }}
         >
-          <span style={{ fontSize: '32px', fontWeight: 700, color: 'white' }}>
+          <span style={{ fontSize: '28px', fontWeight: 700, color: '#111827' }}>
             AgentMarket
           </span>
-          <span style={{ fontSize: '24px', color: '#a5b4fc', marginLeft: '8px' }}>
+          <span style={{ fontSize: '20px', color: '#6366F1', marginLeft: '6px' }}>
             .kr
           </span>
         </div>
