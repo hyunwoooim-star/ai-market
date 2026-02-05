@@ -72,7 +72,8 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    '/((?!api|_next|.*\\.[\\w]+$).*)',
+    // Exclude: api, _next, static files, AND /s/ (hosted pages)
+    '/((?!api|_next|s/|.*\\.[\\w]+$).*)',
     '/',
     '/(ko|en|ja|zh)/:path*',
   ],
