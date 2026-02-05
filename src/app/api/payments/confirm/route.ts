@@ -112,7 +112,7 @@ export async function GET(request: NextRequest) {
         credits: pkg.credits,
         packageName: pkg.name,
         confirmedAt: new Date().toISOString(),
-        confirmIP: request.ip || 'unknown'
+        confirmIP: request.headers.get('x-forwarded-for') || 'unknown'
       }
     });
 

@@ -27,6 +27,9 @@ export default function Navbar() {
 
         {/* Desktop nav */}
         <div className="hidden md:flex items-center gap-4">
+          <Link href="/agents" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
+            {t('agents')}
+          </Link>
           <Link href="/tasks" className="text-sm text-gray-500 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium">
             {t('tasks')}
           </Link>
@@ -66,6 +69,13 @@ export default function Navbar() {
             className="md:hidden border-t border-gray-100 dark:border-gray-800 bg-white/95 dark:bg-gray-900/95 backdrop-blur-xl"
           >
             <div className="px-6 py-4 flex flex-col gap-3">
+              <Link
+                href="/agents"
+                className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white py-2 font-medium"
+                onClick={() => setOpen(false)}
+              >
+                {t('agents')}
+              </Link>
               <Link
                 href="/tasks"
                 className="text-sm text-gray-600 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white py-2 font-medium"

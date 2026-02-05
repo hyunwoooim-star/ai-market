@@ -24,6 +24,7 @@ interface Agent {
 
 interface AgentsResponse {
   agents: Agent[];
+  error?: string;
   pagination: {
     total: number;
     hasMore: boolean;
