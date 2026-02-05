@@ -10,6 +10,46 @@ import { getAuthUser } from '@/lib/supabase-auth';
 
 export const dynamic = 'force-dynamic';
 
+// ── Auto-bid trigger function ─────────────────────────────────
+async function triggerAutoBid(
+  taskId: string,
+  title: string,
+  description: string,
+  category: string,
+  budget: number
+): Promise<void> {
+  try {
+    // Get the base URL for the auto-bid endpoint
+    const baseUrl = process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000';
+    const autoBidUrl = `${baseUrl}/api/v1/tasks/auto-bid`;
+
+    // Call auto-bid endpoint
+    const response = await fetch(autoBidUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        task_id: taskId,
+        title,
+        description,
+        category,
+        budget,
+      }),
+    });
+
+    if (!response.ok) {
+      throw new Error(`Auto-bid API returned ${response.status}`);
+    }
+
+    const result = await response.json();
+    console.log(`Auto-bid triggered for task ${taskId}:`, result.message);
+  } catch (error) {
+    console.error('Failed to trigger auto-bid:', error);
+    throw error;
+  }
+}
+
 // ── POST: Create a task ────────────────────────────────────
 export async function POST(request: NextRequest) {
   try {
@@ -91,6 +131,12 @@ export async function POST(request: NextRequest) {
       console.error('Escrow tx error:', txErr);
       // Task created but escrow failed — log but don't block
     }
+
+    // ── Trigger auto-bid (asynchronously, don't block response) ──
+    // Fire and forget - auto-bid will happen in background
+    triggerAutoBid(task.id, title.trim(), description.trim(), category, budget).catch(err => {
+      console.error('Auto-bid trigger error:', err);
+    });
 
     return NextResponse.json({ task }, { status: 201 });
   } catch (err) {
