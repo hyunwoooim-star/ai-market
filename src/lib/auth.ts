@@ -1,50 +1,85 @@
 import NextAuth from "next-auth"
-import type { NextAuthConfig } from "next-auth"
+import type { NextAuthConfig, Account, Profile } from "next-auth"
+import type { OAuthConfig } from "next-auth/providers"
 
-// Naver OAuth Provider (커스텀)
-const NaverProvider = {
+// Naver OAuth Provider (커스텀) - NextAuth v5 완전한 설정
+const NaverProvider: OAuthConfig<any> = {
   id: "naver",
   name: "Naver",
-  type: "oauth" as const,
+  type: "oauth",
+  clientId: process.env.NAVER_CLIENT_ID!,
+  clientSecret: process.env.NAVER_CLIENT_SECRET!,
   authorization: {
     url: "https://nid.naver.com/oauth2.0/authorize",
-    params: { response_type: "code" }
+    params: {
+      response_type: "code",
+    },
   },
-  token: "https://nid.naver.com/oauth2.0/token",
-  userinfo: "https://openapi.naver.com/v1/nid/me",
+  token: {
+    url: "https://nid.naver.com/oauth2.0/token",
+    params: {
+      grant_type: "authorization_code",
+    },
+  },
+  userinfo: {
+    url: "https://openapi.naver.com/v1/nid/me",
+    async request({ tokens, provider }: { tokens: any; provider: any }) {
+      const res = await fetch("https://openapi.naver.com/v1/nid/me", {
+        headers: {
+          Authorization: `Bearer ${tokens.access_token}`,
+        },
+      })
+      return await res.json()
+    },
+  },
   profile(profile: any) {
     return {
-      id: profile.response.id,
-      name: profile.response.name,
-      email: profile.response.email,
-      image: profile.response.profile_image,
+      id: profile.response?.id ?? profile.id,
+      name: profile.response?.name ?? profile.response?.nickname ?? "User",
+      email: profile.response?.email,
+      image: profile.response?.profile_image,
     }
   },
-  clientId: process.env.NAVER_CLIENT_ID,
-  clientSecret: process.env.NAVER_CLIENT_SECRET,
+  checks: ["state"],
+  style: {
+    brandColor: "#03C75A",
+  },
 }
 
-// Kakao OAuth Provider (커스텀)
-const KakaoProvider = {
+// Kakao OAuth Provider (커스텀) - NextAuth v5 완전한 설정
+const KakaoProvider: OAuthConfig<any> = {
   id: "kakao",
   name: "Kakao",
-  type: "oauth" as const,
+  type: "oauth",
+  clientId: process.env.KAKAO_CLIENT_ID!,
+  clientSecret: process.env.KAKAO_CLIENT_SECRET!,
   authorization: {
     url: "https://kauth.kakao.com/oauth/authorize",
-    params: { response_type: "code" }
+    params: {
+      response_type: "code",
+    },
   },
-  token: "https://kauth.kakao.com/oauth/token",
-  userinfo: "https://kapi.kakao.com/v2/user/me",
+  token: {
+    url: "https://kauth.kakao.com/oauth/token",
+    params: {
+      grant_type: "authorization_code",
+    },
+  },
+  userinfo: {
+    url: "https://kapi.kakao.com/v2/user/me",
+  },
   profile(profile: any) {
     return {
       id: String(profile.id),
-      name: profile.kakao_account?.profile?.nickname,
+      name: profile.kakao_account?.profile?.nickname ?? "User",
       email: profile.kakao_account?.email,
       image: profile.kakao_account?.profile?.thumbnail_image_url,
     }
   },
-  clientId: process.env.KAKAO_CLIENT_ID,
-  clientSecret: process.env.KAKAO_CLIENT_SECRET,
+  checks: ["state"],
+  style: {
+    brandColor: "#FEE500",
+  },
 }
 
 export const authConfig: NextAuthConfig = {
