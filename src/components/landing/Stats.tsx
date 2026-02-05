@@ -37,37 +37,49 @@ function AnimatedNumber({ value, decimal }: { value: number; decimal?: boolean }
 export default function Stats() {
   const t = useTranslations('stats');
   const [liveStats, setLiveStats] = useState<{
-    totalAgents: number;
-    totalTasks: number;
-    avgResponseTime: number;
-    customerSavings: number;
+    agents: number;
+    tasks: number;
+    bids: number;
+    avgResponse: string;
+    savings: number;
   } | null>(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     async function fetchStats() {
       try {
-        const res = await fetch('/api/v1/tasks/stats');
+        const res = await fetch('/api/stats');
         if (res.ok) {
           const data = await res.json();
           setLiveStats({
-            totalAgents: data.totalAgents ?? 20,
-            totalTasks: data.totalTasks ?? 150,
-            avgResponseTime: data.avgResponseTime ?? 3,
-            customerSavings: data.customerSavings ?? 90,
+            agents: data.agents ?? 20,
+            tasks: data.tasks ?? 150,
+            bids: data.bids ?? 300,
+            avgResponse: data.avgResponse ?? "~2분",
+            savings: data.savings ?? 90,
           });
         }
       } catch {
         // fallback to defaults
+        setLiveStats({
+          agents: 20,
+          tasks: 150,
+          bids: 300,
+          avgResponse: "~2분",
+          savings: 90,
+        });
+      } finally {
+        setLoading(false);
       }
     }
     fetchStats();
   }, []);
 
   const STATS = [
-    { label: t('agents'), value: liveStats?.totalAgents ?? 20, suffix: t('agentSuffix'), icon: '🤖' },
-    { label: t('tasks'), value: liveStats?.totalTasks ?? 150, suffix: t('taskSuffix'), icon: '✅' },
-    { label: t('responseTime'), value: liveStats?.avgResponseTime ?? 3, suffix: t('responseTimeSuffix'), icon: '⚡', decimal: true },
-    { label: t('savings'), value: liveStats?.customerSavings ?? 90, suffix: t('savingsSuffix'), icon: '💰', decimal: true },
+    { label: t('agents'), value: liveStats?.agents ?? 20, suffix: t('agentSuffix'), icon: '🤖' },
+    { label: t('tasks'), value: liveStats?.tasks ?? 150, suffix: t('taskSuffix'), icon: '✅' },
+    { label: t('responseTime'), value: liveStats?.avgResponse ?? "~2분", suffix: "", icon: '⚡', isText: true },
+    { label: t('savings'), value: liveStats?.savings ?? 90, suffix: t('savingsSuffix'), icon: '💰', decimal: true },
   ];
 
   return (
@@ -85,8 +97,18 @@ export default function Stats() {
             >
               <span className="text-xl sm:text-2xl mb-1 sm:mb-2 block">{stat.icon}</span>
               <div className="text-xl sm:text-2xl md:text-3xl font-extrabold text-gray-900 dark:text-white mb-1">
-                <AnimatedNumber value={stat.value} decimal={stat.decimal} />
-                <span className="text-xs sm:text-base font-medium text-gray-500 dark:text-slate-400 ml-0.5">{stat.suffix}</span>
+                {loading ? (
+                  <div className="bg-gray-200 dark:bg-slate-600 h-6 sm:h-8 w-16 rounded animate-pulse mx-auto"></div>
+                ) : (
+                  <>
+                    {stat.isText ? (
+                      <span>{stat.value}</span>
+                    ) : (
+                      <AnimatedNumber value={stat.value as number} decimal={stat.decimal} />
+                    )}
+                    <span className="text-xs sm:text-base font-medium text-gray-500 dark:text-slate-400 ml-0.5">{stat.suffix}</span>
+                  </>
+                )}
               </div>
               <p className="text-[10px] sm:text-xs text-gray-500 dark:text-slate-400 font-medium">{stat.label}</p>
             </motion.div>
