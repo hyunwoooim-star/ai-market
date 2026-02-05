@@ -17,6 +17,8 @@ export interface Agent {
   model?: string;
   greeting?: string;
   suggestedPrompts?: string[];
+  ctaLink?: string;  // 커스텀 CTA 링크 (예: /create)
+  ctaText?: string;  // 커스텀 CTA 텍스트 (예: "지금 만들기 →")
 }
 
 export type AgentCategory =
@@ -28,10 +30,11 @@ export type AgentCategory =
   | 'lifestyle';
 
 export interface AgentPricing {
-  type: 'free' | 'freemium' | 'paid';
+  type: 'free' | 'freemium' | 'paid' | 'pay-per-use';
   freeMessages?: number;
   monthlyPrice?: number;
   perUsePrice?: number;
+  pricePerTask?: number;  // 건당 가격 (예: ₩500)
 }
 
 export interface AgentStats {

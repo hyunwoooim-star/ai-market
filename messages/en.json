@@ -439,38 +439,37 @@
       "name": "Gambler Bot",
       "description": "High risk, high reward. Bets big on every trade. Bankruptcy is always one bad deal away."
     },
-    "soul-friend": {
-      "name": "Soul Friend",
-      "description": "AI City's emotional counselor. Your AI best friend on KakaoTalk — always on your side.",
+    "website-creator": {
+      "name": "Website Creator",
+      "description": "Create a stunning landing page in 30 seconds. Free hosting included.",
       "tags": [
-        "chat",
-        "MBTI",
-        "healing",
-        "dating advice",
-        "daily talk"
+        "website",
+        "landing page",
+        "small business",
+        "free hosting",
+        "30 seconds"
       ],
-      "greeting": "Hey! 👋 How are you feeling today? Tell me anything!",
+      "greeting": "Hi! 🌐 What kind of website would you like me to create? Tell me about your business!",
       "suggestedPrompts": [
-        "I had a stressful day at work",
-        "I had a fight with my partner 😢",
-        "I'm bored, what should I do?"
+        "Create a website for my cafe",
+        "I need a nail salon homepage",
+        "Make a landing page for my gym"
       ]
     },
     "blog-master": {
       "name": "Blog Master",
-      "description": "AI City's content craftsman. Naver-optimized blog writer that boosts small business revenue.",
+      "description": "Get a Naver-optimized blog post delivered. SEO-ready, downloadable result.",
       "tags": [
         "blog",
-        "small business",
+        "Naver",
         "SEO",
-        "marketing",
-        "C-Rank"
+        "content delivery"
       ],
-      "greeting": "Hi! I'm Blog Master, your blog marketing expert 📝 What industry do you need blog content for?",
+      "greeting": "Hi! ✍️ What industry do you need blog content for? Tell me your topic and keywords!",
       "suggestedPrompts": [
         "Write a blog post for my cafe",
-        "Write a restaurant review",
-        "Give me Naver SEO tips"
+        "I need a restaurant review post",
+        "Write an SEO-optimized Naver post"
       ]
     },
     "contract-guard": {
@@ -729,19 +728,70 @@
     },
     "ad-copywriter": {
       "name": "Ad Copywriter",
-      "description": "AI City's ad specialist. Auto-generates high-CTR copy for Naver, Kakao, and Meta ads.",
+      "description": "Get 10 high-CTR ad copy variations delivered instantly. Naver & Kakao search ads.",
       "tags": [
         "ad copy",
-        "marketing",
-        "search ads",
-        "social ads",
-        "CTR"
+        "Naver ads",
+        "Kakao ads",
+        "CTR",
+        "instant delivery"
       ],
-      "greeting": "Hi! I'm your Ad Copywriter ✍️ What product or service do you need ad copy for?",
+      "greeting": "Hi! 💡 What product or service do you need ad copy for?",
       "suggestedPrompts": [
-        "Write ad copy for a cafe opening",
-        "Create search ad copy for Naver",
-        "Suggest SNS copy for a sale event"
+        "Cafe opening ad copy",
+        "Create Naver search ad copy",
+        "Sale event SNS copy"
+      ]
+    },
+    "product-page-writer": {
+      "name": "Product Page Writer",
+      "description": "Get e-commerce ready product descriptions delivered. Smartstore & Coupang optimized.",
+      "tags": [
+        "product page",
+        "Smartstore",
+        "Coupang",
+        "conversion",
+        "e-commerce"
+      ],
+      "greeting": "Hi! 🛍️ What product do you need a description for? Tell me the details!",
+      "suggestedPrompts": [
+        "Write a cosmetics product page",
+        "I need clothing descriptions",
+        "Food product page for Smartstore"
+      ]
+    },
+    "sns-content-creator": {
+      "name": "SNS Content Creator",
+      "description": "Get Instagram/TikTok caption + 30 hashtags delivered instantly. A/B test versions included.",
+      "tags": [
+        "Instagram",
+        "TikTok",
+        "hashtags",
+        "captions",
+        "instant delivery"
+      ],
+      "greeting": "Hi! 📱 Is this content for Instagram or TikTok?",
+      "suggestedPrompts": [
+        "Write a cafe Instagram post",
+        "I need TikTok reel scripts",
+        "Recommend 30 hashtags"
+      ]
+    },
+    "review-reply-bot": {
+      "name": "Review Reply Bot",
+      "description": "Get professional customer review replies instantly. Copy and paste ready.",
+      "tags": [
+        "review reply",
+        "customer service",
+        "Naver",
+        "delivery apps",
+        "instant"
+      ],
+      "greeting": "Hi! 💬 Paste the customer review you need to reply to!",
+      "suggestedPrompts": [
+        "Thank positive review",
+        "Apologize for negative review",
+        "Handle 3-star review"
       ]
     },
     "marketer": {
