@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { promises as fs } from 'fs';
 import path from 'path';
+import Mustache from 'mustache';
 
 // Node.js runtime with 60s timeout (Pro plan)
 export const maxDuration = 60;
@@ -68,72 +69,62 @@ RULES:
 3. Be creative and professional
 4. Use realistic Korean names for testimonials
 5. Generate realistic prices in ₩ format
+6. Use placeholder images from https://placehold.co (e.g., https://placehold.co/400x300/indigo/white?text=Menu)
 
 OUTPUT FORMAT (JSON only):
 {
   "hero": {
     "tagline": "짧은 슬로건 (10자 이내)",
-    "headline_prefix": "수식어",
-    "headline_suffix": "부제목",
     "description": "2-3문장 설명",
     "cta_primary": "예약하기",
-    "cta_secondary": "더 알아보기",
-    "stats": [
-      { "value": "2,500+", "label": "만족 고객" },
-      { "value": "4.9", "label": "평점" },
-      { "value": "5년", "label": "운영 경력" }
-    ]
+    "cta_secondary": "더 알아보기"
   },
   "about": {
     "badge": "소개",
     "title": "섹션 제목",
-    "subtitle": "부제목",
+    "tagline": "한 줄 소개",
     "content": "소개 본문 (3-4문장)",
-    "features": ["특징1", "특징2", "특징3", "특징4"]
+    "image_url": "https://placehold.co/800x600/3b82f6/ffffff?text=About"
   },
-  "menu": {
-    "badge": "메뉴",
-    "title": "섹션 제목",
-    "items": [
-      { "name": "메뉴명", "price": "₩15,000", "description": "설명", "popular": true },
-      { "name": "메뉴명", "price": "₩12,000", "description": "설명", "popular": false }
-    ]
-  },
-  "reviews": {
-    "badge": "고객 리뷰",
-    "title": "고객님들의 후기",
-    "subtitle": "실제 방문 고객 리뷰",
-    "items": [
-      { "name": "김민수", "role": "단골 고객", "rating": 5, "text": "리뷰 내용", "date": "2024.01.15" },
-      { "name": "이서연", "role": "신규 고객", "rating": 5, "text": "리뷰 내용", "date": "2024.01.20" }
-    ],
-    "stats": {
-      "rating": "4.9",
-      "count": "2,847",
-      "satisfaction": "98%",
-      "revisit": "93%"
-    }
-  },
+  "category": "메뉴",
+  "menu_items": [
+    { "name": "메뉴명", "price": "₩15,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu1", "delay": "0" },
+    { "name": "메뉴명", "price": "₩12,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu2", "delay": "100" },
+    { "name": "메뉴명", "price": "₩10,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu3", "delay": "200" },
+    { "name": "메뉴명", "price": "₩8,000", "description": "설명", "image": "https://placehold.co/400x300/f59e0b/ffffff?text=Menu4", "delay": "300" }
+  ],
+  "gallery_images": [
+    { "image": "https://placehold.co/600x400/8b5cf6/ffffff?text=Gallery1", "title": "제목", "tag": "매장", "height_class": "h-64", "delay": "0" },
+    { "image": "https://placehold.co/600x500/ec4899/ffffff?text=Gallery2", "title": "제목", "tag": "제품", "height_class": "h-80", "delay": "100" },
+    { "image": "https://placehold.co/600x350/06b6d4/ffffff?text=Gallery3", "title": "제목", "tag": "이벤트", "height_class": "h-56", "delay": "200" }
+  ],
+  "section_badge": "고객 리뷰",
+  "section_title": "고객님들의 후기",
+  "section_subtitle": "실제 방문 고객 리뷰",
+  "reviews": "<div class='group' data-aos='fade-up'><div class='relative h-full p-6 rounded-3xl bg-white/70 dark:bg-white/5 backdrop-blur-xl border border-gray-200/50 dark:border-white/10 shadow-xl'><div class='flex gap-1 mb-4'>⭐⭐⭐⭐⭐</div><p class='text-gray-700 dark:text-gray-300 mb-6'>리뷰 내용</p><div class='flex items-center gap-4 pt-6 border-t border-gray-200/50'><div class='w-12 h-12 rounded-full bg-gradient-to-br from-purple-500 to-blue-500 flex items-center justify-center text-white font-bold'>김</div><div><h4 class='font-semibold text-gray-900 dark:text-white'>김민수</h4><p class='text-sm text-gray-500'>단골 고객</p></div></div></div></div>",
+  "stats_rating_label": "평균 평점",
+  "stats_count_label": "총 리뷰",
+  "stats_satisfaction_label": "만족도",
+  "stats_revisit_label": "재방문율",
   "contact": {
     "badge": "연락처",
-    "title": "문의하기",
-    "phone": "02-1234-5678",
-    "email": "info@example.com",
-    "kakao": "@상호명"
+    "title": "문의하기"
   },
   "location": {
     "badge": "오시는 길",
     "title": "위치 안내",
-    "address": "주소",
     "subway": "지하철역에서 도보 5분",
-    "parking": "건물 내 주차 가능",
-    "hours": "영업시간"
+    "parking": "건물 내 주차 가능"
+  },
+  "reservation": {
+    "badge": "예약",
+    "title": "온라인 예약",
+    "subtitle": "원하시는 날짜와 시간을 선택해주세요"
   },
   "cta": {
     "title": "지금 바로 방문하세요",
     "subtitle": "특별한 경험이 기다리고 있습니다",
-    "button": "예약하기",
-    "phone": "02-1234-5678"
+    "button": "예약하기"
   },
   "footer": {
     "description": "간단한 소개 (1문장)",
@@ -159,21 +150,10 @@ async function loadComponent(componentType: string, variant: number = 1): Promis
   }
 }
 
-function fillTemplate(template: string, data: Record<string, any>, prefix: string = ''): string {
-  let result = template;
-  
-  for (const [key, value] of Object.entries(data)) {
-    const placeholder = prefix ? `{{${prefix}_${key}}}` : `{{${key}}}`;
-    
-    if (typeof value === 'string') {
-      result = result.replace(new RegExp(placeholder.replace(/[{}]/g, '\\$&'), 'g'), value);
-    } else if (typeof value === 'object' && !Array.isArray(value)) {
-      // Recursively handle nested objects
-      result = fillTemplate(result, value, key);
-    }
-  }
-  
-  return result;
+function fillTemplate(template: string, data: Record<string, any>): string {
+  // Use Mustache for template rendering (supports {{#array}}...{{/array}} loops)
+  // Disable HTML escaping to preserve HTML content
+  return Mustache.render(template, data, {}, { escape: (text: string) => text });
 }
 
 function generatePageWrapper(content: string, businessName: string, style: string, color: string): string {
@@ -358,20 +338,24 @@ ${CONTENT_GENERATION_PROMPT}`;
     return generateFullHtml(data);
   }
 
+  // Prepare template data - merge business info with AI-generated content
+  const templateData = {
+    business_name: businessInfo.name,
+    phone: businessInfo.phone || '02-1234-5678',
+    address: businessInfo.address,
+    hours: businessInfo.hours,
+    description: businessInfo.description,
+    ...contentJson, // Spread all AI-generated content (includes menu_items, gallery_images, etc.)
+  };
+
   // Load and combine components
   const componentHtmlParts: string[] = [];
   
   for (const comp of selectedComponents) {
     const template = await loadComponent(comp, 1);
     if (template) {
-      const filledTemplate = fillTemplate(template, {
-        business_name: businessInfo.name,
-        phone: businessInfo.phone || '02-1234-5678',
-        address: businessInfo.address,
-        hours: businessInfo.hours,
-        description: businessInfo.description,
-        ...contentJson[comp],
-      });
+      // Pass full templateData so Mustache can access arrays like {{#menu_items}}
+      const filledTemplate = fillTemplate(template, templateData);
       componentHtmlParts.push(filledTemplate);
     }
   }
@@ -379,12 +363,7 @@ ${CONTENT_GENERATION_PROMPT}`;
   // Always add footer
   const footerTemplate = await loadComponent('footer', 1);
   if (footerTemplate) {
-    const filledFooter = fillTemplate(footerTemplate, {
-      business_name: businessInfo.name,
-      phone: businessInfo.phone || '02-1234-5678',
-      address: businessInfo.address,
-      ...contentJson.footer,
-    });
+    const filledFooter = fillTemplate(footerTemplate, templateData);
     componentHtmlParts.push(filledFooter);
   }
 
