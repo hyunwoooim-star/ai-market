@@ -22,13 +22,14 @@ const PACKAGES: CreditPackage[] = [
   { id: 'premium', priceKRW: 50000, credits: 6000, bonusPercent: 20 },
 ];
 
-function generateOrderId() {
+function generateOrderId(userId: string) {
   const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
-  let result = 'amcredit_';
-  for (let i = 0; i < 16; i++) {
-    result += chars.charAt(Math.floor(Math.random() * chars.length));
+  let random = '';
+  for (let i = 0; i < 8; i++) {
+    random += chars.charAt(Math.floor(Math.random() * chars.length));
   }
-  return result;
+  const timestamp = Date.now().toString(36);
+  return `amcredit_${userId}_${timestamp}_${random}`;
 }
 
 export default function CheckoutPage() {
@@ -59,7 +60,7 @@ export default function CheckoutPage() {
           currency: 'KRW',
           value: selectedPkg.priceKRW,
         },
-        orderId: generateOrderId(),
+        orderId: generateOrderId(user.id),
         orderName: t('orderName', { credits: selectedPkg.credits }),
         successUrl: `${window.location.origin}/api/payments/confirm`,
         failUrl: `${window.location.origin}${window.location.pathname.replace(/\/checkout$/, '')}/checkout/fail`,

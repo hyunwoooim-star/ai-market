@@ -5,7 +5,7 @@ const TOSS_SECRET_KEY = process.env.TOSS_SECRET_KEY!;
 const TOSS_CONFIRM_URL = 'https://api.tosspayments.com/v1/payments/confirm';
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
 
 // Credit packages: amount → credits mapping
 const CREDIT_PACKAGES: Record<number, { credits: number; name: string }> = {
@@ -67,45 +67,59 @@ export async function GET(request: NextRequest) {
     }
 
     // Payment confirmed! Now add credits.
-    const supabase = createClient(supabaseUrl, supabaseKey);
+    const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
-    // Extract user ID from orderId or cookie
-    // We'll get the user from the kakao_user cookie
-    const kakaoUserCookie = request.cookies.get('kakao_user')?.value;
-    let userId = 'anonymous';
-    let userName = 'Anonymous';
+    // Extract user ID from orderId - format: amcredit_userId_timestamp_random
+    const orderIdParts = orderId.split('_');
+    let targetUserId: string | null = null;
 
-    if (kakaoUserCookie) {
-      try {
-        const kakaoUser = JSON.parse(decodeURIComponent(kakaoUserCookie));
-        userId = `kakao_${kakaoUser.id}`;
-        userName = kakaoUser.nickname || 'User';
-      } catch {
-        // fallback
+    // Try to extract user ID from order ID pattern
+    if (orderIdParts.length >= 2) {
+      targetUserId = orderIdParts[1];
+    }
+
+    // If not found in orderId, try cookies as fallback
+    if (!targetUserId) {
+      const kakaoUserCookie = request.cookies.get('kakao_user')?.value;
+      if (kakaoUserCookie) {
+        try {
+          const kakaoUser = JSON.parse(decodeURIComponent(kakaoUserCookie));
+          targetUserId = `kakao_${kakaoUser.id}`;
+        } catch {
+          // fallback failed
+        }
       }
     }
 
-    // Record transaction in am_transactions
-    const { error: txError } = await supabase.from('am_transactions').insert({
-      from_id: 'toss_payments',
-      to_id: userId,
-      amount: pkg.credits,
-      type: 'credit_purchase',
-      note: JSON.stringify({
+    if (!targetUserId) {
+      console.error('Could not determine user ID from orderId or cookies');
+      const failUrl = `${baseUrl}/${locale}/checkout/fail?code=INVALID_USER&message=${encodeURIComponent('사용자를 식별할 수 없습니다')}`;
+      return NextResponse.redirect(failUrl);
+    }
+
+    // Add credits using our atomic function
+    const { error: creditsError } = await supabase.rpc('add_user_credits', {
+      target_user_id: targetUserId,
+      credit_amount: pkg.credits,
+      transaction_type: 'charge',
+      payment_key_val: paymentKey,
+      order_id_val: orderId,
+      description_val: `TossPayments ${pkg.name} Package (₩${amountNum.toLocaleString()})`,
+      metadata_val: {
         paymentKey,
         orderId,
         amountKRW: amountNum,
         credits: pkg.credits,
         packageName: pkg.name,
-        userName,
         confirmedAt: new Date().toISOString(),
-      }),
+        confirmIP: request.ip || 'unknown'
+      }
     });
 
-    if (txError) {
-      console.error('Failed to record transaction:', txError);
-      // Payment was confirmed but recording failed — still redirect to success
-      // The credits can be reconciled manually
+    if (creditsError) {
+      console.error('Failed to add credits:', creditsError);
+      const failUrl = `${baseUrl}/${locale}/checkout/fail?code=CREDIT_ERROR&message=${encodeURIComponent('크레딧 추가 중 오류가 발생했습니다')}`;
+      return NextResponse.redirect(failUrl);
     }
 
     // Redirect to success page with credit info
