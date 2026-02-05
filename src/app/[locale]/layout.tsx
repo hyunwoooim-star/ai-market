@@ -31,7 +31,7 @@ export async function generateMetadata({
   return {
     title: t("title"),
     description: t("description"),
-    keywords: ["AI", "agent", "AgentMarket", "AI agent", "economy", "simulation"],
+    keywords: ["AI", "에이전트마켓", "AI 에이전트", "AI 앱스토어", "무료 웹사이트", "AI 외주", "소상공인 홈페이지", "30초 웹사이트"],
     manifest: "/manifest.json",
     appleWebApp: {
       capable: true,
