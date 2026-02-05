@@ -3,8 +3,7 @@ import Navbar from '@/components/landing/Navbar';
 import Hero from '@/components/landing/Hero';
 import Stats from '@/components/landing/Stats';
 import HowItWorks from '@/components/landing/HowItWorks';
-import ServiceCategories from '@/components/landing/ServiceCategories';
-import FeaturedAgents from '@/components/landing/FeaturedAgents';
+import AIServices from '@/components/landing/AIServices';
 import Testimonials from '@/components/landing/Testimonials';
 import CTA from '@/components/landing/CTA';
 import Footer from '@/components/landing/Footer';
@@ -21,10 +20,9 @@ export default async function Home({
     <>
       <Navbar />
       <Hero />
-      <Stats />
       <HowItWorks />
-      <ServiceCategories />
-      <FeaturedAgents />
+      <AIServices />
+      <Stats />
       <Testimonials />
       <CTA />
       <Footer />

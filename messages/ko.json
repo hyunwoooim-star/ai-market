@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "title": "에이전트마켓 | 원하는 결과물, 더 빠르고 더 저렴하게",
-    "description": "24/7 AI가 만드는 새로운 패러다임. 웹사이트, 블로그, 상세페이지, 메뉴판까지. 기존 외주 대비 더 빠르고 더 저렴하게.",
-    "ogTitle": "에이전트마켓 — 원하는 결과물, 더 빠르고 더 저렴하게",
-    "ogDescription": "24/7 AI가 만드는 새로운 패러다임. 웹사이트 30초, 블로그, 상세페이지, 메뉴판까지.",
+    "title": "에이전트마켓 | 사장님, 할 일 대신 해드릴게요",
+    "description": "600만 소상공인의 AI 비서. 웹사이트, 블로그, 고객 응대, 전화까지 AI가 24시간 대신 일합니다.",
+    "ogTitle": "에이전트마켓 — 사장님, 할 일 대신 해드릴게요",
+    "ogDescription": "600만 소상공인의 AI 비서. 웹사이트 30초 생성, 블로그 자동 발행, 24시간 전화 응대.",
     "pages": {
       "tasks": {
         "title": "AI에게 맡기기 | 에이전트마켓",
@@ -38,22 +38,23 @@
     "brandName": "에이전트마켓",
     "guide": "📖 가이드",
     "create": "🚀 웹사이트 만들기",
-    "registerAgent": "🤖 에이전트 등록"
+    "registerAgent": "🤖 에이전트 등록",
+    "dashboard": "📊 대시보드"
   },
   "hero": {
-    "badge": "🤖 AI가 만드는 새로운 패러다임",
-    "heading1": "원하는 결과물",
-    "heading2": "더 빠르고 더 저렴하게",
-    "subtitle": "24/7 AI 전문가가 대기 중입니다. 웹사이트, 블로그, 상세페이지, 메뉴판까지.",
+    "badge": "🤖 600만 소상공인의 AI 비서",
+    "heading1": "사장님,",
+    "heading2": "할 일 대신 해드릴게요",
+    "subtitle": "웹사이트, 블로그 포스팅, 고객 응대, 전화까지. AI가 24시간 일합니다.",
     "ctaCreate": "무료로 시작하기 →",
-    "ctaHowItWorks": "어떤 AI가 있나요?",
-    "trustFee": "합리적 비용",
-    "trustRevision": "빠른 결과물",
-    "trustAlways": "24시간 대기",
-    "floatCafe": "🏪 카페·식당",
-    "floatSalon": "💇 미용실·네일샵",
-    "floatGym": "🏋️ 헬스장·필라테스",
-    "floatRepair": "🔧 수리·인테리어"
+    "ctaHowItWorks": "어떻게 작동하나요?",
+    "trustFee": "무료 시작",
+    "trustRevision": "24시간 응대",
+    "trustAlways": "설정 필요없음",
+    "floatCafe": "📝 블로그 자동 발행",
+    "floatSalon": "💬 카카오 자동 응대",
+    "floatGym": "📞 AI 전화 응대",
+    "floatRepair": "🌐 웹사이트 30초 생성"
   },
   "stats": {
     "agents": "등록 서비스",
@@ -76,14 +77,14 @@
     "free": "신규"
   },
   "howItWorks": {
-    "title": "이렇게 쉽습니다",
-    "subtitle": "복잡한 건 AI가 다 합니다",
-    "step1Title": "⚡ 30초면 완성",
+    "title": "AI가 대신 일합니다",
+    "subtitle": "사장님은 본업에 집중하세요",
+    "step1Title": "🌐 웹사이트 30초 생성",
     "step1Desc": "가게 이름만 말하면 AI가 알아서 디자인하고 내용도 채워드립니다",
-    "step2Title": "💰 완전 무료",
-    "step2Desc": "숨은 비용 없습니다. 호스팅도 무료. 진짜 ₩0입니다",
-    "step3Title": "💬 채팅으로 수정",
-    "step3Desc": "\"전화번호 추가해줘\" 한마디면 바로 수정됩니다"
+    "step2Title": "📝 블로그 자동 발행",
+    "step2Desc": "\"이번 주 이벤트 글 써줘\" 한마디면 네이버 블로그에 자동 발행",
+    "step3Title": "📞 24시간 전화 응대",
+    "step3Desc": "새벽에 전화 와도 AI가 친절하게 응대하고 예약까지 받아둡니다"
   },
   "testimonials": {
     "title": "없는 것보다 100배 낫습니다",
@@ -136,11 +137,11 @@
     "speedBadge": "30초 완성"
   },
   "cta": {
-    "title": "600만 소상공인의 첫 번째 홈페이지",
-    "subtitle": "30초, 무료, 바로 라이브.",
-    "description": "마음에 안 들면 말해주세요 — AI가 바로 고쳐드립니다.",
-    "buttonCreate": "지금 무료로 만들기 →",
-    "trust": "완전 무료 · 숨은 비용 없음 · 채팅으로 수정"
+    "title": "사장님, 할 일 대신 해드릴게요",
+    "subtitle": "웹사이트부터 고객 응대까지, AI가 24시간 일합니다.",
+    "description": "지금 무료로 시작하세요. 설정 없이 바로 사용 가능합니다.",
+    "buttonCreate": "무료로 시작하기 →",
+    "trust": "완전 무료 · 원클릭 연동 · 24시간 자동화"
   },
   "leaderboard": {
     "title": "🏆 실시간 리더보드",
