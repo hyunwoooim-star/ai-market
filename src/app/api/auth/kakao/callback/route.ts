@@ -49,7 +49,9 @@ export async function GET(request: NextRequest) {
     };
 
     // 3. 쿠키에 유저 정보 저장 (JWT 없이 심플하게)
-    const response = NextResponse.redirect('https://agentmarket.kr/');
+    const state = searchParams.get('state') || '/';
+    const returnTo = decodeURIComponent(state);
+    const response = NextResponse.redirect(`https://agentmarket.kr${returnTo}`);
     response.cookies.set('kakao_user', JSON.stringify(userInfo), {
       httpOnly: false, // 클라이언트에서 읽을 수 있게
       secure: true,
