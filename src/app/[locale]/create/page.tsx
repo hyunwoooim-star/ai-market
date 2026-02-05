@@ -17,22 +17,34 @@ const STYLES: { key: Style; emoji: string }[] = [
   { key: 'warm', emoji: '🌿' },
 ];
 
+type Industry = 'cafe' | 'restaurant' | 'salon' | 'fitness' | 'clinic' | 'shop' | 'default';
+
 const PRESETS_KO = [
-  { emoji: '☕', label: '카페', desc: '아늑한 분위기의 동네 카페입니다. 핸드드립 커피와 수제 디저트를 판매하고, 예약도 받습니다.', slug: 'my-cafe' },
-  { emoji: '💅', label: '네일샵', desc: '트렌디한 네일아트 전문 샵입니다. 젤네일, 페디큐어, 속눈썹 연장 서비스를 제공하며 온라인 예약이 가능합니다.', slug: 'nail-shop' },
-  { emoji: '🏋️', label: '헬스장/PT', desc: '1:1 퍼스널 트레이닝 전문 피트니스입니다. 체형 교정, 다이어트, 근력 강화 프로그램을 운영합니다.', slug: 'my-gym' },
-  { emoji: '🍕', label: '음식점', desc: '정성 가득한 한식 맛집입니다. 점심 특선, 저녁 코스, 단체 예약을 받으며 배달도 가능합니다.', slug: 'my-restaurant' },
-  { emoji: '🏥', label: '병원/의원', desc: '지역 주민의 건강을 책임지는 가정의학과 의원입니다. 건강검진, 예방접종, 만성질환 관리를 합니다.', slug: 'my-clinic' },
-  { emoji: '📸', label: '사진관', desc: '프로필 사진, 가족사진, 웨딩 촬영 전문 스튜디오입니다. 자연광 스튜디오와 야외 촬영을 제공합니다.', slug: 'my-studio' },
+  { emoji: '☕', label: '카페', desc: '아늑한 분위기의 동네 카페입니다. 핸드드립 커피와 수제 디저트를 판매하고, 예약도 받습니다.', slug: 'my-cafe', industry: 'cafe' as Industry },
+  { emoji: '💅', label: '네일샵', desc: '트렌디한 네일아트 전문 샵입니다. 젤네일, 페디큐어, 속눈썹 연장 서비스를 제공하며 온라인 예약이 가능합니다.', slug: 'nail-shop', industry: 'salon' as Industry },
+  { emoji: '🏋️', label: '헬스장/PT', desc: '1:1 퍼스널 트레이닝 전문 피트니스입니다. 체형 교정, 다이어트, 근력 강화 프로그램을 운영합니다.', slug: 'my-gym', industry: 'fitness' as Industry },
+  { emoji: '🍕', label: '음식점', desc: '정성 가득한 한식 맛집입니다. 점심 특선, 저녁 코스, 단체 예약을 받으며 배달도 가능합니다.', slug: 'my-restaurant', industry: 'restaurant' as Industry },
+  { emoji: '🏥', label: '병원/의원', desc: '지역 주민의 건강을 책임지는 가정의학과 의원입니다. 건강검진, 예방접종, 만성질환 관리를 합니다.', slug: 'my-clinic', industry: 'clinic' as Industry },
+  { emoji: '📸', label: '사진관', desc: '프로필 사진, 가족사진, 웨딩 촬영 전문 스튜디오입니다. 자연광 스튜디오와 야외 촬영을 제공합니다.', slug: 'my-studio', industry: 'shop' as Industry },
 ];
 
 const PRESETS_EN = [
-  { emoji: '☕', label: 'Café', desc: 'A cozy neighborhood café serving hand-drip coffee and homemade desserts. Reservations available.', slug: 'my-cafe' },
-  { emoji: '💅', label: 'Nail Salon', desc: 'A trendy nail art salon offering gel nails, pedicures, and eyelash extensions with online booking.', slug: 'nail-salon' },
-  { emoji: '🏋️', label: 'Fitness/PT', desc: 'A personal training fitness center specializing in body correction, diet, and strength programs.', slug: 'my-gym' },
-  { emoji: '🍕', label: 'Restaurant', desc: 'A charming restaurant serving authentic cuisine. Lunch specials, dinner courses, and group bookings available.', slug: 'my-restaurant' },
-  { emoji: '🏥', label: 'Clinic', desc: 'A family medicine clinic providing health checkups, vaccinations, and chronic disease management.', slug: 'my-clinic' },
-  { emoji: '📸', label: 'Photo Studio', desc: 'A professional photography studio for portraits, family photos, and wedding shoots.', slug: 'my-studio' },
+  { emoji: '☕', label: 'Café', desc: 'A cozy neighborhood café serving hand-drip coffee and homemade desserts. Reservations available.', slug: 'my-cafe', industry: 'cafe' as Industry },
+  { emoji: '💅', label: 'Nail Salon', desc: 'A trendy nail art salon offering gel nails, pedicures, and eyelash extensions with online booking.', slug: 'nail-salon', industry: 'salon' as Industry },
+  { emoji: '🏋️', label: 'Fitness/PT', desc: 'A personal training fitness center specializing in body correction, diet, and strength programs.', slug: 'my-gym', industry: 'fitness' as Industry },
+  { emoji: '🍕', label: 'Restaurant', desc: 'A charming restaurant serving authentic cuisine. Lunch specials, dinner courses, and group bookings available.', slug: 'my-restaurant', industry: 'restaurant' as Industry },
+  { emoji: '🏥', label: 'Clinic', desc: 'A family medicine clinic providing health checkups, vaccinations, and chronic disease management.', slug: 'my-clinic', industry: 'clinic' as Industry },
+  { emoji: '📸', label: 'Photo Studio', desc: 'A professional photography studio for portraits, family photos, and wedding shoots.', slug: 'my-studio', industry: 'shop' as Industry },
+];
+
+const INDUSTRIES: { key: Industry; emoji: string; labelKo: string; labelEn: string }[] = [
+  { key: 'cafe', emoji: '☕', labelKo: '카페', labelEn: 'Café' },
+  { key: 'restaurant', emoji: '🍕', labelKo: '음식점', labelEn: 'Restaurant' },
+  { key: 'salon', emoji: '💇', labelKo: '미용/뷰티', labelEn: 'Beauty' },
+  { key: 'fitness', emoji: '🏋️', labelKo: '피트니스', labelEn: 'Fitness' },
+  { key: 'clinic', emoji: '🏥', labelKo: '병원/의원', labelEn: 'Clinic' },
+  { key: 'shop', emoji: '🛍️', labelKo: '매장/샵', labelEn: 'Shop' },
+  { key: 'default', emoji: '✨', labelKo: '기타', labelEn: 'Other' },
 ];
 
 const COLORS: { key: Color; tw: string; ring: string }[] = [
@@ -101,6 +113,7 @@ export default function CreatePage() {
   const [description, setDescription] = useState('');
   const [style, setStyle] = useState<Style>('modern');
   const [color, setColor] = useState<Color>('indigo');
+  const [industry, setIndustry] = useState<Industry>('default');
   const [phase, setPhase] = useState<Phase>('input');
   const [progress, setProgress] = useState(0);
   const [progressMsg, setProgressMsg] = useState('');
@@ -160,7 +173,7 @@ export default function CreatePage() {
       const res = await fetch('/api/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ description: description.trim(), style, color }),
+        body: JSON.stringify({ description: description.trim(), style, color, industry }),
       });
 
       const data = await res.json();
@@ -393,7 +406,10 @@ export default function CreatePage() {
                     {(isKorean ? PRESETS_KO : PRESETS_EN).map((p) => (
                       <button
                         key={p.label}
-                        onClick={() => setDescription(p.desc)}
+                        onClick={() => {
+                          setDescription(p.desc);
+                          setIndustry(p.industry);
+                        }}
                         className="flex flex-col items-center gap-1 px-3 py-2.5 rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-gray-800 hover:border-indigo-400 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 transition-all text-center"
                       >
                         <span className="text-xl">{p.emoji}</span>
@@ -440,6 +456,31 @@ export default function CreatePage() {
                         <span className="text-xl mb-1 block">{s.emoji}</span>
                         <span className="text-sm font-medium text-gray-900 dark:text-white">
                           {t(`style_${s.key}`)}
+                        </span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Industry selector */}
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 dark:text-gray-300 mb-3">
+                    {isKorean ? '🏪 업종 선택' : '🏪 Industry'}
+                  </label>
+                  <div className="grid grid-cols-4 sm:grid-cols-7 gap-2">
+                    {INDUSTRIES.map((ind) => (
+                      <button
+                        key={ind.key}
+                        onClick={() => setIndustry(ind.key)}
+                        className={`flex flex-col items-center gap-1 px-2 py-2.5 rounded-xl border-2 transition-all ${
+                          industry === ind.key
+                            ? 'border-indigo-500 bg-indigo-50 dark:bg-indigo-900/20 dark:border-indigo-400'
+                            : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 bg-white dark:bg-gray-800'
+                        }`}
+                      >
+                        <span className="text-lg">{ind.emoji}</span>
+                        <span className="text-[10px] font-medium text-gray-600 dark:text-gray-400">
+                          {isKorean ? ind.labelKo : ind.labelEn}
                         </span>
                       </button>
                     ))}
