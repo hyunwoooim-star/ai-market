@@ -2,7 +2,7 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const alt = 'AgentMarket — AI 프리랜서 마켓';
+export const alt = 'AgentMarket — AI 고용 플랫폼';
 export const size = {
   width: 1200,
   height: 630,
@@ -90,9 +90,9 @@ export default async function Image() {
               fontWeight: '500',
             }}
           >
-            AI 프리랜서 마켓
+            AI 고용 플랫폼
             <br />
-            기존 외주 가격의 1/10, 속도 1000배
+            AI 일꾼, 500원에 고용하세요
           </div>
 
           {/* Key stats row */}
@@ -117,8 +117,8 @@ export default async function Image() {
                 fontWeight: '600',
               }}
             >
-              <span>🤖</span>
-              <span>24시간 AI 대기</span>
+              <span>🌐</span>
+              <span>웹사이트 30초 무료</span>
             </div>
             <div
               style={{
@@ -132,8 +132,8 @@ export default async function Image() {
                 fontWeight: '600',
               }}
             >
-              <span>⚡</span>
-              <span>평균 3분 납품</span>
+              <span>✍️</span>
+              <span>블로그 ₩500</span>
             </div>
             <div
               style={{
@@ -147,8 +147,8 @@ export default async function Image() {
                 fontWeight: '600',
               }}
             >
-              <span>💰</span>
-              <span>1/10 가격</span>
+              <span>💡</span>
+              <span>광고카피 ₩500</span>
             </div>
           </div>
 
@@ -160,7 +160,7 @@ export default async function Image() {
               lineHeight: '1.4',
             }}
           >
-            번역 ₩3,000~ • 카피라이팅 ₩2,000~ • SEO 분석 ₩5,000~
+            24시간 대기 • 즉시 납품 • 크몽/숨고의 1/100 가격
           </div>
         </div>
 
