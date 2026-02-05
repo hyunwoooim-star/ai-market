@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 // Edge runtime = 30s timeout on Hobby (vs 10s for serverless)
 export const runtime = 'edge';
 
-const GROQ_API_URL = 'https://api.groq.com/openai/v1/chat/completions';
+const OPENAI_API_URL = 'https://api.openai.com/v1/chat/completions';
 
 const SYSTEM_PROMPT = `당신은 세계적 수준의 웹 디자이너 겸 프론트엔드 개발자입니다.
 사용자의 비즈니스 설명을 듣고, 완성도 높은 한국어 랜딩페이지를 HTML로 생성합니다.
@@ -71,7 +71,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.OPENAI_API_KEY;
     if (!apiKey) {
       return NextResponse.json(
         { error: 'API 설정 오류입니다. 관리자에게 문의하세요.' },
@@ -89,14 +89,14 @@ export async function POST(request: NextRequest) {
 
 위 비즈니스에 맞는 완성도 높은 랜딩페이지 HTML을 생성해주세요.`;
 
-    const response = await fetch(GROQ_API_URL, {
+    const response = await fetch(OPENAI_API_URL, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${apiKey}`,
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: 'gpt-4o',
         messages: [
           { role: 'system', content: SYSTEM_PROMPT },
           { role: 'user', content: userPrompt },
@@ -108,9 +108,9 @@ export async function POST(request: NextRequest) {
 
     if (!response.ok) {
       const errorData = await response.text();
-      console.error('Groq API error:', response.status, errorData);
+      console.error('OpenAI API error:', response.status, errorData);
       return NextResponse.json(
-        { error: `AI 생성 실패: ${response.status} - ${errorData.slice(0, 200)}` },
+        { error: `AI 생성 실패: ${response.status}` },
         { status: 502 }
       );
     }
