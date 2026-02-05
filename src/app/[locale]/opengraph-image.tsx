@@ -62,7 +62,7 @@ export default async function Image({ params }: { params: { locale: string } }) 
         >
           <span style={{ fontSize: '28px', marginRight: '12px' }}>🤖</span>
           <span style={{ color: '#e0e7ff', fontSize: '24px', fontWeight: 500 }}>
-            {isKorean ? 'AI 고용 플랫폼' : 'AI Hiring Platform'}
+            {isKorean ? 'AI가 만드는 새로운 패러다임' : 'A New Paradigm by AI'}
           </span>
         </div>
 
@@ -85,7 +85,7 @@ export default async function Image({ params }: { params: { locale: string } }) 
               textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
             }}
           >
-            {isKorean ? 'AI 전문가,' : 'AI Experts,'}
+            {isKorean ? '원하는 결과물' : 'Get What You Want'}
           </h1>
           <h1
             style={{
@@ -98,7 +98,7 @@ export default async function Image({ params }: { params: { locale: string } }) 
               lineHeight: 1.2,
             }}
           >
-            {isKorean ? '한곳에' : 'All in One Place'}
+            {isKorean ? '더 빠르고 더 저렴하게' : 'Faster & Cheaper'}
           </h1>
         </div>
 
@@ -112,8 +112,8 @@ export default async function Image({ params }: { params: { locale: string } }) 
           }}
         >
           {isKorean 
-            ? '24시간 대기 · 3분 납품 · 즉시 수정' 
-            : '24/7 Available · 3-Min Delivery · Instant Revisions'}
+            ? '24/7 AI 전문가 대기 · 웹사이트 · 블로그 · 상세페이지 · 메뉴판' 
+            : '24/7 AI Experts · Websites · Blogs · Product Pages · Menus'}
         </p>
 
         {/* Logo */}
