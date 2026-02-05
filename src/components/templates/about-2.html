@@ -1,0 +1,197 @@
+<!-- about-2.html — 타임라인/스토리 스타일 -->
+<section class="relative py-24 lg:py-32 bg-gradient-to-b from-gray-50 via-white to-slate-50 dark:from-gray-950 dark:via-gray-900 dark:to-gray-950 overflow-hidden">
+  
+  <!-- Background Decorations -->
+  <div class="absolute inset-0 overflow-hidden">
+    <div class="absolute top-1/4 -left-20 w-96 h-96 bg-gradient-to-br from-violet-200/30 to-purple-300/30 dark:from-violet-900/20 dark:to-purple-900/20 rounded-full blur-3xl"></div>
+    <div class="absolute bottom-1/4 -right-20 w-80 h-80 bg-gradient-to-tl from-blue-200/30 to-cyan-300/30 dark:from-blue-900/20 dark:to-cyan-900/20 rounded-full blur-3xl"></div>
+    <div class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gradient-radial from-amber-100/20 via-transparent to-transparent dark:from-amber-900/10 rounded-full"></div>
+  </div>
+  
+  <div class="relative z-10 max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <!-- Section Header -->
+    <div class="text-center mb-20" data-aos="fade-up">
+      <span class="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-violet-100 to-purple-100 dark:from-violet-900/30 dark:to-purple-900/30 text-violet-700 dark:text-violet-300 text-sm font-semibold mb-6">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        Our Journey
+      </span>
+      <h2 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 dark:text-white mb-6">
+        <span class="bg-gradient-to-r from-violet-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent">{{business_name}}</span>의 이야기
+      </h2>
+      <p class="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto leading-relaxed">
+        {{description}}
+      </p>
+    </div>
+    
+    <!-- Timeline -->
+    <div class="relative">
+      
+      <!-- Central Line -->
+      <div class="absolute left-1/2 transform -translate-x-1/2 h-full w-1 bg-gradient-to-b from-violet-400 via-purple-500 to-indigo-600 rounded-full hidden lg:block"></div>
+      <div class="absolute left-8 h-full w-1 bg-gradient-to-b from-violet-400 via-purple-500 to-indigo-600 rounded-full lg:hidden"></div>
+      
+      <!-- Timeline Items -->
+      <div class="space-y-12 lg:space-y-16">
+        
+        <!-- Item 1: Left -->
+        <div class="relative flex flex-col lg:flex-row items-center" data-aos="fade-right" data-aos-duration="1000">
+          <div class="w-full lg:w-1/2 lg:pr-16 lg:text-right order-2 lg:order-1 mt-8 lg:mt-0 ml-16 lg:ml-0">
+            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl p-8 shadow-xl border border-white/50 dark:border-gray-700/50 hover:shadow-2xl transition-shadow">
+              <span class="inline-block px-4 py-1.5 rounded-full bg-violet-100 dark:bg-violet-900/50 text-violet-700 dark:text-violet-300 text-sm font-semibold mb-4">2020</span>
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">시작의 순간</h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                작은 아이디어에서 시작된 {{business_name}}. 미래를 바꿀 혁신적인 서비스를 꿈꾸며 첫 발을 내딛었습니다. 단 3명의 팀원으로 시작한 여정이었지만, 큰 비전을 품고 있었습니다.
+              </p>
+              <div class="mt-4 flex justify-end gap-2">
+                <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm">창업</span>
+                <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm">비전</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Center Node -->
+          <div class="absolute left-8 lg:left-1/2 transform lg:-translate-x-1/2 order-1 lg:order-2">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/30 border-4 border-white dark:border-gray-900">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="hidden lg:block lg:w-1/2 order-3"></div>
+        </div>
+        
+        <!-- Item 2: Right -->
+        <div class="relative flex flex-col lg:flex-row items-center" data-aos="fade-left" data-aos-duration="1000">
+          <div class="hidden lg:block lg:w-1/2 order-1"></div>
+          
+          <!-- Center Node -->
+          <div class="absolute left-8 lg:left-1/2 transform lg:-translate-x-1/2 order-2">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30 border-4 border-white dark:border-gray-900">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="w-full lg:w-1/2 lg:pl-16 order-3 mt-8 lg:mt-0 ml-16 lg:ml-0">
+            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl p-8 shadow-xl border border-white/50 dark:border-gray-700/50 hover:shadow-2xl transition-shadow">
+              <span class="inline-block px-4 py-1.5 rounded-full bg-blue-100 dark:bg-blue-900/50 text-blue-700 dark:text-blue-300 text-sm font-semibold mb-4">2021</span>
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">성장의 가속화</h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                첫 투자 유치와 함께 팀을 확장했습니다. 10명의 열정적인 팀원들과 함께 제품을 고도화하고, 첫 1,000명의 사용자를 달성하는 뜻깊은 해였습니다.
+              </p>
+              <div class="mt-4 flex gap-2">
+                <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm">투자유치</span>
+                <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm">팀 확장</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Item 3: Left -->
+        <div class="relative flex flex-col lg:flex-row items-center" data-aos="fade-right" data-aos-duration="1000">
+          <div class="w-full lg:w-1/2 lg:pr-16 lg:text-right order-2 lg:order-1 mt-8 lg:mt-0 ml-16 lg:ml-0">
+            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl p-8 shadow-xl border border-white/50 dark:border-gray-700/50 hover:shadow-2xl transition-shadow">
+              <span class="inline-block px-4 py-1.5 rounded-full bg-emerald-100 dark:bg-emerald-900/50 text-emerald-700 dark:text-emerald-300 text-sm font-semibold mb-4">2022</span>
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">글로벌 확장</h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                국내를 넘어 아시아 태평양 시장에 진출했습니다. 다국어 지원을 시작하고, 해외 파트너십을 구축하며 글로벌 기업으로 도약했습니다.
+              </p>
+              <div class="mt-4 flex justify-end gap-2">
+                <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm">글로벌</span>
+                <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm">파트너십</span>
+              </div>
+            </div>
+          </div>
+          
+          <!-- Center Node -->
+          <div class="absolute left-8 lg:left-1/2 transform lg:-translate-x-1/2 order-1 lg:order-2">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/30 border-4 border-white dark:border-gray-900">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="hidden lg:block lg:w-1/2 order-3"></div>
+        </div>
+        
+        <!-- Item 4: Right -->
+        <div class="relative flex flex-col lg:flex-row items-center" data-aos="fade-left" data-aos-duration="1000">
+          <div class="hidden lg:block lg:w-1/2 order-1"></div>
+          
+          <!-- Center Node -->
+          <div class="absolute left-8 lg:left-1/2 transform lg:-translate-x-1/2 order-2">
+            <div class="w-16 h-16 rounded-full bg-gradient-to-br from-amber-500 to-orange-600 flex items-center justify-center shadow-lg shadow-amber-500/30 border-4 border-white dark:border-gray-900">
+              <svg class="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"></path>
+              </svg>
+            </div>
+          </div>
+          
+          <div class="w-full lg:w-1/2 lg:pl-16 order-3 mt-8 lg:mt-0 ml-16 lg:ml-0">
+            <div class="backdrop-blur-xl bg-white/70 dark:bg-gray-800/70 rounded-3xl p-8 shadow-xl border border-white/50 dark:border-gray-700/50 hover:shadow-2xl transition-shadow">
+              <span class="inline-block px-4 py-1.5 rounded-full bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-300 text-sm font-semibold mb-4">2023</span>
+              <h3 class="text-2xl font-bold text-gray-900 dark:text-white mb-3">AI 혁신</h3>
+              <p class="text-gray-600 dark:text-gray-300 leading-relaxed">
+                인공지능 기술을 핵심 서비스에 통합했습니다. GPT와 같은 최신 AI 모델을 활용하여 사용자 경험을 혁신적으로 개선했습니다.
+              </p>
+              <div class="mt-4 flex gap-2">
+                <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm">AI</span>
+                <span class="px-3 py-1 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-600 dark:text-gray-300 text-sm">혁신</span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <!-- Item 5: Center (Current) -->
+        <div class="relative flex flex-col items-center" data-aos="zoom-in" data-aos-duration="1000">
+          <div class="w-20 h-20 rounded-full bg-gradient-to-br from-pink-500 via-purple-500 to-indigo-600 flex items-center justify-center shadow-2xl shadow-purple-500/40 border-4 border-white dark:border-gray-900 animate-pulse mb-8">
+            <svg class="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+            </svg>
+          </div>
+          
+          <div class="w-full max-w-2xl ml-0">
+            <div class="backdrop-blur-xl bg-gradient-to-br from-white/90 to-purple-50/90 dark:from-gray-800/90 dark:to-purple-900/30 rounded-3xl p-10 shadow-2xl border-2 border-purple-200/50 dark:border-purple-500/30 text-center">
+              <span class="inline-block px-5 py-2 rounded-full bg-gradient-to-r from-purple-500 to-indigo-500 text-white text-sm font-bold mb-6">NOW - 2024</span>
+              <h3 class="text-3xl font-bold text-gray-900 dark:text-white mb-4">새로운 챕터의 시작</h3>
+              <p class="text-lg text-gray-600 dark:text-gray-300 leading-relaxed mb-6">
+                {{tagline}}<br/>
+                50,000명 이상의 사용자와 함께 더 큰 도약을 준비하고 있습니다. 
+                함께 미래를 만들어가실 준비가 되셨나요?
+              </p>
+              <a href="#" class="group inline-flex items-center gap-2 px-8 py-4 text-lg font-bold text-white rounded-2xl bg-gradient-to-r from-purple-600 via-pink-600 to-indigo-600 hover:from-purple-700 hover:via-pink-700 hover:to-indigo-700 shadow-lg shadow-purple-500/30 hover:shadow-purple-500/50 transition-all duration-300 hover:scale-105">
+                우리와 함께하기
+                <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7l5 5m0 0l-5 5m5-5H6"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Mission Statement -->
+    <div class="mt-24 text-center" data-aos="fade-up">
+      <div class="backdrop-blur-xl bg-white/40 dark:bg-gray-800/40 rounded-3xl p-12 border border-white/50 dark:border-gray-700/50">
+        <blockquote class="text-2xl sm:text-3xl font-medium text-gray-700 dark:text-gray-200 italic leading-relaxed">
+          "기술로 세상을 더 나은 곳으로 만드는 것,<br/>
+          그것이 <span class="text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-indigo-600 font-bold not-italic">{{business_name}}</span>의 미션입니다."
+        </blockquote>
+        <div class="mt-8 flex items-center justify-center gap-4">
+          <img src="{{image_url}}" alt="CEO" class="w-14 h-14 rounded-full object-cover border-2 border-purple-200 dark:border-purple-700" onerror="this.src='https://placehold.co/100x100/8b5cf6/ffffff?text=CEO'"/>
+          <div class="text-left">
+            <div class="font-semibold text-gray-900 dark:text-white">CEO / Founder</div>
+            <div class="text-sm text-gray-500 dark:text-gray-400">{{business_name}}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

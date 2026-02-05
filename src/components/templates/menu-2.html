@@ -1,0 +1,134 @@
+<!-- Menu 2: Premium List Style Menu (카테고리별) -->
+<!-- Tailwind CSS + AOS + Glass Morphism + Dark Mode -->
+
+<section class="relative py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900 overflow-hidden">
+  <!-- Ambient Background -->
+  <div class="absolute inset-0 overflow-hidden pointer-events-none">
+    <div class="absolute top-1/4 left-1/4 w-96 h-96 bg-violet-500/10 rounded-full blur-3xl animate-pulse"></div>
+    <div class="absolute bottom-1/4 right-1/4 w-96 h-96 bg-rose-500/10 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s;"></div>
+    <!-- Grid Pattern -->
+    <div class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.02)_1px,transparent_1px)] bg-[size:64px_64px]"></div>
+  </div>
+
+  <div class="relative max-w-5xl mx-auto">
+    <!-- Section Header -->
+    <div class="text-center mb-16" data-aos="fade-up">
+      <div class="inline-flex items-center gap-2 px-4 py-2 mb-6 bg-white/5 backdrop-blur-xl rounded-full border border-white/10">
+        <span class="w-2 h-2 bg-emerald-400 rounded-full animate-pulse"></span>
+        <span class="text-sm font-medium text-slate-300">{{category}}</span>
+      </div>
+      <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6">
+        Discover Our
+        <span class="block mt-2 bg-gradient-to-r from-violet-400 via-pink-400 to-rose-400 bg-clip-text text-transparent">
+          Signature Selection
+        </span>
+      </h2>
+      <p class="text-lg text-slate-400 max-w-xl mx-auto">
+        Each item crafted with precision and passion
+      </p>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="flex flex-wrap justify-center gap-3 mb-12" data-aos="fade-up" data-aos-delay="100">
+      <button class="px-6 py-3 bg-white text-slate-900 font-semibold rounded-full transition-all duration-300 hover:shadow-lg hover:shadow-white/20">
+        All
+      </button>
+      <button class="px-6 py-3 bg-white/10 text-white font-medium rounded-full backdrop-blur-sm border border-white/10 transition-all duration-300 hover:bg-white/20">
+        Coffee
+      </button>
+      <button class="px-6 py-3 bg-white/10 text-white font-medium rounded-full backdrop-blur-sm border border-white/10 transition-all duration-300 hover:bg-white/20">
+        Tea
+      </button>
+      <button class="px-6 py-3 bg-white/10 text-white font-medium rounded-full backdrop-blur-sm border border-white/10 transition-all duration-300 hover:bg-white/20">
+        Dessert
+      </button>
+    </div>
+
+    <!-- Menu List -->
+    <div class="space-y-4">
+      {{#menu_items}}
+      <!-- Menu List Item -->
+      <div 
+        class="group relative bg-white/5 backdrop-blur-xl rounded-2xl border border-white/10 overflow-hidden transition-all duration-500 hover:bg-white/10 hover:border-white/20 hover:shadow-2xl hover:shadow-violet-500/10"
+        data-aos="fade-up"
+        data-aos-delay="{{delay}}"
+      >
+        <div class="flex flex-col sm:flex-row items-stretch">
+          <!-- Image -->
+          <div class="relative sm:w-40 md:w-48 h-40 sm:h-auto flex-shrink-0 overflow-hidden">
+            <img 
+              src="{{image}}" 
+              alt="{{name}}" 
+              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+            />
+            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-transparent to-slate-900/50 hidden sm:block"></div>
+            <!-- Mobile Gradient -->
+            <div class="absolute inset-0 bg-gradient-to-b from-transparent to-slate-900/80 sm:hidden"></div>
+          </div>
+
+          <!-- Content -->
+          <div class="flex-1 p-6 sm:p-8 flex flex-col justify-center">
+            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+              <div class="flex-1">
+                <div class="flex items-center gap-3 mb-2">
+                  <h3 class="text-xl md:text-2xl font-bold text-white group-hover:text-violet-300 transition-colors duration-300">
+                    {{name}}
+                  </h3>
+                  <!-- Badge -->
+                  <span class="px-2 py-1 text-xs font-semibold text-emerald-300 bg-emerald-500/20 rounded-full hidden sm:inline-block">
+                    인기
+                  </span>
+                </div>
+                <p class="text-slate-400 text-sm md:text-base leading-relaxed max-w-lg">
+                  {{description}}
+                </p>
+              </div>
+
+              <!-- Price & Action -->
+              <div class="flex items-center gap-4 sm:flex-col sm:items-end">
+                <div class="text-2xl md:text-3xl font-bold bg-gradient-to-r from-violet-400 to-pink-400 bg-clip-text text-transparent">
+                  {{price}}
+                </div>
+                <button class="flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-violet-500 to-pink-500 text-white font-semibold rounded-xl transition-all duration-300 hover:shadow-lg hover:shadow-violet-500/30 hover:scale-105 active:scale-95">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                  </svg>
+                  <span class="hidden sm:inline">담기</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hover Glow Effect -->
+        <div class="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-1/2 h-px bg-gradient-to-r from-transparent via-violet-400 to-transparent"></div>
+        </div>
+
+        <!-- Number Badge -->
+        <div class="absolute top-4 left-4 sm:top-6 sm:left-6 w-8 h-8 flex items-center justify-center bg-white/10 backdrop-blur-sm rounded-full text-sm font-bold text-white/60 border border-white/10">
+          {{index}}
+        </div>
+      </div>
+      {{/menu_items}}
+    </div>
+
+    <!-- Load More -->
+    <div class="text-center mt-12" data-aos="fade-up">
+      <button class="group inline-flex items-center gap-3 px-8 py-4 bg-white/10 backdrop-blur-sm text-white font-semibold rounded-full border border-white/20 transition-all duration-300 hover:bg-white/20 hover:border-white/30">
+        더 보기
+        <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-y-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 14l-7 7m0 0l-7-7m7 7V3"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Required Scripts -->
+<!-- 
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+<script>AOS.init({ duration: 800, once: true });</script>
+-->
