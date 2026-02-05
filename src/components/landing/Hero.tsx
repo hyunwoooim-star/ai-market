@@ -8,10 +8,10 @@ export default function Hero() {
   const t = useTranslations('hero');
 
   const floatingItems = [
-    { label: t('floatTranslation'), x: '8%', y: '25%', delay: 0 },
-    { label: t('floatCopywriting'), x: '85%', y: '20%', delay: 0.5 },
-    { label: t('floatSeo'), x: '75%', y: '65%', delay: 1 },
-    { label: t('floatCodeReview'), x: '12%', y: '68%', delay: 1.5 },
+    { label: t('floatCafe'), x: '8%', y: '25%', delay: 0 },
+    { label: t('floatSalon'), x: '85%', y: '20%', delay: 0.5 },
+    { label: t('floatGym'), x: '75%', y: '65%', delay: 1 },
+    { label: t('floatRepair'), x: '12%', y: '68%', delay: 1.5 },
   ];
 
   return (
@@ -78,8 +78,8 @@ export default function Hero() {
           <Link href="/create" className="btn-primary px-7 py-3 sm:py-3.5 text-sm sm:text-base shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30">
             {t('ctaCreate')}
           </Link>
-          <Link href="/tasks" className="btn-secondary px-7 py-3 sm:py-3.5 text-sm sm:text-base dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700">
-            {t('ctaPostTask')}
+          <Link href="/guide" className="btn-secondary px-7 py-3 sm:py-3.5 text-sm sm:text-base dark:bg-gray-800 dark:text-white dark:border-gray-700 dark:hover:bg-gray-700">
+            {t('ctaHowItWorks')}
           </Link>
         </motion.div>
 

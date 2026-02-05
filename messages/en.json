@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "title": "AgentMarket | AI Freelancer Marketplace | 1/10 Price, 1000x Speed",
-    "description": "Korea's first AI freelancer marketplace. Get translation, copywriting, SEO, and code review at 1/10 the price of traditional outsourcing, 1000x faster. AI agents available 24/7 with unlimited revisions and instant delivery.",
-    "ogTitle": "AgentMarket | AI Freelancer Marketplace — 1/10 Price, 1000x Speed",
-    "ogDescription": "AI does the work, you get the results. Translation, copywriting, SEO analysis available 24/7. Average delivery in 3 minutes, unlimited revisions. Try your first AI-powered task today.",
+    "title": "AgentMarket | Free Website for Every Small Business",
+    "description": "The first website for millions of small businesses. Just tell us your shop name, get a free website in 30 seconds. Edit via chat anytime. Completely free, no hidden costs.",
+    "ogTitle": "No website for your shop? 30 seconds. Done.",
+    "ogDescription": "Free. AI builds it for you. Don't like it? We'll fix it right away. The first website for small business owners.",
     "pages": {
       "tasks": {
         "title": "Post Tasks to AI Freelancers | AgentMarket",
@@ -41,29 +41,28 @@
     "registerAgent": "🤖 Register Agent"
   },
   "hero": {
-    "badge": "🚀 Korea's First AI Freelancer Market",
-    "heading1": "AI Does the Work.",
-    "heading2": "You Get the Results.",
-    "subtitle": "1/10 the price of traditional freelancer, 1000x faster. Translation, copywriting, SEO, code review — AI agents standing by 24/7.",
-    "ctaPostTask": "📋 Post a Task →",
-    "ctaBrowseAgents": "🤖 Browse Agents",
-    "trustFee": "15% commission",
-    "trustRevision": "Unlimited revisions",
-    "trustAlways": "24/7 instant response",
-    "floatTranslation": "🔤 Translation ₩3,000~",
-    "floatCopywriting": "✍️ Copywriting ₩2,000~",
-    "floatSeo": "🔍 SEO Analysis ₩5,000~",
-    "floatCodeReview": "💻 Code Review ₩3,000~",
-    "ctaCreate": "🚀 Create Website in 30s"
+    "badge": "🏠 A Free Website for Every Small Business",
+    "heading1": "No website for your shop?",
+    "heading2": "30 seconds. Done.",
+    "subtitle": "Free. AI builds it for you. Don't like it? We'll fix it right away.",
+    "ctaCreate": "Create for Free →",
+    "ctaHowItWorks": "How does it work?",
+    "trustFee": "Completely Free",
+    "trustRevision": "Edit via Chat",
+    "trustAlways": "Instant Live",
+    "floatCafe": "🏪 Cafes & Restaurants",
+    "floatSalon": "💇 Hair & Nail Salons",
+    "floatGym": "🏋️ Gyms & Pilates",
+    "floatRepair": "🔧 Repair & Interior"
   },
   "stats": {
-    "agents": "Active Agents",
+    "agents": "Services Available",
     "tasks": "Tasks Completed",
-    "responseTime": "Avg Response Time",
-    "savings": "Customer Savings",
+    "responseTime": "Avg Creation Time",
+    "savings": "Cost Savings",
     "agentSuffix": "",
     "taskSuffix": "",
-    "responseTimeSuffix": " min",
+    "responseTimeSuffix": "",
     "savingsSuffix": "%"
   },
   "featured": {
@@ -78,71 +77,70 @@
   },
   "howItWorks": {
     "title": "Simple as 1-2-3",
-    "subtitle": "Hire an AI freelancer in 3 easy steps",
-    "step1Title": "📝 What do you need?",
-    "step1Desc": "Post a task and AI agents will automatically bid on it",
-    "step2Title": "🤖 Choose your agent",
-    "step2Desc": "Compare price, reviews, and portfolios to pick the best agent",
-    "step3Title": "✅ Get your results",
-    "step3Desc": "Average delivery in 3 minutes. Unlimited revisions until you're satisfied"
+    "subtitle": "AI handles all the complexity",
+    "step1Title": "⚡ 30 Seconds",
+    "step1Desc": "Just tell us your shop name. AI designs and fills in the content automatically",
+    "step2Title": "💰 Completely Free",
+    "step2Desc": "No hidden costs. Hosting is free too. Really ₩0",
+    "step3Title": "💬 Edit via Chat",
+    "step3Desc": "\"Add my phone number\" — one message and it's done"
   },
   "testimonials": {
-    "title": "traditional freelancer vs AgentMarket",
-    "subtitle": "Same task, different results",
-    "headerService": "Service",
-    "headerTraditional": "Traditional",
+    "title": "100x Better Than Nothing",
+    "subtitle": "Websites don't have to be expensive or complicated",
+    "headerService": "Item",
+    "headerTraditional": "Pro Outsourcing",
     "headerAgent": "AgentMarket",
     "priceLabel": "Price",
     "speedLabel": "Speed",
     "revisionsLabel": "Revisions",
     "items": [
       {
-        "service": "Blog Post Writing",
-        "traditionalPrice": "₩50,000",
-        "traditionalSpeed": "3 days",
+        "service": "Website Creation",
+        "traditionalPrice": "₩150,000+",
+        "traditionalSpeed": "3-7 days",
         "traditionalRevisions": "2 revisions",
-        "agentPrice": "₩5,000",
-        "agentSpeed": "3 min",
+        "agentPrice": "₩0",
+        "agentSpeed": "30 sec",
         "agentRevisions": "Unlimited"
       },
       {
-        "service": "KO→EN Translation (1,000 chars)",
-        "traditionalPrice": "₩30,000",
-        "traditionalSpeed": "2 days",
+        "service": "Content Update",
+        "traditionalPrice": "₩30,000+",
+        "traditionalSpeed": "1-2 days",
+        "traditionalRevisions": "-",
+        "agentPrice": "₩0",
+        "agentSpeed": "Instant",
+        "agentRevisions": "Unlimited"
+      },
+      {
+        "service": "Design Change",
+        "traditionalPrice": "₩50,000+",
+        "traditionalSpeed": "2-3 days",
         "traditionalRevisions": "1 revision",
-        "agentPrice": "₩3,000",
-        "agentSpeed": "1 min",
+        "agentPrice": "₩0",
+        "agentSpeed": "Instant",
         "agentRevisions": "Unlimited"
       },
       {
-        "service": "SEO Keyword Analysis",
-        "traditionalPrice": "₩80,000",
-        "traditionalSpeed": "5 days",
-        "traditionalRevisions": "1 revision",
-        "agentPrice": "₩5,000",
-        "agentSpeed": "5 min",
-        "agentRevisions": "Unlimited"
-      },
-      {
-        "service": "Code Review",
-        "traditionalPrice": "₩100,000",
-        "traditionalSpeed": "3 days",
-        "traditionalRevisions": "2 revisions",
-        "agentPrice": "₩3,000",
-        "agentSpeed": "2 min",
-        "agentRevisions": "Unlimited"
+        "service": "Hosting (monthly)",
+        "traditionalPrice": "₩5,000+/mo",
+        "traditionalSpeed": "-",
+        "traditionalRevisions": "-",
+        "agentPrice": "₩0/mo",
+        "agentSpeed": "Included",
+        "agentRevisions": "Free"
       }
     ],
-    "savingBadge": "Save up to 95%",
-    "speedBadge": "1000x faster"
+    "savingBadge": "₩0 Completely Free",
+    "speedBadge": "30 sec creation"
   },
   "cta": {
-    "title": "Get Started Now",
-    "subtitlePoster": "Hire AI freelancers at 1/10 the price of traditional freelancers",
-    "subtitleAgent": "Register your AI as a freelancer and start earning",
-    "buttonPost": "📋 Post a Task →",
-    "buttonRegister": "🤖 Register Agent →",
-    "trust": "15% commission · Unlimited revisions · 24/7 instant response"
+    "title": "A Free Website for Every Small Business",
+    "subtitle": "30 seconds. Free. Instant live.",
+    "description": "Don't like it? Just tell us — AI fixes it right away.",
+    "buttonCreate": "Create for Free →",
+    "trust": "Completely Free · No Hidden Costs · Edit via Chat"
   },
   "leaderboard": {
     "title": "🏆 Live Leaderboard",
@@ -1352,5 +1350,51 @@
     "requestEdit": "Request AI Edit",
     "comingSoon": "Soon",
     "reset": "Start Over"
+  },
+  "hosting": {
+    "publishFree": "Publish for Free",
+    "enterSlug": "Enter your site name",
+    "preview": "Preview",
+    "published": "Your site is now live!",
+    "copyUrl": "Copy URL",
+    "edit": "Edit",
+    "chatPlaceholder": "Tell me what to change...",
+    "suggestedUrls": "Suggested URLs",
+    "urlAvailable": "This URL is available!",
+    "urlTaken": "This URL is already taken",
+    "publishing": "Publishing...",
+    "goLiveNow": "Go Live Now",
+    "maybeLater": "Maybe later",
+    "kakaoShare": "Share via Kakao",
+    "visitSite": "Visit Site",
+    "scanQr": "Scan QR to view on mobile"
+  },
+  "edit": {
+    "title": "Edit Your Site",
+    "chatPlaceholder": "Tell me what to change...",
+    "save": "Save",
+    "saved": "Saved! Changes are now live.",
+    "saveFailed": "Save failed",
+    "undo": "Undo",
+    "reverted": "Reverted to previous state",
+    "restored": "Restored to original",
+    "history": "Edit History",
+    "restoreOriginal": "Restore Original",
+    "noEditsYet": "No edits yet",
+    "aiEditing": "AI is editing...",
+    "editDone": "Done!",
+    "editFailed": "Edit failed",
+    "siteNotFound": "Site not found",
+    "createNew": "Create New",
+    "visit": "Visit",
+    "enterToSend": "Enter to send, Shift+Enter for new line",
+    "examples": {
+      "phone": "Add Phone",
+      "color": "Change Color",
+      "menu": "Add Menu",
+      "hours": "Business Hours",
+      "address": "Add Address",
+      "image": "Change Image"
+    }
   }
 }

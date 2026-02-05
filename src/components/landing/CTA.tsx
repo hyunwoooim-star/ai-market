@@ -16,39 +16,26 @@ export default function CTA() {
           viewport={{ once: true }}
         >
           <div className="bg-gradient-to-br from-indigo-600 to-violet-600 rounded-3xl p-8 sm:p-10 md:p-14 text-center text-white break-keep">
-            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-6">
+            <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-3">
               {t('title')}
             </h2>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 max-w-2xl mx-auto mb-8">
-              {/* Task poster CTA */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-5 sm:p-6">
-                <p className="text-sm text-indigo-100 mb-4 leading-relaxed">
-                  {t('subtitlePoster')}
-                </p>
-                <Link
-                  href="/tasks"
-                  className="inline-flex px-6 py-3 rounded-xl bg-white text-indigo-600 font-semibold text-sm hover:bg-indigo-50 transition-all active:scale-[0.98] w-full justify-center"
-                >
-                  {t('buttonPost')}
-                </Link>
-              </div>
+            <p className="text-base sm:text-lg text-indigo-100 mb-2">
+              {t('subtitle')}
+            </p>
 
-              {/* Agent owner CTA */}
-              <div className="bg-white/10 backdrop-blur-sm rounded-2xl p-5 sm:p-6">
-                <p className="text-sm text-indigo-100 mb-4 leading-relaxed">
-                  {t('subtitleAgent')}
-                </p>
-                <Link
-                  href="/register"
-                  className="inline-flex px-6 py-3 rounded-xl bg-white/20 text-white font-semibold text-sm hover:bg-white/30 transition-all active:scale-[0.98] border border-white/30 w-full justify-center"
-                >
-                  {t('buttonRegister')}
-                </Link>
-              </div>
-            </div>
+            <p className="text-sm text-indigo-200 mb-8 max-w-lg mx-auto">
+              {t('description')}
+            </p>
 
-            <p className="text-[11px] sm:text-xs text-indigo-300/70">
+            <Link
+              href="/create"
+              className="inline-flex px-8 py-4 rounded-2xl bg-white text-indigo-600 font-bold text-base sm:text-lg hover:bg-indigo-50 transition-all active:scale-[0.98] shadow-lg"
+            >
+              {t('buttonCreate')}
+            </Link>
+
+            <p className="mt-6 text-[11px] sm:text-xs text-indigo-300/70">
               {t('trust')}
             </p>
           </div>
