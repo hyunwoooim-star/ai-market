@@ -7,70 +7,114 @@ const supabase = createClient(
   process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
 );
 
+type PageData = {
+  slug: string;
+  title: string;
+  description: string | null;
+  html_content: string;
+  source: 'hosted_pages' | 'sites';
+};
+
 type Props = {
   params: Promise<{ slug: string }>;
 };
 
-export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
-  const { data: site } = await supabase
-    .from('sites')
-    .select('title, description')
+/**
+ * hosted_pages → sites 순서로 조회
+ */
+async function getPageBySlug(slug: string): Promise<PageData | null> {
+  // 1) hosted_pages 먼저 확인
+  const { data: hostedPage } = await supabase
+    .from('hosted_pages')
+    .select('slug, title, description, html_content')
     .eq('slug', slug)
     .eq('is_published', true)
     .single();
 
-  if (!site) return { title: 'Site Not Found' };
+  if (hostedPage) {
+    return { ...hostedPage, source: 'hosted_pages' };
+  }
+
+  // 2) 기존 sites 테이블 fallback
+  const { data: site } = await supabase
+    .from('sites')
+    .select('slug, title, description, html_content')
+    .eq('slug', slug)
+    .eq('is_published', true)
+    .single();
+
+  if (site) {
+    return { ...site, source: 'sites' };
+  }
+
+  return null;
+}
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug } = await params;
+  const page = await getPageBySlug(slug);
+
+  if (!page) {
+    return { title: '페이지를 찾을 수 없습니다' };
+  }
+
+  const title = page.title || slug;
+  const description = page.description || `${slug} — Made with AgentMarket`;
 
   return {
-    title: site.title || slug,
-    description: site.description || `${slug} — Made with AgentMarket`,
+    title,
+    description,
     openGraph: {
-      title: site.title || slug,
-      description: site.description || `${slug} — Made with AgentMarket`,
+      title,
+      description,
+      url: `https://agentmarket.kr/s/${slug}`,
+      siteName: 'AgentMarket',
+      type: 'website',
+    },
+    twitter: {
+      card: 'summary',
+      title,
+      description,
     },
   };
 }
 
-export default async function SitePage({ params }: Props) {
+export default async function HostedPage({ params }: Props) {
   const { slug } = await params;
+  const page = await getPageBySlug(slug);
 
-  const { data: site, error } = await supabase
-    .from('sites')
-    .select('*')
-    .eq('slug', slug)
-    .eq('is_published', true)
-    .single();
-
-  if (error || !site) {
+  if (!page) {
     notFound();
   }
 
-  // Increment views (fire and forget)
-  supabase.rpc('increment_site_views', { site_slug: slug }).then(() => {});
+  // 조회수 증가 (fire and forget)
+  if (page.source === 'hosted_pages') {
+    supabase.rpc('increment_view_count', { page_slug: slug }).then(() => {});
+  } else {
+    supabase.rpc('increment_site_views', { site_slug: slug }).then(() => {});
+  }
 
-  // Inject AgentMarket badge into the HTML
-  const badge = `
-    <div style="position:fixed;bottom:16px;right:16px;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,sans-serif;">
-      <a href="https://agentmarket.kr/ko/create" target="_blank" rel="noopener"
-         style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,0.95);border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.12);text-decoration:none;color:#4f46e5;font-size:12px;font-weight:600;backdrop-filter:blur(8px);border:1px solid rgba(79,70,229,0.2);transition:all 0.2s;">
+  // 하단 워터마크 뱃지 (무료 tier)
+  const watermark = `
+    <div style="position:fixed;bottom:16px;right:16px;z-index:9999;font-family:-apple-system,BlinkMacSystemFont,'Noto Sans KR',sans-serif;">
+      <a href="https://agentmarket.kr" target="_blank" rel="noopener noreferrer"
+         style="display:flex;align-items:center;gap:6px;padding:8px 14px;background:rgba(255,255,255,0.95);border-radius:12px;box-shadow:0 2px 12px rgba(0,0,0,0.12);text-decoration:none;color:#4f46e5;font-size:12px;font-weight:600;backdrop-filter:blur(8px);border:1px solid rgba(79,70,229,0.15);transition:all 0.2s ease;">
         <span style="font-size:14px;">🚀</span>
-        <span>Made with AgentMarket</span>
+        <span>Powered by AgentMarket</span>
       </a>
     </div>
   `;
 
-  // Insert badge before </body>
-  const htmlWithBadge = site.html_content.replace(
-    '</body>',
-    `${badge}</body>`
-  );
+  // </body> 앞에 워터마크 삽입
+  const htmlWithWatermark = page.html_content.includes('</body>')
+    ? page.html_content.replace('</body>', `${watermark}</body>`)
+    : page.html_content + watermark;
 
   return (
     <iframe
-      srcDoc={htmlWithBadge}
+      srcDoc={htmlWithWatermark}
       className="w-full h-screen border-0"
-      title={site.title || slug}
+      title={page.title || slug}
       sandbox="allow-scripts allow-same-origin allow-popups allow-forms"
     />
   );
