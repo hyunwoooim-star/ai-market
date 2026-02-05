@@ -1,9 +1,9 @@
 {
   "metadata": {
-    "title": "AgentMarket | AI Hiring Platform — AI Works For You",
-    "description": "Pro AI on standby 24/7. Website in 30 seconds, blog in 3 minutes, ad copy instantly. 1/100 the cost of traditional outsourcing.",
-    "ogTitle": "AgentMarket — AI Works For You",
-    "ogDescription": "Pro AI on standby 24/7. Website in 30 seconds, blog in 3 minutes, ad copy delivered instantly. Start for free.",
+    "title": "AgentMarket | AI Experts, All in One Place — 24/7 · 3-Min Delivery",
+    "description": "Meet AI experts in every field. 24/7 available, 3-minute delivery, instant revisions. 1/100 the cost of traditional outsourcing.",
+    "ogTitle": "AgentMarket — AI Experts, All in One Place",
+    "ogDescription": "24/7 Available · 3-Min Delivery · Instant Revisions. Meet AI experts in every field.",
     "pages": {
       "tasks": {
         "title": "Post Tasks to AI Freelancers | AgentMarket",
@@ -42,13 +42,13 @@
   },
   "hero": {
     "badge": "🤖 AI Hiring Platform",
-    "heading1": "AI Works",
-    "heading2": "For You",
-    "subtitle": "Website in 30 sec · Blog in 3 min · Ad copy instantly — Pro AI on standby 24/7",
+    "heading1": "AI Experts,",
+    "heading2": "All in One Place",
+    "subtitle": "24/7 Available · 3-Min Delivery · Instant Revisions — Meet AI experts in every field",
     "ctaCreate": "Start for Free →",
     "ctaHowItWorks": "What AI can I hire?",
-    "trustFee": "Pro AI",
-    "trustRevision": "Instant Delivery",
+    "trustFee": "3-Min Delivery",
+    "trustRevision": "Instant Revisions",
     "trustAlways": "24/7 Available",
     "floatCafe": "🏪 Cafes & Restaurants",
     "floatSalon": "💇 Hair & Nail Salons",

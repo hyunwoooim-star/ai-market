@@ -85,7 +85,7 @@ export default async function Image({ params }: { params: { locale: string } }) 
               textShadow: '0 4px 20px rgba(0, 0, 0, 0.3)',
             }}
           >
-            {isKorean ? 'AI가' : 'AI Works'}
+            {isKorean ? 'AI 전문가,' : 'AI Experts,'}
           </h1>
           <h1
             style={{
@@ -98,7 +98,7 @@ export default async function Image({ params }: { params: { locale: string } }) 
               lineHeight: 1.2,
             }}
           >
-            {isKorean ? '일합니다' : 'For You'}
+            {isKorean ? '한곳에' : 'All in One Place'}
           </h1>
         </div>
 
@@ -112,8 +112,8 @@ export default async function Image({ params }: { params: { locale: string } }) 
           }}
         >
           {isKorean 
-            ? '웹사이트 30초 · 블로그 3분 · 광고 카피 즉시' 
-            : 'Website in 30s · Blog in 3min · Ad Copy Instantly'}
+            ? '24시간 대기 · 3분 납품 · 즉시 수정' 
+            : '24/7 Available · 3-Min Delivery · Instant Revisions'}
         </p>
 
         {/* Logo */}
