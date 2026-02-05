@@ -74,6 +74,11 @@ export default function CreatePage() {
   const [html, setHtml] = useState('');
   const [viewMode, setViewMode] = useState<ViewMode>('desktop');
   const [error, setError] = useState('');
+  const [slug, setSlug] = useState('');
+  const [publishedUrl, setPublishedUrl] = useState('');
+  const [publishing, setPublishing] = useState(false);
+  const [showPublish, setShowPublish] = useState(false);
+  const [slugAvailable, setSlugAvailable] = useState<boolean | null>(null);
   const progressInterval = useRef<ReturnType<typeof setInterval> | null>(null);
 
   const isKorean = t('title') === 'AI 웹사이트 만들기';
@@ -147,6 +152,50 @@ export default function CreatePage() {
     setHtml('');
     setProgress(0);
     setError('');
+    setSlug('');
+    setPublishedUrl('');
+    setShowPublish(false);
+    setSlugAvailable(null);
+  };
+
+  const checkSlug = async (value: string) => {
+    const cleaned = value.toLowerCase().replace(/[^a-z0-9가-힣\-]/g, '').slice(0, 50);
+    setSlug(cleaned);
+    if (cleaned.length < 2) { setSlugAvailable(null); return; }
+    try {
+      const res = await fetch(`/api/sites?slug=${encodeURIComponent(cleaned)}`);
+      const data = await res.json();
+      setSlugAvailable(data.available);
+    } catch { setSlugAvailable(null); }
+  };
+
+  const handlePublish = async () => {
+    if (!slug || !html || !slugAvailable) return;
+    setPublishing(true);
+    try {
+      const res = await fetch('/api/sites', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          slug,
+          title: description.slice(0, 100),
+          description: description.slice(0, 300),
+          html_content: html,
+          business_type: 'general',
+          style,
+        }),
+      });
+      const data = await res.json();
+      if (data.success) {
+        setPublishedUrl(`https://agentmarket.kr/s/${slug}`);
+      } else {
+        setError(data.error || 'Failed to publish');
+      }
+    } catch {
+      setError('Failed to publish. Please try again.');
+    } finally {
+      setPublishing(false);
+    }
   };
 
   return (
@@ -422,33 +471,115 @@ export default function CreatePage() {
                 </div>
               </div>
 
+              {/* Published success */}
+              {publishedUrl && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-6 max-w-2xl mx-auto p-6 rounded-2xl bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800"
+                >
+                  <div className="text-center">
+                    <span className="text-4xl">🎉</span>
+                    <h3 className="text-lg font-bold text-green-800 dark:text-green-300 mt-2">
+                      {isKorean ? '홈페이지가 라이브됐습니다!' : 'Your site is live!'}
+                    </h3>
+                    <a
+                      href={publishedUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-block mt-2 text-green-600 dark:text-green-400 font-mono text-sm hover:underline break-all"
+                    >
+                      {publishedUrl}
+                    </a>
+                    <div className="flex gap-2 justify-center mt-4">
+                      <button
+                        onClick={() => navigator.clipboard.writeText(publishedUrl)}
+                        className="px-4 py-2 rounded-lg bg-green-600 text-white text-sm font-medium hover:bg-green-700 transition-colors"
+                      >
+                        📋 {isKorean ? 'URL 복사' : 'Copy URL'}
+                      </button>
+                      <a
+                        href={publishedUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="px-4 py-2 rounded-lg bg-white dark:bg-gray-800 border border-green-300 dark:border-green-700 text-green-700 dark:text-green-400 text-sm font-medium hover:bg-green-50 dark:hover:bg-green-900/30 transition-colors"
+                      >
+                        🔗 {isKorean ? '사이트 방문' : 'Visit Site'}
+                      </a>
+                    </div>
+                  </div>
+                </motion.div>
+              )}
+
               {/* Action buttons */}
               <div className="flex flex-col sm:flex-row gap-3 mt-6 max-w-2xl mx-auto">
+                {!publishedUrl && !showPublish && (
+                  <button
+                    onClick={() => setShowPublish(true)}
+                    className="flex-1 py-3.5 px-6 rounded-xl bg-green-600 hover:bg-green-700 text-white font-bold text-sm transition-all shadow-lg shadow-green-200 dark:shadow-green-900/30 active:scale-[0.98]"
+                  >
+                    🚀 {isKorean ? '무료로 바로 라이브!' : 'Go Live for Free!'}
+                  </button>
+                )}
                 <button
                   onClick={handleDownload}
-                  className="flex-1 py-3.5 px-6 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm transition-all shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30 active:scale-[0.98]"
+                  className={`${showPublish || publishedUrl ? 'flex-1' : 'flex-1'} py-3.5 px-6 rounded-xl ${publishedUrl ? 'bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300' : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-lg shadow-indigo-200 dark:shadow-indigo-900/30'} font-bold text-sm transition-all active:scale-[0.98]`}
                 >
                   📥 {t('download')}
                 </button>
-                <button
-                  disabled
-                  className="flex-1 py-3.5 px-6 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 font-medium text-sm cursor-not-allowed relative"
-                >
-                  🌐 {t('connectDomain')}
-                  <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 rounded-full">
-                    {t('comingSoon')}
-                  </span>
-                </button>
-                <button
-                  disabled
-                  className="flex-1 py-3.5 px-6 rounded-xl bg-gray-100 dark:bg-gray-800 text-gray-400 dark:text-gray-500 font-medium text-sm cursor-not-allowed relative"
-                >
-                  ✏️ {t('requestEdit')}
-                  <span className="absolute -top-2 -right-2 px-2 py-0.5 text-[10px] font-bold bg-amber-100 dark:bg-amber-900/50 text-amber-700 dark:text-amber-400 rounded-full">
-                    {t('comingSoon')}
-                  </span>
-                </button>
               </div>
+
+              {/* Publish form */}
+              {showPublish && !publishedUrl && (
+                <motion.div
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="mt-4 max-w-2xl mx-auto p-6 rounded-2xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 shadow-lg"
+                >
+                  <h3 className="text-base font-bold text-gray-900 dark:text-white mb-1">
+                    {isKorean ? '🌐 사이트 주소 정하기' : '🌐 Choose your site URL'}
+                  </h3>
+                  <p className="text-xs text-gray-500 dark:text-gray-400 mb-4">
+                    {isKorean ? '영어 소문자, 숫자, 하이픈만 사용 가능해요' : 'Lowercase letters, numbers, and hyphens only'}
+                  </p>
+
+                  <div className="flex items-center gap-0 mb-3">
+                    <span className="px-3 py-3 bg-gray-100 dark:bg-gray-700 text-gray-500 dark:text-gray-400 text-sm rounded-l-xl border border-r-0 border-gray-200 dark:border-gray-600 whitespace-nowrap">
+                      agentmarket.kr/s/
+                    </span>
+                    <input
+                      type="text"
+                      value={slug}
+                      onChange={(e) => checkSlug(e.target.value)}
+                      placeholder={isKorean ? 'my-cafe' : 'my-cafe'}
+                      className={`flex-1 px-3 py-3 rounded-r-xl border text-sm font-mono ${
+                        slugAvailable === true
+                          ? 'border-green-400 dark:border-green-600 bg-green-50 dark:bg-green-900/20'
+                          : slugAvailable === false
+                          ? 'border-red-400 dark:border-red-600 bg-red-50 dark:bg-red-900/20'
+                          : 'border-gray-200 dark:border-gray-600 bg-white dark:bg-gray-900'
+                      } focus:outline-none focus:ring-2 focus:ring-indigo-500`}
+                    />
+                  </div>
+
+                  {slugAvailable === true && (
+                    <p className="text-xs text-green-600 dark:text-green-400 mb-3">✅ {isKorean ? '사용 가능한 주소입니다!' : 'This URL is available!'}</p>
+                  )}
+                  {slugAvailable === false && (
+                    <p className="text-xs text-red-600 dark:text-red-400 mb-3">❌ {isKorean ? '이미 사용 중인 주소입니다' : 'This URL is taken'}</p>
+                  )}
+
+                  <button
+                    onClick={handlePublish}
+                    disabled={!slugAvailable || publishing}
+                    className="w-full py-3 rounded-xl bg-green-600 hover:bg-green-700 disabled:bg-gray-300 dark:disabled:bg-gray-700 text-white font-bold text-sm transition-all disabled:cursor-not-allowed active:scale-[0.98]"
+                  >
+                    {publishing
+                      ? (isKorean ? '배포 중...' : 'Publishing...')
+                      : (isKorean ? '🚀 지금 바로 라이브하기' : '🚀 Go Live Now')}
+                  </button>
+                </motion.div>
+              )}
 
               {/* Reset */}
               <div className="text-center mt-6">
