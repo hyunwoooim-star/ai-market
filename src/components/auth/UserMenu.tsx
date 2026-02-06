@@ -5,8 +5,7 @@ import { useTranslations } from 'next-intl';
 import { useAuth } from '@/contexts/AuthContext';
 
 export default function UserMenu() {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const { user, loading, signInWithKakao, signOut } = useAuth();
+  const { user, loading, signOut } = useAuth();
   const [open, setOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const t = useTranslations('auth');
@@ -25,10 +24,12 @@ export default function UserMenu() {
     return <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse" />;
   }
 
-  // Kakao login disabled — auth system under review
   if (!user) {
     return null;
   }
+
+  const displayName = user.name || 'User';
+  const providerLabel = user.provider === 'naver' ? '네이버' : user.provider === 'kakao' ? '카카오' : 'OAuth';
 
   return (
     <div ref={menuRef} className="relative">
@@ -36,15 +37,15 @@ export default function UserMenu() {
         onClick={() => setOpen(!open)}
         className="flex items-center gap-2 hover:opacity-80 transition-opacity"
       >
-        {user.profileImage ? (
+        {user.image ? (
           <img
-            src={user.profileImage}
-            alt={user.nickname}
+            src={user.image}
+            alt={displayName}
             className="w-8 h-8 rounded-full border-2 border-indigo-200 dark:border-indigo-700"
           />
         ) : (
           <div className="w-8 h-8 rounded-full bg-indigo-100 dark:bg-indigo-900 flex items-center justify-center text-sm font-bold text-indigo-600 dark:text-indigo-300">
-            {user.nickname[0]}
+            {displayName[0]}
           </div>
         )}
       </button>
@@ -52,8 +53,8 @@ export default function UserMenu() {
       {open && (
         <div className="absolute right-0 top-10 w-56 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-xl shadow-lg py-2 z-50">
           <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700">
-            <p className="text-sm font-bold text-gray-900 dark:text-white">{user.nickname}</p>
-            <p className="text-xs text-gray-400">{t('kakaoLabel')}</p>
+            <p className="text-sm font-bold text-gray-900 dark:text-white">{displayName}</p>
+            <p className="text-xs text-gray-400">{providerLabel} 로그인</p>
           </div>
           <div className="py-1">
             <button

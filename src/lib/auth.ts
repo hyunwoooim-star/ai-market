@@ -61,7 +61,7 @@ export const authConfig: NextAuthConfig = {
     KakaoProvider(),
   ],
   callbacks: {
-    async jwt({ token, account }) {
+    async jwt({ token, account, user }) {
       // OAuth 연결 시 토큰 정보 저장
       if (account) {
         token.accessToken = account.access_token
@@ -69,12 +69,18 @@ export const authConfig: NextAuthConfig = {
         token.provider = account.provider
         token.expiresAt = account.expires_at
       }
+      if (user) {
+        token.id = user.id
+      }
       return token
     },
     async session({ session, token }) {
       // 세션에 토큰 정보 전달
       session.accessToken = token.accessToken as string
       session.provider = token.provider as string
+      if (token.id) {
+        (session.user as any).id = token.id
+      }
       return session
     },
   },
@@ -84,7 +90,20 @@ export const authConfig: NextAuthConfig = {
   },
   session: {
     strategy: "jwt",
+    maxAge: 30 * 24 * 60 * 60, // 30일
   },
+  cookies: {
+    sessionToken: {
+      name: `__Secure-next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        sameSite: 'lax',
+        path: '/',
+        secure: true,
+      },
+    },
+  },
+  trustHost: true,
 }
 
 export const { handlers, auth, signIn, signOut } = NextAuth(authConfig)
